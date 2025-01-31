@@ -1,7 +1,9 @@
 import NextAuth from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
+import dbConnect from "../../../../lib/mongodb";
+import User from "../../../../models/User";
 
-const options = {
+const handler = NextAuth({
   providers: [
     GoogleProvider({
       clientId: process.env.GOOGLE_CLIENT_ID,
@@ -9,18 +11,34 @@ const options = {
     }),
   ],
   secret: process.env.NEXTAUTH_SECRET,
-  pages: {
-    signIn: "/auth/signin", // Optional custom sign-in page
-  },
   callbacks: {
-    async session({ session, token }) {
-      session.user.id = token.sub; // Store user ID in session
+    async signIn({ user }) {
+      await dbConnect(); // Ensure database connection
+
+      // Check if user exists in DB
+      const existingUser = await User.findOne({ email: user.email });
+
+      if (!existingUser) {
+        await User.create({
+          name: user.name,
+          email: user.email,
+          image: user.image,
+        });
+      }
+
+      return true;
+    },
+    async session({ session }) {
+      await dbConnect();
+      const dbUser = await User.findOne({ email: session.user.email });
+
+      if (dbUser) {
+        session.user.id = dbUser._id;
+      }
+
       return session;
     },
   },
-};
+});
 
-const handler = NextAuth(options);
-
-export const GET = handler;
-export const POST = handler;
+export { handler as GET, handler as POST };
