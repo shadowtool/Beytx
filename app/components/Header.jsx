@@ -1,6 +1,7 @@
 import Link from "next/link";
 import AuthButton from "./AuthButton";
 import AddProperty from "../add-property/page";
+import AddPropertyButton from "./AddPropertyButton";
 
 const Header = () => {
     return (  
@@ -17,13 +18,19 @@ const Header = () => {
                         <li><Link href="/contact"><span className="hover:underline">Contact</span></Link></li>
                     </ul>
                 </nav>
+                
 
                 {/* Auth Button */}
 
-                <div className="flex justify-end">
+                <div className="flex  justify-center items-center gap-10">
                   
                     <AuthButton />
+                    <AddPropertyButton />
+                    
                 </div>
+
+               
+               
             </div>
         </header>
     );
