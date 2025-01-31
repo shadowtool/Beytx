@@ -26,7 +26,7 @@ export default function AddProperty() {
     setImages((prevImages) => [...prevImages, ...files]);
   };
 
-  if (session) {
+  if (!session) {
     return (
       <div className="flex flex-col items-center justify-center min-h-screen">
         <p>You must be logged in to add a property.</p>
