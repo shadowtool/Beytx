@@ -12,7 +12,7 @@ export default function AuthButton() {
   ) : (
     <button
       onClick={() => signIn("google")}
-      className="flex justify-center items-center gap-2 bg-green-800 text-white font-mono px-4 py-3 h-12 rounded-lg border-2 border-solid hover:border-teal-800 transition-all duration-300
+      className="flex justify-center items-center gap-2 bg-[#131314]  text-white font-mono px-4 py-3 h-12 rounded-lg border-2 border-solid hover:border-teal-800 transition-all duration-300
       "
     >
       <img
@@ -20,7 +20,7 @@ export default function AuthButton() {
         alt="Google Logo"
         className="w-6 h-6 mr-2 " // Increase the size of the logo
       />
-      Login with Google
+      Google Login
     </button>
   );
 }

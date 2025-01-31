@@ -70,7 +70,7 @@ const PropertyListings = () => {
   }, [loading, loadMoreProperties]);
 
   return (
-    <section className="container mx-auto py-10 px-4">
+    <section className="container mx-auto py-10 px-4" style={{ minHeight: '100vh' }}>
       <div className="flex justify-center mb-10">
         <h2 className="text-4xl font-bold text-white text-center
         bg-green-600 px-6 py-2 rounded-full

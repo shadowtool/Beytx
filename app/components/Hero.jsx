@@ -1,6 +1,6 @@
 // components/Hero.js
 'use client';
-import { useState } from "react"; // Importing state management from React
+import { useState, useEffect } from "react"; // Importing state management from React
 import { usePropertyContext } from '../context/PropertyContext';
 
 const Hero = () => {
@@ -8,6 +8,11 @@ const Hero = () => {
   const [propertyType, setPropertyType] = useState("");
   const [bedrooms, setBedrooms] = useState("");
   const [furnished, setFurnished] = useState("");
+
+  // Set default filter status to "sale" on component mount
+  useEffect(() => {
+    setFilterStatus("sale");
+  }, [setFilterStatus]);
 
   return (
     <div className="bg-gray-100 py-20 text-center">
@@ -17,8 +22,8 @@ const Hero = () => {
       <div className="mt-4 flex justify-center space-x-4">
         <button
           onClick={() => setFilterStatus(filterStatus === "sale" ? null : "sale")}
-          className={`px-6 py-2 rounded-full transition ${
-            filterStatus === "sale" ? "bg-green-600 text-white shadow-lg" : "bg-gray-300 text-gray-700"
+          className={`px-6 py-2 w-40 sm:w-32 rounded-full transition ${
+            filterStatus === "sale" ? "bg-green-600 text-white shadow-lg" : "bg-gray-300 text-gray-700 border-2 border-solid hover:border-teal-800 transition-all duration-300"
           }`}
         >
           For Sale
@@ -26,8 +31,8 @@ const Hero = () => {
 
         <button
           onClick={() => setFilterStatus(filterStatus === "rent" ? null : "rent")}
-          className={`px-6 py-2 rounded-full transition ${
-            filterStatus === "rent" ? "bg-green-600 text-white shadow-lg" : "bg-gray-300 text-gray-700"
+          className={`px-6 py-2 w-40 sm:w-32 rounded-full transition ${
+            filterStatus === "rent" ? "bg-green-600 text-white shadow-lg" : "bg-gray-300 text-gray-700 border-2 border-solid hover:border-teal-800 transition-all duration-300"
           }`}
         >
           For Rent
@@ -35,18 +40,18 @@ const Hero = () => {
       </div>
 
       {/* Search Bar */}
-      <div className="w-full flex flex-col items-center bg-gray-100 p-6">
+      <div className="w-full flex flex-col items-center bg-gray-100 p-6" style={{ minHeight: '200px' }}>
 
-      {/* Search Bar Container */}
-      <div className="flex items-center bg-white rounded-xl shadow-md overflow-hidden w-full max-w-3xl">
+      {/* Filter Bar Container */}
+      <div className="flex items-center bg-white rounded-xl shadow-md overflow-hidden w-full max-w-3xl mb-4">
         
         {/* Property Type Select */}
         <select
           value={propertyType}
           onChange={(e) => setPropertyType(e.target.value)}
-          className="px-4 py-3 w-40 text-gray-700 border-r border-gray-300 outline-none"
+          className="px-4 py-3 w-1/3 text-gray-700 border-r border-gray-300 outline-none"
         >
-          <option value="" disabled>Property Type</option>
+          <option value="" disabled>Type</option>
           <option value="Villa">Villa</option>
           <option value="Apartment">Apartment</option>
           <option value="Land">Land</option>
@@ -56,7 +61,7 @@ const Hero = () => {
         <select
             value={furnished}
             onChange={(e) => setFurnished(e.target.value)}
-            className="px-4 py-3 w-40 text-gray-700 border-r border-gray-300 outline-none"
+            className="px-4 py-3 w-1/3 text-gray-700 border-r border-gray-300 outline-none"
           >
             <option value="" disabled>Furniture</option>
             <option value="Furnished">Furnished</option>
@@ -67,7 +72,7 @@ const Hero = () => {
         <select
           value={bedrooms}
           onChange={(e) => setBedrooms(e.target.value)}
-          className="px-4 py-3 w-32 text-gray-700 border-r border-gray-300 outline-none"
+          className="px-4 py-3 w-1/3 text-gray-700 outline-none"
         >
           <option value="" disabled>Beds</option>
           <option value="Studio">Studio</option>
@@ -79,12 +84,15 @@ const Hero = () => {
           <option value="6">6</option>
           <option value="7+">7+</option>
         </select>
+      </div>
 
+      {/* Search Bar Container */}
+      <div className="flex items-center bg-white rounded-xl shadow-md overflow-hidden w-full max-w-3xl">
         {/* Search Bar Input */}
         <input
           type="text"
-          placeholder="Search properties..."
-          className="px-4 py-3 flex-1 text-gray-700 outline-none"
+          placeholder="Location"
+          className="px-4 py-3 flex-1 text-gray-800 outline-none"
         />
 
         {/* Search Button */}
