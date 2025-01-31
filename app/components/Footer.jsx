@@ -1,13 +1,16 @@
 import React from "react";
+import Link from "next/link";
 
 const Footer = () => {
   return (
     <footer className="bg-gray-900 text-white">
       {/* Top Bar with Add Property Button */}
       <div className="bg-green-700 text-center py-3">
-        <button className="bg-white text-green-700 font-semibold px-4 py-2 rounded-md hover:bg-gray-100 transition duration-300">
+      <Link href="/add-property">
+      <button className="bg-white text-green-700 font-semibold px-4 py-2 rounded-md hover:bg-gray-100 transition duration-300">
           + Add Property
         </button>
+        </Link>
       </div>
 
       {/* Main Footer Content */}
