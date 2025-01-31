@@ -37,7 +37,7 @@ const PropertyListings = () => {
       setProperties(prev => [...prev, ...newProperties]);
       setLoading(false);
       setPage(prev => prev + 1);
-    }, 1000);
+    }, 2000);
   }, [page, filterStatus]);
 
   useEffect(() => {

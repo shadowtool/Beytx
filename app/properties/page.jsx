@@ -6,7 +6,6 @@ import PropertyListings from '../components/PropertyListings';
 
 export default function Home() {
   return (<>
-    <Header />
     <Hero />
     <main>
       <PropertyListings />
