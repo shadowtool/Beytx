@@ -6,7 +6,7 @@ export default function AuthButton() {
   const { data: session } = useSession();
 
   return session ? (
-    <button onClick={() => signOut()} className="bg-red-500 text-white px-4 py-2 rounded">
+    <button onClick={() => signOut()} className="flex justify-center items-center gap-2 bg-red-500  text-white font-mono px-4 py-3 h-12 rounded-lg border-2 border-solid hover:border-red-800 transition-all duration-300 ">
       Logout
     </button>
   ) : (
