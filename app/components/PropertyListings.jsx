@@ -1,6 +1,7 @@
 'use client';
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { usePropertyContext } from '../context/PropertyContext';
+import PropertyFilter from './PropertyFilter';
 
 // Sample data - replace with your API call
 const allProperties = Array.from({ length: 100 }, (_, index) => ({
@@ -18,6 +19,7 @@ const PropertyListings = () => {
   const [loading, setLoading] = useState(false);
   const [page, setPage] = useState(1);
   const loadMoreRef = useRef(null);
+  const filterBarRef = useRef(null);
   const itemsPerPage = 9;
 
   const loadMoreProperties = useCallback(() => {
@@ -69,17 +71,37 @@ const PropertyListings = () => {
     };
   }, [loading, loadMoreProperties]);
 
+  useEffect(() => {
+    const handleScroll = () => {
+      if (filterBarRef.current) {
+        if (window.scrollY > filterBarRef.current.offsetTop) {
+          filterBarRef.current.classList.add('fixed', 'top-0', 'left-1/2', 'transform', '-translate-x-1/2', 'w-3/5', 'max-w-8xl',  'flex', 'justify-center', 'mb-10');
+        } else {
+          filterBarRef.current.classList.remove('fixed', 'top-0', 'left-1/2', 'transform', '-translate-x-1/2', 'w-3/5', 'max-w-8xl',  'flex', 'justify-center', 'mb-10');
+        }
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, []);
+
   return (
     <section className="container mx-auto py-10 px-4" style={{ minHeight: '100vh' }}>
-      <div className="flex justify-center mb-10">
+      {/* <div className="flex justify-center mb-10">
         <h2 className="text-4xl font-bold text-white text-center
         bg-green-600 px-6 py-2 rounded-full
         transition-all duration-500 hover:bg-green-700">
           Property Listings
         </h2>
+      </div> */}
+      <div ref={filterBarRef} className="w-full max-w-8xl mx-auto mb-6">
+        <PropertyFilter />
       </div>
-
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        
         {properties.map((property) => (
           <div key={property.id} className="border rounded-lg p-4 shadow-md bg-gray-200">
             <img src={property.image} alt={property.title} className="w-full h-48 object-cover rounded-md" />

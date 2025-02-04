@@ -9,7 +9,7 @@ const Header = () => {
           
                 {/* Navigation Links */}
                 <nav className="flex-1 text-center">  
-                    <ul className="flex space-x-10 font-mono text-xl justify-center mx-auto">
+                    <ul className="flex space-x-10 text-xl justify-center mx-auto">
                         <li><Link href="/"><span className="hover:underline">Home</span></Link></li>
                         <li><Link href="/properties"><span className="hover:underline">Properties</span></Link></li>
                         <li><Link href="/contact"><span className="hover:underline">Contact</span></Link></li>

@@ -16,26 +16,26 @@ const Hero = () => {
 
   return (
     <div className="bg-gray-100 py-20 text-center">
-      <h1 className="text-3xl font-bold text-green-600 mb-6">Find Your Dream Property</h1>
+      {/* <h1 className="text-3xl font-bold text-emerald-600 mb-6">Search Property</h1> */}
 
       {/* Search Buttons */}
       <div className="mt-4 flex justify-center space-x-4">
         <button
           onClick={() => setFilterStatus(filterStatus === "sale" ? null : "sale")}
           className={`px-6 py-2 w-40 sm:w-32 rounded-full transition ${
-            filterStatus === "sale" ? "bg-green-600 text-white shadow-lg" : "bg-gray-300 text-gray-700 border-2 border-solid hover:border-teal-800 transition-all duration-300"
+            filterStatus === "sale" ? "bg-emerald-500 hover:bg-emerald-400 text-white shadow-lg" : "bg-gray-300 text-gray-700 border-2 border-solid hover:border-emerald-500 transition-all duration-700 hover:bg-emerald-400 hover:text-white"
           }`}
         >
-          For Sale
+          Buy
         </button>
 
         <button
           onClick={() => setFilterStatus(filterStatus === "rent" ? null : "rent")}
           className={`px-6 py-2 w-40 sm:w-32 rounded-full transition ${
-            filterStatus === "rent" ? "bg-green-600 text-white shadow-lg" : "bg-gray-300 text-gray-700 border-2 border-solid hover:border-teal-800 transition-all duration-300"
+            filterStatus === "rent" ? "bg-emerald-500 hover:bg-emerald-400 text-white shadow-lg" : "bg-gray-300 text-gray-700 border-2 border-solid hover:border-emerald-500 transition-all duration-700 hover:bg-emerald-400 hover:text-white"
           }`}
         >
-          For Rent
+          Rent
         </button>
       </div>
 
@@ -43,7 +43,7 @@ const Hero = () => {
       <div className="w-full flex flex-col items-center bg-gray-100 p-6" style={{ minHeight: '200px' }}>
 
       {/* Filter Bar Container */}
-      <div className="flex items-center bg-white rounded-xl shadow-md overflow-hidden w-full max-w-3xl mb-4">
+      <div className="flex items-center bg-white rounded-xl shadow-md overflow-hidden w-full max-w-3xl mb-2">
         
         {/* Property Type Select */}
         <select
@@ -96,7 +96,7 @@ const Hero = () => {
         />
 
         {/* Search Button */}
-        <button className="bg-green-600 text-white px-10 py-3 font-semibold hover:bg-green-700 transition">
+        <button className="bg-emerald-500 text-white px-10 py-3 font-semibold hover:bg-emerald-600 transition">
           Search
         </button>
       </div>

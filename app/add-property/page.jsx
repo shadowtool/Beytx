@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { useSession, signIn } from "next-auth/react";
 import { useForm } from 'react-hook-form';
 
@@ -9,6 +9,7 @@ export default function AddProperty() {
   const { register, handleSubmit, reset } = useForm();
   const [images, setImages] = useState([]);
   const [status, setStatus] = useState("");
+  const fileInputRef = useRef(null);
 
   const onSubmit = (data) => {
     console.log({ ...data, status });
@@ -24,6 +25,15 @@ export default function AddProperty() {
   const handleFileChange = (e) => {
     const files = Array.from(e.target.files);
     setImages((prevImages) => [...prevImages, ...files]);
+    e.target.value = null; // Clear the input value
+  };
+
+  const handleClick = () => {
+    fileInputRef.current.click();
+  };
+
+  const handleRemoveImage = (index) => {
+    setImages((prevImages) => prevImages.filter((_, i) => i !== index));
   };
 
   if (!session) {
@@ -173,6 +183,7 @@ export default function AddProperty() {
               <div
                 onDrop={handleDrop}
                 onDragOver={(e) => e.preventDefault()}
+                onClick={handleClick}
                 className="mt-1 block w-full h-52 px-4 py-12 border-2 border-dashed border-gray-300 rounded-md shadow-sm text-center cursor-pointer focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-all duration-300 text-black"
               >
                 <p className="text-gray-500">Drag and drop images here, or click to select files</p>
@@ -180,6 +191,7 @@ export default function AddProperty() {
                   type="file"
                   multiple
                   onChange={handleFileChange}
+                  ref={fileInputRef}
                   className="hidden"
                 />
               </div>
@@ -193,6 +205,13 @@ export default function AddProperty() {
                       alt={`Selected ${index}`}
                       className="w-full h-32 object-cover rounded-md"
                     />
+                    <button
+                      type="button"
+                      onClick={() => handleRemoveImage(index)}
+                      className="absolute top-0 right-0 transform translate-x-1/2 -translate-y-1/2 bg-red-500 text-white rounded-full p-1 w-6 h-6 flex items-center justify-center"
+                    >
+                      &times;
+                    </button>
                   </div>
                 ))}
               </div>

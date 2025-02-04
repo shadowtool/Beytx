@@ -6,13 +6,13 @@ export default function AuthButton() {
   const { data: session } = useSession();
 
   return session ? (
-    <button onClick={() => signOut()} className="flex justify-center items-center gap-2 bg-red-600  text-white font-mono px-4 py-3 h-12 rounded-lg border-2 border-solid hover:border-red-400 transition-all duration-300 ">
+    <button onClick={() => signOut()} className="flex justify-center items-center gap-2 bg-red-600  text-white  px-4 py-3 h-12 rounded-lg border-2 border-solid hover:border-red-400 transition-all duration-300 ">
       Logout
     </button>
   ) : (
     <button
       onClick={() => signIn("google")}
-      className="flex justify-center items-center gap-2 bg-[#131314]  text-white font-mono px-4 py-3 h-12 rounded-lg border-2 border-solid hover:border-teal-800 transition-all duration-300
+      className="flex justify-center items-center gap-2 bg-[#131314]  text-white px-4 py-3 h-12 rounded-lg border-2 border-solid border-gray-700 hover:border-gray-300 transition-all duration-300
       "
     >
       <img

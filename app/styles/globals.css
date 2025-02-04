@@ -1,0 +1,18 @@
+.custom-scrollbar::-webkit-scrollbar {
+  width: 8px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 10px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: #4ade80; /* Emerald green */
+  border-radius: 50%;
+  border: 2px solid #f1f1f1; /* Add border to make it look like a dot */
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: #34d399; /* Darker emerald green */
+}
