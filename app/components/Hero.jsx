@@ -23,7 +23,7 @@ const Hero = () => {
         <button
           onClick={() => setFilterStatus(filterStatus === "sale" ? null : "sale")}
           className={`px-6 py-2 w-40 sm:w-32 rounded-full transition ${
-            filterStatus === "sale" ? "bg-emerald-500 hover:bg-emerald-400 text-white shadow-lg" : "bg-gray-300 text-gray-700 border-2 border-solid hover:border-emerald-500 transition-all duration-700 hover:bg-emerald-400 hover:text-white"
+            filterStatus === "sale" ? "bg-emerald-500 hover:bg-emerald-400 text-white shadow-lg rounded-lg" : "bg-gray-300 text-gray-700 border-2 border-solid rounded-lg hover:border-emerald-500 transition-all duration-700 hover:bg-emerald-400 hover:text-white "
           }`}
         >
           Buy
@@ -32,7 +32,7 @@ const Hero = () => {
         <button
           onClick={() => setFilterStatus(filterStatus === "rent" ? null : "rent")}
           className={`px-6 py-2 w-40 sm:w-32 rounded-full transition ${
-            filterStatus === "rent" ? "bg-emerald-500 hover:bg-emerald-400 text-white shadow-lg" : "bg-gray-300 text-gray-700 border-2 border-solid hover:border-emerald-500 transition-all duration-700 hover:bg-emerald-400 hover:text-white"
+            filterStatus === "rent" ? "bg-emerald-500 hover:bg-emerald-400 text-white shadow-lg rounded-lg" : "bg-gray-300 text-gray-700 border-2 border-solid hover:border-emerald-500 transition-all duration-700 hover:bg-emerald-400 hover:text-white rounded-lg"
           }`}
         >
           Rent
@@ -72,7 +72,8 @@ const Hero = () => {
         <select
           value={bedrooms}
           onChange={(e) => setBedrooms(e.target.value)}
-          className="px-4 py-3 w-1/3 text-gray-700 outline-none"
+          className="px-4 py-3 w-1/3 text-gray-700 outline-none select  "
+          
         >
           <option value="" disabled>Beds</option>
           <option value="Studio">Studio</option>

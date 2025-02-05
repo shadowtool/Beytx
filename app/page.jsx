@@ -11,7 +11,7 @@ export default function Home() {
     <main>
     <Hero />
       <FeaturedListings />
-        <PropertyHyperlinks />
+        {/* <PropertyHyperlinks /> */}
           <PropertyListings />
     </main>
     </>

@@ -59,8 +59,8 @@ export default function AddProperty() {
                 <button
                   type="button"
                   onClick={() => setStatus(status === "sale" ? "" : "sale")}
-                  className={`mt-4 px-10 py-2 rounded-full transition ${
-                    status === "sale" ? "bg-green-600 text-white shadow-lg" : "bg-gray-300 text-gray-700"
+                  className={`mt-4 px-10 py-2 rounded-full transition duration-1000  w-44 ${
+                    status === "sale" ? "bg-emerald-500 hover:bg-emerald-400 text-white shadow-lg rounded-lg" : "bg-gray-300 text-gray-700 border-2 border-solid rounded-lg hover:border-emerald-500  hover:bg-emerald-400 hover:text-white "
                   }`}
                 >
                   For Sale
@@ -68,8 +68,8 @@ export default function AddProperty() {
                 <button
                   type="button"
                   onClick={() => setStatus(status === "rent" ? "" : "rent")}
-                  className={`mt-4 px-10 py-2 rounded-full transition ${
-                    status === "rent" ? "bg-green-600 text-white shadow-lg" : "bg-gray-300 text-gray-700"
+                  className={`mt-4 px-10 py-2 rounded-full transition duration-1000 w-44 ${
+                    status === "rent" ? "bg-emerald-500 hover:bg-emerald-400 text-white shadow-lg rounded-lg" : "bg-gray-300 text-gray-700 border-2 border-solid hover:border-emerald-500   hover:bg-emerald-400 hover:text-white rounded-lg"
                   }`}
                 >
                   For Rent
@@ -86,6 +86,25 @@ export default function AddProperty() {
                   {...register('title', { required: true })}
                   className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-all duration-300 text-black"
                 />
+              </div>
+
+              {/* Property Type */}
+              <div>
+                <label htmlFor="type" className="block text-sm font-medium text-gray-700 mb-1">
+                  Type of Property
+                </label>
+                <select
+                  id="type"
+                  {...register('type', { required: true })}
+                  className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-all duration-300 text-black"
+                >
+                  <option value="Villa">Villa</option>
+                  <option value="Apartment">Apartment</option>
+                  <option value="Land">Land</option>
+                  <option value="Office">Office</option>
+                  <option value="Shop">Shop</option>
+                
+                </select>
               </div>
 
               <div>
@@ -110,34 +129,6 @@ export default function AddProperty() {
                   {...register('location', { required: true })}
                   className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-all duration-300 text-black"
                 />
-              </div>
-
-              <div>
-                <label htmlFor="description" className="block text-sm font-medium text-gray-700 mb-1">
-                  Description
-                </label>
-                <textarea
-                  id="description"
-                  {...register('description', { required: true })}
-                  rows="4"
-                  className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-all duration-300 text-black"
-                ></textarea>
-              </div>
-
-              {/* Property Type */}
-              <div>
-                <label htmlFor="type" className="block text-sm font-medium text-gray-700 mb-1">
-                  Type of Property
-                </label>
-                <select
-                  id="type"
-                  {...register('type', { required: true })}
-                  className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-all duration-300 text-black"
-                >
-                  <option value="house">House</option>
-                  <option value="apartment">Apartment</option>
-                  <option value="villa">Villa</option>
-                </select>
               </div>
 
               {/* Beds */}
@@ -178,6 +169,22 @@ export default function AddProperty() {
                   className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-all duration-300 text-black"
                 />
               </div>
+
+              <div>
+                <label htmlFor="description" className="block text-sm font-medium text-gray-700 mb-1">
+                  Description
+                </label>
+                <textarea
+                  id="description"
+                  {...register('description', { required: true })}
+                  rows="4"
+                  className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-all duration-300 text-black"
+                ></textarea>
+              </div>
+
+
+
+
 
               {/* Drag and Drop Image Upload */}
               <div
