@@ -1,27 +1,36 @@
 {
-  "name": "xtry",
+  "name": "my-next14-app",
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev --turbopack",
+    "dev": "next dev",
     "build": "next build",
     "start": "next start",
     "lint": "next lint"
   },
   "dependencies": {
-    "geist": "^1.0.0",
+    "@headlessui/react": "^2.2.0",
+    "@tanstack/react-query": "^5.66.0",
+    "axios": "^1.7.9",
+    "cloudinary": "^2.5.1",
+    "geist": "^1.3.1",
     "mongodb": "^6.13.0",
-    "mongoose": "^8.9.6",
-    "next": "15.1.6",
+    "mongoose": "^8.10.0",
+    "multer": "^1.4.5-lts.1",
+    "next": "14.2.24",
     "next-auth": "^4.24.11",
-    "react": "^19.0.0",
-    "react-dom": "^19.0.0",
-    "react-hook-form": "^7.54.2"
+    "next-cloudinary": "^6.16.0",
+    "next-intl": "^3.26.5",
+    "react": "^18",
+    "react-dom": "^18",
+    "react-hook-form": "^7.54.2",
+    "react-icons": "^5.4.0",
+    "react-quill": "^2.0.0",
+    "react-toastify": "^11.0.3",
+    "tailwindcss-rtl": "^0.9.0"
   },
   "devDependencies": {
-    "@eslint/eslintrc": "^3",
-    "eslint": "^9",
-    "eslint-config-next": "15.1.6",
+    "@types/node": "^22.13.2",
     "postcss": "^8",
     "tailwindcss": "^3.4.1"
   }

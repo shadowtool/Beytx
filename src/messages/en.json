@@ -1,0 +1,59 @@
+{
+  "Header": {
+    "home": "Home",
+    "properties": "Properties",
+    "contactUs": "Contact Us",
+    "login": "Login",
+    "addProperty": "Add Property"
+  },
+  "Footer": {
+    "aboutUs": "About Us",
+    "contact": "Contact Us",
+    "addProperty": "Add Property",
+    "siteMap": "Site Map",
+    "privacyPolicy": "Privacy Policy",
+    "termsandconditions": "Terms & Conditions"
+  },
+  "PropertyPage": {
+    "loginMessageText": "You must be logged in to add a property.",
+    "forSale": "For Sale",
+    "forRent": "For Rent",
+    "title": "Title",
+    "typeOfProperty": "Type Of Property",
+    "price": "Price",
+    "location": "location",
+    "bedrooms": "Bedrooms",
+    "bathrooms": "Bathrooms",
+    "area": "Area (In Square meters)",
+    "amenities": "Amenities",
+    "description": "Description",
+    "dragAndDropPlaceholderText": "Drag and drop images here, or click to select files",
+    "adding": "Adding ...",
+    "addProperty": "Add Property",
+    "login": "Login"
+  },
+  "PropertyTypes": {
+    "villa": "Villa",
+    "apartment": "Apartment",
+    "land": "Land",
+    "office": "Office",
+    "townhouse": "Townhouse"
+  },
+  "UserOptions": {
+    "editProfile": "Edit Profile",
+    "myListings": "My Listings",
+    "logout": "Logout",
+    "login": "Login"
+  },
+  "Cards": {
+    "beds": "beds",
+    "baths": "baths",
+    "view": "View",
+    "edit": "Edit",
+    "delete": "Delete",
+    "call": "call",
+    "whatsapp": "Whatsapp",
+    "email": "Email",
+    "share": "Share"
+  }
+}

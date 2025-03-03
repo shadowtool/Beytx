@@ -1,0 +1,59 @@
+{
+  "Header": {
+    "home": "الرئيسية",
+    "properties": "العقارات",
+    "contactUs": "اتصل بنا",
+    "login": "تسجيل الدخول",
+    "addProperty": "إضافة عقار"
+  },
+  "Footer": {
+    "aboutUs": "من نحن",
+    "contact": "اتصل بنا",
+    "addProperty": "إضافة عقار",
+    "siteMap": "خريطة الموقع",
+    "privacyPolicy": "سياسة الخصوصية",
+    "termsandconditions": "الشروط والأحكام"
+  },
+  "PropertyPage": {
+    "loginMessageText": "يجب تسجيل الدخول لإضافة عقار",
+    "forSale": "للبيع",
+    "forRent": "للإيجار",
+    "title": "العنوان",
+    "typeOfProperty": "نوع العقار",
+    "price": "السعر",
+    "location": "الموقع",
+    "bedrooms": "غرف النوم",
+    "bathrooms": "الحمامات",
+    "area": "المساحة (بالمتر المربع)",
+    "amenities": "المميزات",
+    "description": "الوصف",
+    "dragAndDropPlaceholderText": "اسحب وأفلت الصور هنا، أو انقر لاختيار الملفات",
+    "adding": "جاري الإضافة ...",
+    "addProperty": "إضافة عقار",
+    "login": "تسجيل الدخول"
+  },
+  "PropertyTypes": {
+    "villa": "فيلا",
+    "apartment": "شقة",
+    "land": "أرض",
+    "office": "مكتب",
+    "townhouse": "تاون هاوس"
+  },
+  "UserOptions": {
+    "editProfile": "تعديل الملف الشخصي",
+    "myListings": "عقاراتي",
+    "logout": "تسجيل الخروج",
+    "login": "تسجيل الدخول"
+  },
+  "Cards": {
+    "beds": "غرف نوم",
+    "baths": "حمامات",
+    "view": "عرض",
+    "edit": "تعديل",
+    "delete": "حذف",
+    "call": "اتصال",
+    "whatsapp": "واتساب",
+    "email": "بريد إلكتروني",
+    "share": "مشاركة"
+  }
+}
