@@ -4,7 +4,7 @@ import { useState, useRef, useEffect } from "react";
 import { useSession, signIn } from "next-auth/react";
 import { FormProvider, useForm } from "react-hook-form";
 import MultiTagInput from "@/components/Reusables/TagInput";
-import { axiosInstance } from "@/axios";
+import { axiosInstance } from "@/lib/axios";
 import { toast } from "react-toastify";
 import TextEditor from "@/components/Reusables/TextEditor";
 import { useParams, useRouter } from "next/navigation";
@@ -36,7 +36,10 @@ export default function index() {
     mutationFn: (variables) =>
       updatePropertyMutation(params?.propertyId, variables),
     onSuccess: () => {
-      queryClient.invalidateQueries([ROUTES.GET_PROPERTIES]);
+      queryClient.invalidateQueries([
+        ROUTES.GET_PROPERTIES,
+        ROUTES.GET_LOCATIONS,
+      ]);
       toast.success("Property Updated successfully");
       router.push(`/${params.locale}/my-listings`);
     },

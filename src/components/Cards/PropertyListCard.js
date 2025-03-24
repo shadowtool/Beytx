@@ -1,4 +1,4 @@
-import { axiosInstance } from "@/axios";
+import { axiosInstance } from "@/lib/axios";
 import { ROUTES } from "@/constants/routes";
 import {
   AreaIcon,
@@ -46,7 +46,9 @@ const PropertyListCard = ({ property, cardType, selectedView }) => {
       className="border rounded-lg max-h-48 bg-white flex items-center shadow-md hover:shadow-xl cursor-pointer transition-all duration-300 hover:scale-[1.02] relative overflow-hidden "
       onClick={() => {
         if (cardType !== "UserlistingCard") {
-          return router.push(`/${locale}/properties/${property?._id}`);
+          return router.push(
+            `/${locale}/${property?.status}/${property?.location?.country}/${property?.location?.city}/${property?._id}`
+          );
         }
       }}
     >
@@ -79,7 +81,7 @@ const PropertyListCard = ({ property, cardType, selectedView }) => {
             <p className="text-green-700 text-base font-semibold flex items-center mb-2 mt-1 ">
               <LocationIcon size={21} />
 
-              {property?.location}
+              {property?.location?.city}
             </p>
             <div className="text-gray-500 mt-2 flex items-center space-x-2">
               <p className="flex items-center text-sm">

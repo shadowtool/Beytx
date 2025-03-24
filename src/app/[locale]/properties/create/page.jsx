@@ -2,16 +2,17 @@
 
 import { useState, useRef } from "react";
 import { useSession, signIn } from "next-auth/react";
-import { FormProvider, useForm } from "react-hook-form";
+import { FormProvider, useForm, useWatch } from "react-hook-form";
 import MultiTagInput from "@/components/Reusables/TagInput";
-import { axiosInstance } from "@/axios";
+import { axiosInstance } from "@/lib/axios";
 import { toast } from "react-toastify";
 import TextEditor from "@/components/Reusables/TextEditor";
 import { useMutation } from "@tanstack/react-query";
 import { uploadImage } from "@/lib/queryFunctions";
 import { createPropertyMutation } from "@/lib/mutationFunctions";
 import { useTranslations } from "next-intl";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
+import MapPicker from "@/components/Misc/MapPicker";
 
 export default function AddProperty() {
   const translate = useTranslations("PropertyPage");
@@ -20,21 +21,23 @@ export default function AddProperty() {
 
   const { data: session } = useSession();
 
+  const router = useRouter();
+
   const { locale } = useParams();
 
   const methods = useForm({
     defaultValues: {
       status: "sale",
-      title: "TEST",
-      status: "sale",
-      price: 10,
-      location: "location",
-      size: 10,
-      type: "villa",
-      bedrooms: 10,
-      bathrooms: 10,
-      description: "test desc",
-      amenities: ["test"],
+      title: "",
+      status: "",
+      price: "",
+      location: "",
+      size: "",
+      type: "",
+      bedrooms: "",
+      bathrooms: "",
+      description: "",
+      amenities: [],
     },
   });
   const [images, setImages] = useState([]);
@@ -44,19 +47,7 @@ export default function AddProperty() {
 
   const { register, handleSubmit, reset, control, setValue } = methods;
 
-  const { mutate: updatePropertyData, isLoading } = useMutation({
-    mutationFn: (variables) =>
-      createPropertyMutation(params?.propertyId, variables),
-    onSuccess: () => {
-      queryClient.invalidateQueries([ROUTES.GET_PROPERTIES]);
-      toast.success("Property Updated successfully");
-      router.push(`/${locale}/my-listings`);
-    },
-    onError: (error) => {
-      console.error("Error updating property:", error);
-      toast.error("Something went wrong, please try later");
-    },
-  });
+  const formValues = useWatch({ control: control });
 
   const { mutateAsync } = useMutation({
     mutationFn: uploadImage,
@@ -66,6 +57,7 @@ export default function AddProperty() {
     mutationFn: (variables) => createPropertyMutation(variables),
     onSuccess: () => {
       toast.success("Property added successfully!");
+      router.push(`/${locale}/properties`);
       reset();
     },
     onError: () => {
@@ -164,14 +156,14 @@ export default function AddProperty() {
           <FormProvider {...methods}>
             <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
               <div className="grid grid-cols-1 gap-6">
-                <div className="flex justify-center space-x-4">
+                <div className="flex flex-col md:flex-row justify-center gap-4">
                   <button
                     type="button"
                     onClick={() => {
                       setValue("status", status === "sale" ? "" : "sale");
                       setStatus(status === "sale" ? "" : "sale");
                     }}
-                    className={`mt-4 px-10 py-2 rounded-full transition duration-300 w-44 border ${
+                    className={`mt-4 px-10 py-2 rounded-full transition duration-300 md:max-w-48 border w-full grow ${
                       status === "sale" ? "border-green-600" : "border-gray-400"
                     }`}
                   >
@@ -193,7 +185,7 @@ export default function AddProperty() {
                       setValue("status", status === "rent" ? "" : "rent");
                       setStatus(status === "rent" ? "" : "rent");
                     }}
-                    className={`mt-4 px-10 py-2 rounded-full transition duration-300 w-44 border ${
+                    className={`mt-4 px-10 py-2 rounded-full transition duration-300 md:max-w-48 border w-full grow ${
                       status === "rent" ? "border-green-600" : "border-gray-400"
                     }`}
                   >
@@ -250,8 +242,8 @@ export default function AddProperty() {
                     <option value="Office">
                       {propertyTypeTranslations("office")}
                     </option>
-                    <option value="Shop">
-                      {propertyTypeTranslations("shop")}
+                    <option value="Townhouse">
+                      {propertyTypeTranslations("townhouse")}
                     </option>
                   </select>
                 </div>
@@ -278,11 +270,8 @@ export default function AddProperty() {
                   >
                     {translate("location")}
                   </label>
-                  <input
-                    type="text"
-                    id="location"
-                    {...register("location", { required: true })}
-                    className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-all duration-300 text-black"
+                  <MapPicker
+                    onLocationSelect={(value) => setValue("location", value)}
                   />
                 </div>
 

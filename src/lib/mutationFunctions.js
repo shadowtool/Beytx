@@ -1,4 +1,4 @@
-import { axiosInstance } from "@/axios";
+import { axiosInstance } from "@/lib/axios";
 import { ROUTES } from "@/constants/routes";
 
 export const updatePropertyMutation = async (propertyId, variables) => {
@@ -27,11 +27,18 @@ export const updateUserMutation = async (variables) => {
   const response = await axiosInstance.put(
     `${ROUTES.GET_USER_INFO}/${variables.userId}`,
     {
-      email: variables.email,
-      phoneNumber: variables.phoneNumber,
-      image: variables.image,
+      ...variables,
     }
   );
 
   return response?.data;
+};
+
+export const toggleListingInSavedListings = async (userId, propertyId) => {
+  console.log({ userId, propertyId });
+  const { data } = await axiosInstance.post(ROUTES.ADD_TO_SAVED_LISTINGS, {
+    userId,
+    propertyId,
+  });
+  return data;
 };

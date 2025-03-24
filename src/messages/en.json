@@ -40,20 +40,21 @@
     "townhouse": "Townhouse"
   },
   "UserOptions": {
-    "editProfile": "Edit Profile",
-    "myListings": "My Listings",
+    "dashboard": "Dashboard",
     "logout": "Logout",
     "login": "Login"
   },
   "Cards": {
-    "beds": "beds",
-    "baths": "baths",
+    "beds": "Beds",
+    "baths": "Baths",
     "view": "View",
     "edit": "Edit",
     "delete": "Delete",
-    "call": "call",
+    "call": "Call",
     "whatsapp": "Whatsapp",
     "email": "Email",
-    "share": "Share"
+    "share": "Share",
+    "removeSavedListing": "Remove saved listing",
+    "saveListing": "Save Listing"
   }
 }

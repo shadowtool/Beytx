@@ -95,8 +95,6 @@ export async function DELETE(req, { params }) {
       { new: true, runValidators: true }
     );
 
-    console.log({ updatedProperty });
-
     if (!updatedProperty) {
       return NextResponse.json(
         { error: "Property not found" },

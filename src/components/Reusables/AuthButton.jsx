@@ -24,40 +24,35 @@ export default function AuthButton({ buttonClasses }) {
   return (
     <>
       {session ? (
-        <ClickAwayListener onClickAway={() => setShowProfileOptions(false)}>
+        <ClickAwayListener
+          onClickAway={() => setShowProfileOptions(false)}
+          containerClasses={"!w-fit"}
+        >
           <div className="relative">
             <div
-              className="h-fit w-fit py-2.5 px-6 flex cursor-pointer items-center gap-2 text-white border-2 border-solid border-white rounded-lg font-semibold"
+              className="h-fit w-fit py-2.5 px-2 md:px-6 flex cursor-pointer items-center gap-2 text-white border-0 md:border-2 border-solid border-white rounded-lg font-semibold"
               onClick={() => {
                 setShowProfileOptions(!showProfileOptions);
               }}
             >
-              {session?.user?.name}
-              <UserIcon size={28} color="#fff" />
+              <p className="hidden md:block">{session?.user?.name}</p>
+              <UserIcon size={21} color="#fff" />
             </div>
             {showProfileOptions && (
-              <div className="h-fit w-fit absolute top-[110%] right-0 bg-white rounded-md shadow-md z-[9] overflow-hidden">
+              <div className="h-fit w-fit min-w-36 absolute top-[110%] right-0 bg-white rounded-md shadow-md z-[9] overflow-hidden">
                 <div
                   className="py-3 px-6 flex items-center text-black text-sm cursor-pointer hover:bg-gray-200 transition-all duration-300 font-medium"
                   onClick={() => {
-                    setShowEditProfileModal(true);
+                    router.push(`/${locale}/dashboard`);
                     setShowProfileOptions(false);
                   }}
                 >
-                  {translate("editProfile")}
+                  {translate("dashboard")}
                 </div>
                 <div
                   className="py-3 px-6 flex items-center text-black text-sm cursor-pointer hover:bg-gray-200 transition-all duration-300 font-medium"
-                  onClick={() => {
-                    router.push(`/${locale}/my-listings`);
-                    setShowProfileOptions(false);
-                  }}
-                >
-                  {translate("myListings")}
-                </div>
-                <div
-                  className="py-3 px-6 flex items-center text-black text-sm cursor-pointer hover:bg-gray-200 transition-all duration-300 font-medium"
-                  onClick={() => {
+                  onClick={(e) => {
+                    e.stopPropagation();
                     signOut();
                   }}
                 >
@@ -69,13 +64,13 @@ export default function AuthButton({ buttonClasses }) {
         </ClickAwayListener>
       ) : (
         <button
-          className={`h-fit w-fit py-2.5 px-6 text-white border-2 border-solid border-white rounded-lg font-semibold ${buttonClasses}`}
+          className={`h-fit w-fit p-0 md:py-2.5 md:px-6 text-white border-2 border-none md:border-solid border-white rounded-lg font-semibold ${buttonClasses}`}
           onClick={() => {
-            signIn("google");
+            router.push(`/${locale}/auth/login`);
           }}
         >
           <div className="flex gap-2">
-            <p>{translate("login")}</p>
+            <p className="hidden md:inline">{translate("login")}</p>
             <LoginIcon size={28} color="#fff" />
           </div>
         </button>

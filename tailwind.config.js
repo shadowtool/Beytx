@@ -8,6 +8,17 @@ module.exports = {
     "./src/app/**/*.{js,ts,jsx,tsx,mdx}",
   ],
   theme: {
+    screens: {
+      xs: "480px",
+      sm: "640px",
+      "sm-md": "720px",
+      md: "768px",
+      "md-lg": "880px",
+      lg: "1024px",
+      "lg-xl": "1154px",
+      xl: "1280px",
+      "2xl": "1536px",
+    },
     extend: {
       colors: {
         background: "var(--background)",
@@ -15,7 +26,6 @@ module.exports = {
       },
       fontFamily: {
         montserrat: ["var(--font-montserrat)", "sans-serif"],
-        "jetbrains-mono": ["var(--font-jetbrains-mono)", "monospace"],
       },
     },
   },

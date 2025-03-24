@@ -1,5 +1,5 @@
 "use client";
-import { axiosInstance } from "@/axios";
+import { axiosInstance } from "@/lib/axios";
 import { ROUTES } from "@/constants/routes";
 import { fetchUserInfo } from "@/lib/queryFunctions";
 import { useQuery } from "@tanstack/react-query";

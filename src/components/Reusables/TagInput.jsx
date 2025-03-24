@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { useController } from "react-hook-form";
 
 const MultiTagInput = ({
@@ -17,8 +17,6 @@ const MultiTagInput = ({
     defaultValue: [],
   });
 
-  const [tags, setTags] = useState(Array.isArray(value) ? value : []);
-
   const [inputValue, setInputValue] = useState("");
 
   const handleKeyDown = (e) => {
@@ -30,27 +28,27 @@ const MultiTagInput = ({
   };
 
   const addTag = (newTag) => {
-    if (!tags.includes(newTag)) {
-      setTags((prev) => [...prev, newTag]);
+    if (!value.includes(newTag)) {
+      onChange([...value, newTag]); // Directly update RHF
     }
   };
 
   const removeTag = (tagToRemove) => {
-    setTags((prev) => prev.filter((tag) => tag !== tagToRemove));
+    onChange(value.filter((tag) => tag !== tagToRemove)); // Directly update RHF
   };
 
   return (
     <div className="flex flex-col w-full">
       <div className="border border-solid border-gray-300 rounded-md flex flex-wrap gap-2 p-2">
-        {tags.length === 0 ? (
+        {value.length === 0 ? (
           <div className="text-jet-black text-sm">
-            {inputValue?.length > 0
+            {inputValue.length > 0
               ? typingTagsBlockPlaceholder
               : emptyTagsBlockPlaceholder}
           </div>
         ) : (
           <>
-            {tags.map((tag, index) => (
+            {value.map((tag, index) => (
               <div
                 key={index}
                 className="flex items-center bg-green-600 text-white text-sm font-semibold px-1 py-1 pl-3 rounded-full"

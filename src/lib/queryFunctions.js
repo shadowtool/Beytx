@@ -1,4 +1,4 @@
-import { axiosInstance } from "../axios";
+import { axiosInstance } from "./axios";
 import { ROUTES } from "../constants/routes";
 
 export const uploadImage = async (file) => {
@@ -23,7 +23,7 @@ export const fetchPropertyListings = async (
     const response = await axiosInstance.get(`${ROUTES.GET_PROPERTIES}`, {
       params: { page: pageParam, limit: itemsPerPage, ...filters },
     });
-    return response?.data?.properties;
+    return response?.data;
   } catch (error) {
     console.error("Error fetching property listings:", error);
     throw error;
@@ -42,9 +42,9 @@ export const fetchPropertiesOfLoggedUser = async (userId) => {
   }
 };
 
-export const fetchPropertyDetails = async (propertyId) => {
+export const fetchPropertyDetails = async (propertyName) => {
   const response = await axiosInstance.get(
-    `${ROUTES.GET_PROPERTIES}/${propertyId ?? ""}`
+    `${ROUTES.GET_PROPERTIES}/${propertyName ?? ""}`
   );
   return response?.data;
 };
@@ -57,5 +57,17 @@ export const fetchFeaturedListings = async () => {
 export const fetchUserInfo = async (userId) => {
   if (!userId) return null;
   const { data } = await axiosInstance.get(`${ROUTES.GET_USER_INFO}/${userId}`);
+  return data;
+};
+
+export const fetchCities = async () => {
+  const { data } = await axiosInstance.get(`${ROUTES.GET_LOCATIONS}`);
+  return data;
+};
+
+export const fetchFavorites = async (userId) => {
+  const { data } = await axiosInstance.get(
+    `${ROUTES.GET_USER_SAVED_LISTINGS}?userId=${userId}`
+  );
   return data;
 };

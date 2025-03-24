@@ -6,7 +6,14 @@ const propertySchema = new mongoose.Schema({
   title: { type: String, required: true },
   status: { type: String, required: true, enum: PROPERTY_STATUS },
   price: { type: Number, required: true },
-  location: { type: String, required: true },
+  location: {
+    lat: { type: String, required: true },
+    lng: { type: String, required: true },
+    address: { type: String, required: true },
+    city: { type: String, required: true },
+    pincode: { type: String, required: true },
+    country: { type: String, required: true },
+  },
   size: { type: Number, required: true },
   type: {
     type: String,

@@ -34,7 +34,7 @@ export async function PUT(req, { params }) {
     await dbConnect();
 
     const { id } = params;
-    const { email, phoneNumber, image } = await req.json();
+    const { email, phoneNumber, image, name } = await req.json();
 
     if (!id) {
       return NextResponse.json(
@@ -66,6 +66,10 @@ export async function PUT(req, { params }) {
 
     if (image) {
       user.image = image;
+    }
+
+    if (name) {
+      user.name = name;
     }
 
     await user.save();

@@ -1,14 +1,14 @@
 import { NextResponse } from "next/server";
 import dbConnect from "@/lib/mongodb";
-import Property from "@/models/Property"; // Import the Mongoose model
+import Property from "@/models/Property";
 
 export async function POST(req) {
   try {
-    await dbConnect(); // Connect to MongoDB
+    await dbConnect();
 
-    const body = await req.json(); // Parse incoming JSON data
+    const body = await req.json();
 
-    const newProperty = await Property.create(body); // Insert into MongoDB
+    const newProperty = await Property.create(body);
 
     return NextResponse.json(
       { success: true, propertyId: newProperty._id },
