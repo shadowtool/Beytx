@@ -41,7 +41,7 @@ const MultiTagInput = ({
     <div className="flex flex-col w-full">
       <div className="border border-solid border-gray-300 rounded-md flex flex-wrap gap-2 p-2">
         {value.length === 0 ? (
-          <div className="text-jet-black text-sm">
+          <div className="text-jet-black  ">
             {inputValue.length > 0
               ? typingTagsBlockPlaceholder
               : emptyTagsBlockPlaceholder}
@@ -51,7 +51,7 @@ const MultiTagInput = ({
             {value.map((tag, index) => (
               <div
                 key={index}
-                className="flex items-center bg-green-600 text-white text-sm font-semibold px-1 py-1 pl-3 rounded-full"
+                className="flex items-center bg-green-600 text-white      px-1 py-1 pl-3 rounded-full"
               >
                 <span className="mr-2">{tag}</span>
                 <button
@@ -76,7 +76,7 @@ const MultiTagInput = ({
         />
       </div>
 
-      {error && <p className="text-red-500 text-sm">{error.message}</p>}
+      {error && <p className="text-red-500  ">{error.message}</p>}
     </div>
   );
 };

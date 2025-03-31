@@ -40,7 +40,7 @@ const MobileDashboard = ({
               className="object-cover w-full h-full"
             />
           </div>
-          <h4 className="text-xl font-semibold">{userInfo?.name}</h4>
+          <h4 className="    ">{userInfo?.name}</h4>
           <div className="w-full flex flex-col gap-2">
             {TABS?.map((el) => (
               <button
@@ -58,7 +58,7 @@ const MobileDashboard = ({
         <div className="w-full min-h-fit flex flex-col">
           <div className="h-fit w-full p-4">
             <button
-              className="mb-4 px-4 py-2 text-sm border border-solid border-green-600 text-green-600 bg-green-100 flex items-center gap-2 rounded-md transition w-fit"
+              className="mb-4 px-4 py-2   border border-solid border-green-600 text-green-600 bg-green-100 flex items-center gap-2 rounded-md transition w-fit"
               onClick={() => setSelectedTab(null)}
             >
               <LeftArrowIcon />
@@ -68,9 +68,7 @@ const MobileDashboard = ({
           {selectedTab === "editProfile" ? (
             <div className="p-4">
               <div className="h-fit w-full p-4 rounded-xl shadow-lg relative border border-gray-200 bg-white">
-                <h5 className="text-lg mb-6 font-semibold text-gray-800">
-                  Edit Your Info
-                </h5>
+                <h5 className="  mb-6    text-gray-800">Edit Your Info</h5>
                 <div className="min-h-24 max-h-24 rounded-full bg-green-600 flex items-center justify-center min-w-24 max-w-24 mb-6 overflow-hidden shadow-md">
                   <input
                     type="file"
@@ -98,30 +96,28 @@ const MobileDashboard = ({
                   )}
                 </div>
                 <div className="flex flex-col gap-2 w-full items-start mb-4">
-                  <h5 className="text-xs font-semibold text-gray-700">Name</h5>
+                  <h5 className="     text-gray-700">Name</h5>
                   <input
                     {...methods.register("name")}
                     className="py-3 px-6 bg-gray-50 w-full rounded-lg border border-gray-300"
                   />
                 </div>
                 <div className="flex flex-col gap-2 w-full items-start mb-4">
-                  <h5 className="text-xs font-semibold text-gray-700">Email</h5>
+                  <h5 className="     text-gray-700">Email</h5>
                   <input
                     {...methods.register("email")}
                     className="py-3 px-6 bg-gray-50 w-full rounded-lg border border-gray-300"
                   />
                 </div>
                 <div className="flex flex-col gap-2 w-full items-start mb-4">
-                  <h5 className="text-xs font-semibold text-gray-700">
-                    Phone Number
-                  </h5>
+                  <h5 className="     text-gray-700">Phone Number</h5>
                   <input
                     {...methods.register("phoneNumber")}
                     className="py-3 px-6 bg-gray-50 w-full rounded-lg border border-gray-300"
                   />
                 </div>
                 <button
-                  className="w-full py-3 px-6 rounded-md bg-green-600 text-white text-sm font-semibold shadow-md hover:bg-green-700 transition"
+                  className="w-full py-3 px-6 rounded-md bg-green-600 text-white      shadow-md hover:bg-green-700 transition"
                   onClick={handleUpdateModified}
                 >
                   Update
@@ -131,7 +127,7 @@ const MobileDashboard = ({
           ) : selectedTab === "my-listings" ? (
             <div className="min-h-fit w-full flex flex-col gap-6 pb-16">
               {properties?.length <= 0 ? (
-                <div className="h-fit w-full p-6 text-base font-medium">
+                <div className="h-fit w-full p-6    ">
                   <h5>No listings found</h5>
                 </div>
               ) : (
@@ -147,7 +143,7 @@ const MobileDashboard = ({
           ) : selectedTab === "saved-listings" ? (
             <div className="min-h-fit w-full flex flex-col gap-6 pb-16">
               {savedListings?.length <= 0 ? (
-                <div className="h-fit w-full p-6 text-base font-medium">
+                <div className="h-fit w-full p-6    ">
                   <h5>No listings found</h5>
                 </div>
               ) : (

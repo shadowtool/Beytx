@@ -1,37 +1,55 @@
 import React, { useEffect, useRef } from "react";
 import { Controller, useFormContext } from "react-hook-form";
 
-const GeneralInput = ({ name, placeholder, disabled, classes }) => {
+const GeneralInput = ({
+  name,
+  placeholder,
+  disabled,
+  classes,
+  type = "text",
+  validation = {},
+  error,
+  debounce = false,
+  debounceTime = 500,
+}) => {
   const { control } = useFormContext();
   const debounceRef = useRef(null);
 
   return (
-    <Controller
-      name={name}
-      control={control}
-      defaultValue=""
-      render={({ field }) => {
-        useEffect(() => {
-          if (debounceRef.current) clearTimeout(debounceRef.current);
+    <div className="w-full">
+      <Controller
+        name={name}
+        control={control}
+        defaultValue=""
+        rules={validation}
+        render={({ field }) => {
+          useEffect(() => {
+            if (!debounce) return; // ✅ Skip debounce if not needed
 
-          debounceRef.current = setTimeout(() => {
-            field.onChange(field.value);
-          }, 500);
+            if (debounceRef.current) clearTimeout(debounceRef.current);
 
-          return () => clearTimeout(debounceRef.current);
-        }, [field.value]);
+            debounceRef.current = setTimeout(() => {
+              field.onChange(field.value);
+            }, debounceTime);
 
-        return (
-          <input
-            type="text"
-            placeholder={placeholder}
-            disabled={disabled}
-            className={`px-4 py-2 border rounded-md flex-grow outline-none focus:outline-none text-black ${classes}`}
-            {...field}
-          />
-        );
-      }}
-    />
+            return () => clearTimeout(debounceRef.current);
+          }, [field.value]);
+
+          return (
+            <input
+              type={type}
+              placeholder={placeholder}
+              disabled={disabled}
+              className={`w-full px-4 py-2 border rounded-md outline-none focus:outline-none focus:ring-2 focus:ring-green-500 transition-all duration-300 text-black disabled:bg-gray-300   placeholder:  ${
+                error ? "border-red-500" : "border-gray-300"
+              } ${classes}`}
+              {...field}
+            />
+          );
+        }}
+      />
+      {error && <p className="text-red-500   mt-1">{error.message}</p>}
+    </div>
   );
 };
 

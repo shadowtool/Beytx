@@ -50,7 +50,7 @@ const index = () => {
   const queryClient = useQueryClient();
 
   const { isLoading: fetchMyListingsLoading, data: properties } = useQuery({
-    queryKey: [ROUTES.GET_PROPERTIES],
+    queryKey: ["userProperties"],
     queryFn: () => fetchPropertiesOfLoggedUser(userInfo?._id),
     enabled: !!userInfo?._id,
   });

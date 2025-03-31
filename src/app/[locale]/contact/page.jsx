@@ -32,15 +32,13 @@ const Contact = () => {
       <div className="min-h-screen bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
         <div className="max-w-md mx-auto bg-white rounded-xl shadow-md overflow-hidden md:max-w-2xl">
           <div className="p-8">
-            <h2 className="text-3xl font-bold text-green-700 mb-6 text-center">
-              Contact Us
-            </h2>
+            <h2 className="     text-green-700 mb-6 text-center">Contact Us</h2>
             <form onSubmit={handleSubmit} className="space-y-6">
               <div className="grid grid-cols-1 gap-6">
                 <div>
                   <label
                     htmlFor="name"
-                    className="block text-sm font-medium text-gray-700 mb-1"
+                    className="block     text-gray-700 mb-1"
                   >
                     Name
                   </label>
@@ -58,7 +56,7 @@ const Contact = () => {
                 <div>
                   <label
                     htmlFor="email"
-                    className="block text-sm font-medium text-gray-700 mb-1"
+                    className="block     text-gray-700 mb-1"
                   >
                     Email
                   </label>
@@ -76,7 +74,7 @@ const Contact = () => {
                 <div>
                   <label
                     htmlFor="phone"
-                    className="block text-sm font-medium text-gray-700 mb-1"
+                    className="block     text-gray-700 mb-1"
                   >
                     Phone Number
                   </label>
@@ -93,7 +91,7 @@ const Contact = () => {
                 <div>
                   <label
                     htmlFor="inquiry"
-                    className="block text-sm font-medium text-gray-700 mb-1"
+                    className="block     text-gray-700 mb-1"
                   >
                     Inquiry
                   </label>
@@ -111,7 +109,7 @@ const Contact = () => {
 
               <button
                 type="submit"
-                className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-green-500 hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 transition-colors duration-300 active:scale-95"
+                className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm     text-white bg-green-500 hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 transition-colors duration-300 active:scale-95"
               >
                 Send Message
               </button>

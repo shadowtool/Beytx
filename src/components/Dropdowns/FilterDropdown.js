@@ -23,7 +23,7 @@ export default function FilterDropdown({
       {/* Accordion Header */}
       <button
         onClick={() => setOpen(!open)}
-        className="w-full flex justify-between items-center p-4 text-left font-normal"
+        className="w-full flex justify-between items-center p-4 text-left  "
       >
         {title}
         <DownIcon

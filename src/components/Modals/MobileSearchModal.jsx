@@ -2,12 +2,14 @@ import React, { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import PropertyFilter from "../SearchedProperties/PropertyFilter";
 import ModalWrapper from "./ModalWrapper";
-import { CloseIcon, LeftArrowIcon, LocationIcon } from "@/imports/icons";
+import { CloseIcon, LeftArrowIcon } from "@/imports/icons";
 import { useFormContext, useWatch } from "react-hook-form";
 import GeneralInput from "../Inputs/GeneralInput";
 import { fetchCities } from "@/lib/queryFunctions";
 import { ROUTES } from "@/constants/routes";
 import { useQuery } from "@tanstack/react-query";
+import { LocationIcon } from "@/imports/images";
+import Image from "next/image";
 
 const MobileSearchModal = ({
   open,
@@ -44,6 +46,8 @@ const MobileSearchModal = ({
     setValue("locationInput", "");
   };
 
+  console.log({ selectedLocationsValue });
+
   useEffect(() => {
     if (open) {
       if (selectedBedrooms?.length > 0 || selectedLocationsValue?.length > 0) {
@@ -67,6 +71,8 @@ const MobileSearchModal = ({
     }
   }, [selectedBedrooms, selectedLocationsValue]);
 
+  console.log({ locationsData });
+
   return (
     <ModalWrapper open={open} handleClose={handleClose}>
       <div
@@ -88,6 +94,8 @@ const MobileSearchModal = ({
               name="locationInput"
               placeholder="Search by city, state or community"
               classes="focus:ring-2 focus:ring-green-200 transition-all duration-300"
+              debounce={true}
+              debounceTime={500}
             />
           </div>
           <div className="px-6">
@@ -103,7 +111,7 @@ const MobileSearchModal = ({
                           animate={{ opacity: 1, scale: 1 }}
                           exit={{ opacity: 0, scale: 0.9 }}
                           transition={{ duration: 0.2 }}
-                          className="py-1 px-2 text-sm bg-green-100 shadow text-green-800 border border-green-800 font-medium flex items-center gap-2 cursor-pointer rounded-md"
+                          className="py-1 px-2   bg-green-100 shadow text-green-800 border border-green-800   flex items-center gap-2 cursor-pointer rounded-md"
                           onClick={() => {
                             setValue(
                               "selectedLocations",
@@ -113,7 +121,7 @@ const MobileSearchModal = ({
                             );
                           }}
                         >
-                          {el.city}, {el.country}{" "}
+                          {el.city}, {el.country}
                           <CloseIcon size={18} className="text-green-800" />
                         </motion.div>
                       ))}
@@ -126,7 +134,7 @@ const MobileSearchModal = ({
                         transition={{ duration: 0.3 }}
                         className="w-full mt-6"
                       >
-                        <h3 className="text-lg font-semibold">Bedrooms</h3>
+                        <h5 className="">Bedrooms</h5>
                         <div className="flex gap-2 mt-2 max-w-full overflow-x-auto hide-scrollbar">
                           {[1, 2, 3, 4, 5, 6, 7].map((bed) => (
                             <button
@@ -167,10 +175,13 @@ const MobileSearchModal = ({
                         className="py-2 flex items-center gap-2 cursor-pointer"
                         onClick={() => handleLocationSelect(el)}
                       >
-                        <LocationIcon size={21} className="text-green-800" />
+                        <Image
+                          src={LocationIcon}
+                          className="min-h-6 min-w-6 max-h-6 max-w-6"
+                        />
                         <div>
-                          <h5 className="text-sm">{el.city}</h5>
-                          <p className="text-xs">{el.country}</p>
+                          <h6 className="">{el.city}</h6>
+                          <p className="">{el.country}</p>
                         </div>
                       </div>
                     ))}
@@ -180,7 +191,7 @@ const MobileSearchModal = ({
 
             <div className="fixed bottom-0 left-0 w-full bg-white p-4 border-t border-gray-300 flex gap-6">
               <button
-                className="py-3 px-6 rounded-md text-black underline font-semibold"
+                className="py-3 px-6 rounded-md text-black underline   "
                 onClick={() => {
                   reset();
                   setTimeout(() => {
@@ -192,10 +203,10 @@ const MobileSearchModal = ({
                 Clear
               </button>
               <button
-                className="w-full py-3 px-6 rounded-md bg-green-600 text-white font-semibold"
+                className="w-full py-3 px-6 rounded-md bg-green-600 text-white   "
                 onClick={handleClose}
               >
-                Show {totalCount ?? 0} Results
+                {totalCount ?? 0} Properties
               </button>
             </div>
           </div>

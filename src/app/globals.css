@@ -2,11 +2,57 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer base {
+  h1,
+  h2 {
+    @apply text-5xl md:text-6xl font-extrabold;
+    font-family: var(--font-raleway), sans-serif;
+  }
+
+  h2 {
+    @apply text-4xl font-bold;
+  }
+
+  h3,
+  h4,
+  h5,
+  h6,
+  p,
+  button,
+  div,
+  li {
+    font-family: var(--font-montserrat), sans-serif;
+  }
+
+  h3 {
+    @apply text-3xl font-semibold;
+  }
+
+  h4 {
+    @apply text-2xl font-semibold;
+  }
+
+  h5 {
+    @apply text-xl font-medium;
+  }
+
+  h6 {
+    @apply text-lg font-medium;
+  }
+
+  p,
+  button,
+  div,
+  li,
+  span {
+    @apply text-sm font-medium;
+  }
+}
+
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-family: "montserrat", sans-serif;
 }
 
 html[dir="rtl"] {

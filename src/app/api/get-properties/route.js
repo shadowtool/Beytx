@@ -16,6 +16,7 @@ export async function GET(req) {
 
     // Extract search params
     const { searchParams } = new URL(req.url);
+    const featured = searchParams.get("featured");
     const name = searchParams.get("name");
     const type = JSON.parse(searchParams.get("type"));
     const status = searchParams.get("status");
@@ -32,6 +33,11 @@ export async function GET(req) {
 
     // Build query object
     const query = { archived: false };
+
+    // Filter Featured Properties
+    if (featured === "true" || featured === "false") {
+      query.featured = featured === "true";
+    }
 
     // Search by Name (case-insensitive)
     if (name) {

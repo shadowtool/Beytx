@@ -19,7 +19,7 @@ const TextEditor = ({ name, placeholder }) => {
             {...field}
             placeholder={placeholder}
             theme="snow"
-            className="h-full min-h-52 text-black border-2 border-solid border-gray-200 rounded-2xl p-1 !text-sm"
+            className="h-full min-h-52 text-black border-2 border-solid border-gray-200 rounded-2xl p-1 ! "
           />
         )}
       />

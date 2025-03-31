@@ -71,3 +71,10 @@ export const fetchFavorites = async (userId) => {
   );
   return data;
 };
+
+export const fetchUserAccountStatus = async (email) => {
+  const { data } = await axiosInstance.get(
+    `${ROUTES.CHECK_USER_EXISTS}?email=${email}`
+  );
+  return data;
+};

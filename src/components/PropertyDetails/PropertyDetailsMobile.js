@@ -4,16 +4,11 @@ import Loader from "../Reusables/Loader";
 import { CREATOR_ACTIONS, USER_ACTIONS } from "@/constants/constants";
 import Image from "next/image";
 import { motion } from "framer-motion";
-import {
-  AgentIcon,
-  AreaIcon,
-  BathroomIcon,
-  BedIcon,
-  DownIcon,
-} from "@/imports/icons";
+import { AgentIcon, BathroomIcon, BedIcon, DownIcon } from "@/imports/icons";
 import PropertyImagesModal from "../Modals/PropertyImagesModal";
 import DescriptionModal from "../Modals/DescriptionModal";
 import MapPicker from "../Misc/MapPicker";
+import { AreaIcon } from "@/imports/images";
 
 const PropertyDetailsMobile = ({ loading, propertyData }) => {
   const [openImagesModal, setOpenImagesModal] = useState(false);
@@ -87,24 +82,27 @@ const PropertyDetailsMobile = ({ loading, propertyData }) => {
             <div className="w-full grow px-4">
               <div className="">
                 <div className="flex flex-col md:flex-row items-start md:items-end justify-between mb-4">
-                  <h2 className="text-3xl font-bold text-gray-800 text-left">
-                    KWD{" "}
+                  <h2 className="     text-gray-800 text-left">
                     <span className="text-black">{propertyData?.price}</span>{" "}
-                    <span className="text-lg">/year</span>
+                    <span className=" ">/year</span> KWD
                   </h2>
-                  <div className="flex gap-6 items-end text-gray-600 my-8">
-                    <div className="flex flex-col gap-2 items-center text-sm md:text-base">
+                  <div className="flex gap-6 w-full items-center text-gray-600 my-8">
+                    <div className="flex flex-col w-full grow xs:max-w-fit gap-2 items-center   xs:  md: ">
                       <BedIcon color="#aaa" size={28} />
                       {propertyData?.bathrooms} Bedrooms
                     </div>
                     <div className="h-16 w-[1.5px] bg-[#aaa]"></div>
-                    <div className="flex flex-col gap-2 items-center text-sm md:text-base">
+                    <div className="flex flex-col gap-2  w-full grow xs:max-w-fit items-center   xs:  md: ">
                       <BathroomIcon color="#aaa" size={28} />
                       {propertyData?.bedrooms} Bathrooms
                     </div>
                     <div className="h-16 w-[1.5px] bg-[#aaa]"></div>
-                    <div className="flex flex-col gap-2 items-center text-sm md:text-base">
-                      <AreaIcon color="#aaa" size={28} />
+                    <div className="flex flex-col gap-2  w-full grow xs:max-w-fit items-center   xs:  md: ">
+                      <Image
+                        src={AreaIcon}
+                        alt="area-icon"
+                        className="h-5 w-auto object-contain"
+                      />
                       {propertyData?.size} Sq. ft.
                     </div>
                   </div>
@@ -133,7 +131,7 @@ const PropertyDetailsMobile = ({ loading, propertyData }) => {
                     }`}
                   >
                     <button
-                      className="flex items-center gap-3 text-lg font-semibold"
+                      className="flex items-center gap-3     "
                       onClick={() =>
                         setIsDescriptionExpanded(!isDescriptionExpanded)
                       }
@@ -146,7 +144,7 @@ const PropertyDetailsMobile = ({ loading, propertyData }) => {
                   </div>
                 </div>
                 <div className="border-t border-solid border-gray-300 py-6">
-                  <h2 className="text-2xl font-semibold"> Amenities</h2>
+                  <h2 className="    "> Amenities</h2>
                   <div className="mt-4 flex flex-col gap-2">
                     {propertyData?.amenities?.map((amenity, index) => (
                       <div key={index} className="flex items-center gap-2">
@@ -158,7 +156,7 @@ const PropertyDetailsMobile = ({ loading, propertyData }) => {
                 </div>
 
                 <div className="my-12 ">
-                  <h2 className="text-2xl font-semibold mb-4">Location</h2>
+                  <h2 className="     mb-4">Location</h2>
                   <MapPicker location={propertyData?.location} isReadable />
                 </div>
               </div>
@@ -172,35 +170,31 @@ const PropertyDetailsMobile = ({ loading, propertyData }) => {
                 />
                 <div className="h-fit w-fit py-1 px-4 bg-green-600 flex items-center justify-center gap-2 text-white rounded-md">
                   <AgentIcon size={24} color="#fff" />
-                  <p className="text-xs font-semibold">New Agent</p>
+                  <p className="    ">New Agent</p>
                 </div>
                 <div className="flex gap-1 flex-col">
-                  <h5 className="text-2xl text-black font-medium">
-                    {propertyData?.user?.name}
-                  </h5>
+                  <h5 className="  text-black  ">{propertyData?.user?.name}</h5>
                 </div>
               </div>
               <div className="h-fit w-full my-2 max-w-80">
                 <div className="flex items-center my-3">
-                  <h5 className="text-sm font-normal min-w-28">
-                    Response Time
-                  </h5>
-                  <p className="text-xl font-semibold">within 5 minutes</p>
+                  <h5 className="    min-w-28">Response Time</h5>
+                  <p className="    ">within 5 minutes</p>
                 </div>
                 <div className="flex items-center my-3">
-                  <h5 className="text-sm font-normal min-w-28">Closed Deals</h5>
-                  <p className="text-xl font-semibold">3</p>
+                  <h5 className="    min-w-28">Closed Deals</h5>
+                  <p className="    ">3</p>
                 </div>
                 <div className="flex items-center my-3">
-                  <h5 className="text-sm font-normal min-w-28">Languages </h5>
-                  <p className="text-xl font-semibold">English</p>
+                  <h5 className="    min-w-28">Languages </h5>
+                  <p className="    ">English</p>
                 </div>
               </div>
               <div className="flex items-center justify-between gap-6 mt-6 max-w-80">
                 {CREATOR_ACTIONS?.map((el, idx) => (
                   <button
                     key={idx}
-                    className="h-fit w-fit grow px-4 rounded-md py-3 flex items-center text-xs md:text-sm gap-1 md:gap-2 text-white bg-green-600"
+                    className="h-fit w-fit grow px-4 rounded-md py-3 flex items-center   md:  gap-1 md:gap-2 text-white bg-green-600"
                   >
                     {el.icon}
                     {el.label}

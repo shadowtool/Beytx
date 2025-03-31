@@ -53,7 +53,7 @@ const Loader = ({ customMessage }) => {
         </svg>
       </div>
       {customMessage?.length > 0 && (
-        <h5 className="text-sm mt-6 text-green-900">{customMessage}</h5>
+        <h5 className="  mt-6 text-green-900">{customMessage}</h5>
       )}
     </div>
   );

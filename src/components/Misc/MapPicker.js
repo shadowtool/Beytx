@@ -133,7 +133,7 @@ const MapPicker = ({ onLocationSelect, location, isReadable = false }) => {
       {/* Selected Location Details */}
       {!isReadable && (
         <div className="mt-4 p-2 border rounded bg-gray-100">
-          <h3 className="font-semibold">📍 Selected Address:</h3>
+          <h3 className="  ">📍 Selected Address:</h3>
           <p>
             <strong>Address:</strong> {locationDetails.address || "N/A"}
           </p>

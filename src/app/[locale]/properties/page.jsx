@@ -19,8 +19,8 @@ export default function index() {
 
     return {
       location: params?.loc ? [params.loc] : [],
-      propertyType: params?.type ? [params.type] : [],
-      propertyStatus: params.status || "",
+      type: params?.type ? [params.type] : [],
+      status: params.status || "",
       beds: params.bed ? Number(params.bed) : "",
       baths: params.bath ? Number(params.bath) : "",
       sortBy: "",
@@ -39,9 +39,9 @@ export default function index() {
   const filters = useMemo(() => {
     const filtersToReturn = Object.fromEntries(
       Object.entries({
-        location: formValues?.location,
-        type: formValues?.propertyType,
-        status: formValues?.propertyStatus,
+        location: formValues?.location ? [formValues.location] : [],
+        type: formValues?.type ? formValues.type : [],
+        status: formValues?.status,
         bedrooms: formValues?.beds,
         bathrooms: formValues?.baths,
         sortBy: formValues?.sortBy,
@@ -64,16 +64,18 @@ export default function index() {
     return filtersToReturn;
   }, [formValues]);
 
+  console.log({ formValues });
+
   const {
     data,
     fetchNextPage,
     hasNextPage,
     isFetchingNextPage,
-    isFetching,
+    isPending,
     refetch,
     error,
   } = useInfiniteQuery({
-    queryKey: [ROUTES.GET_PROPERTIES],
+    queryKey: [ROUTES.GET_PROPERTIES, filters],
     queryFn: ({ pageParam = 1 }) =>
       fetchPropertyListings(pageParam, itemsPerPage, filters),
     getNextPageParam: (lastPage) => {
@@ -116,7 +118,7 @@ export default function index() {
           properties={properties}
           locationsData={locationsData}
           refetchListings={refetch}
-          isFetchingData={isFetching}
+          isFetchingData={isPending}
           isFetchingNextPage={isFetchingNextPage}
           loadMoreRef={loadMoreRef}
         />
@@ -124,7 +126,7 @@ export default function index() {
           properties={properties}
           locationsData={locationsData}
           refetchListings={refetch}
-          isFetchingData={isFetching}
+          isFetchingData={isPending}
           isFetchingNextPage={isFetchingNextPage}
           loadMoreRef={loadMoreRef}
           totalCount={totalCount}

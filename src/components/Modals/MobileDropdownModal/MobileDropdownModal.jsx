@@ -20,7 +20,7 @@ const MobileDropdownModal = ({
           onClick={(e) => e.stopPropagation()}
         >
           <div className="flex items-center justify-between h-14 border-b border-solid border-gray-200 px-6">
-            <h5 className="font-semibold text-base">{filterTitle}</h5>
+            <h5 className="    ">{filterTitle}</h5>
             <CloseIcon size={28} color="#000" onClick={() => handleClose()} />
           </div>
 
@@ -28,7 +28,7 @@ const MobileDropdownModal = ({
 
           <div className="h-16 w-full flex items-center justify-end px-6 border-t border-solid border-gray-300">
             <button
-              className="h-fit w-fit px-6 py-2 rounded-md bg-green-600 font-semibold text-sm text-white"
+              className="h-fit w-fit px-6 py-2 rounded-md bg-green-600      text-white"
               onClick={() => {
                 setTimeout(() => {
                   refetchListings();

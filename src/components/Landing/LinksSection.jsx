@@ -20,7 +20,7 @@ const LinksSection = () => {
 
   return (
     <div className="h-fit w-full p-4 bg-green-100 backdrop-blur-sm py-10 md:hidden">
-      <h4 className="text-2xl mb-8">Explore by major locations</h4>
+      <h4 className="  mb-8">Explore by major locations</h4>
       <div className="w-full h-fit max-w-full overflow-x-auto hide-scrollbar flex flex-nowrap items-center gap-6">
         {LOCATIONS?.map((el) => (
           <button
@@ -33,7 +33,7 @@ const LinksSection = () => {
       </div>
       <div className="my-6 flex flex-col gap-3">
         {LINKS?.map((el) => (
-          <a href="#" className="text-sm underline text-black" key={el}>
+          <a href="#" className="  underline text-black" key={el}>
             {el}
           </a>
         ))}

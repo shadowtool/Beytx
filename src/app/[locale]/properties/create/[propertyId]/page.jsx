@@ -176,7 +176,7 @@ export default function index() {
                 <div>
                   <label
                     htmlFor="title"
-                    className="block text-sm font-medium text-gray-700 mb-1"
+                    className="block     text-gray-700 mb-1"
                   >
                     Title
                   </label>
@@ -192,7 +192,7 @@ export default function index() {
                 <div>
                   <label
                     htmlFor="type"
-                    className="block text-sm font-medium text-gray-700 mb-1"
+                    className="block     text-gray-700 mb-1"
                   >
                     Type of Property
                   </label>
@@ -212,7 +212,7 @@ export default function index() {
                 <div>
                   <label
                     htmlFor="price"
-                    className="block text-sm font-medium text-gray-700 mb-1"
+                    className="block     text-gray-700 mb-1"
                   >
                     Price
                   </label>
@@ -227,7 +227,7 @@ export default function index() {
                 <div>
                   <label
                     htmlFor="location"
-                    className="block text-sm font-medium text-gray-700 mb-1"
+                    className="block     text-gray-700 mb-1"
                   >
                     Location
                   </label>
@@ -243,7 +243,7 @@ export default function index() {
                 <div>
                   <label
                     htmlFor="beds"
-                    className="block text-sm font-medium text-gray-700 mb-1"
+                    className="block     text-gray-700 mb-1"
                   >
                     Beds
                   </label>
@@ -259,7 +259,7 @@ export default function index() {
                 <div>
                   <label
                     htmlFor="baths"
-                    className="block text-sm font-medium text-gray-700 mb-1"
+                    className="block     text-gray-700 mb-1"
                   >
                     Baths
                   </label>
@@ -275,7 +275,7 @@ export default function index() {
                 <div>
                   <label
                     htmlFor="area"
-                    className="block text-sm font-medium text-gray-700 mb-1"
+                    className="block     text-gray-700 mb-1"
                   >
                     Area (in square meters)
                   </label>
@@ -290,7 +290,7 @@ export default function index() {
                 <div>
                   <label
                     htmlFor="area"
-                    className="block text-sm font-medium text-gray-700 mb-1"
+                    className="block     text-gray-700 mb-1"
                   >
                     Amenities
                   </label>
@@ -310,7 +310,7 @@ export default function index() {
                 <div>
                   <label
                     htmlFor="description"
-                    className="block text-sm font-medium text-gray-700 mb-1"
+                    className="block     text-gray-700 mb-1"
                   >
                     Description
                   </label>
@@ -362,7 +362,7 @@ export default function index() {
 
               <button
                 type="submit"
-                className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-green-500 hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 transition-colors duration-300 active:scale-95"
+                className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm     text-white bg-green-500 hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 transition-colors duration-300 active:scale-95"
                 disabled={isLoading}
               >
                 {isLoading ? "Updating..." : "Update Property"}

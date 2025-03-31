@@ -216,7 +216,7 @@ export default function CreatePropertyFormDesktop() {
                 <div>
                   <label
                     htmlFor="title"
-                    className="block text-sm font-medium text-gray-700 mb-1"
+                    className="block     text-gray-700 mb-1"
                   >
                     {translate("title")}
                   </label>
@@ -232,7 +232,7 @@ export default function CreatePropertyFormDesktop() {
                 <div>
                   <label
                     htmlFor="type"
-                    className="block text-sm font-medium text-gray-700 mb-1"
+                    className="block     text-gray-700 mb-1"
                   >
                     {translate("typeOfProperty")}
                   </label>
@@ -262,7 +262,7 @@ export default function CreatePropertyFormDesktop() {
                 <div>
                   <label
                     htmlFor="price"
-                    className="block text-sm font-medium text-gray-700 mb-1"
+                    className="block     text-gray-700 mb-1"
                   >
                     {translate("price")}
                   </label>
@@ -277,7 +277,7 @@ export default function CreatePropertyFormDesktop() {
                 <div>
                   <label
                     htmlFor="location"
-                    className="block text-sm font-medium text-gray-700 mb-1"
+                    className="block     text-gray-700 mb-1"
                   >
                     {translate("location")}
                   </label>
@@ -293,7 +293,7 @@ export default function CreatePropertyFormDesktop() {
                 <div>
                   <label
                     htmlFor="beds"
-                    className="block text-sm font-medium text-gray-700 mb-1"
+                    className="block     text-gray-700 mb-1"
                   >
                     {translate("bedrooms")}
                   </label>
@@ -309,7 +309,7 @@ export default function CreatePropertyFormDesktop() {
                 <div>
                   <label
                     htmlFor="baths"
-                    className="block text-sm font-medium text-gray-700 mb-1"
+                    className="block     text-gray-700 mb-1"
                   >
                     {translate("bathrooms")}
                   </label>
@@ -325,7 +325,7 @@ export default function CreatePropertyFormDesktop() {
                 <div>
                   <label
                     htmlFor="area"
-                    className="block text-sm font-medium text-gray-700 mb-1"
+                    className="block     text-gray-700 mb-1"
                   >
                     {translate("area")}
                   </label>
@@ -340,7 +340,7 @@ export default function CreatePropertyFormDesktop() {
                 <div>
                   <label
                     htmlFor="area"
-                    className="block text-sm font-medium text-gray-700 mb-1"
+                    className="block     text-gray-700 mb-1"
                   >
                     {translate("amenities")}
                   </label>
@@ -360,7 +360,7 @@ export default function CreatePropertyFormDesktop() {
                 <div>
                   <label
                     htmlFor="description"
-                    className="block text-sm font-medium text-gray-700 mb-1"
+                    className="block     text-gray-700 mb-1"
                   >
                     {translate("description")}
                   </label>
@@ -412,7 +412,7 @@ export default function CreatePropertyFormDesktop() {
 
               <button
                 type="submit"
-                className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-green-500 hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 transition-colors duration-300 active:scale-95"
+                className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm     text-white bg-green-500 hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 transition-colors duration-300 active:scale-95"
                 disabled={loading}
               >
                 {loading ? translate("adding") : translate("addProperty")}

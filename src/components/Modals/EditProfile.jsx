@@ -89,7 +89,7 @@ const EditProfile = ({ open, handleClose }) => {
             className="absolute top-4 right-4 cursor-pointer"
             onClick={handleClose}
           />
-          <h5 className="text-lg mb-6 font-medium">Edit your info</h5>
+          <h5 className="  mb-6  ">Edit your info</h5>
 
           <div className="min-h-24 max-h-24 rounded-full bg-green-600 flex items-center justify-center min-w-24 max-w-24 mb-4 overflow-hidden">
             <input
@@ -120,25 +120,25 @@ const EditProfile = ({ open, handleClose }) => {
 
           {/* Email Field */}
           <div className="flex flex-col gap-1 w-full items-start">
-            <h5 className="text-xs font-semibold">Email</h5>
+            <h5 className="    ">Email</h5>
             <input
               {...methods.register("email")}
-              className="py-3 px-6 bg-white w-full rounded-lg focus:outline-none border border-solid border-gray-300 text-black placeholder:text-gray-700 text-sm"
+              className="py-3 px-6 bg-white w-full rounded-lg focus:outline-none border border-solid border-gray-300 text-black placeholder:text-gray-700  "
             />
           </div>
 
           {/* Phone Number Field */}
           <div className="flex flex-col gap-1 w-full items-start mt-6">
-            <h5 className="text-xs font-semibold">Phone Number</h5>
+            <h5 className="    ">Phone Number</h5>
             <input
               {...methods.register("phoneNumber")}
-              className="py-3 px-6 bg-white w-full rounded-lg focus:outline-none border border-solid border-gray-300 text-black placeholder:text-gray-700 text-sm"
+              className="py-3 px-6 bg-white w-full rounded-lg focus:outline-none border border-solid border-gray-300 text-black placeholder:text-gray-700  "
             />
           </div>
 
           {/* Update Button */}
           <button
-            className="my-8 py-2.5 px-6 rounded-md bg-green-600 text-white text-sm font-semibold"
+            className="my-8 py-2.5 px-6 rounded-md bg-green-600 text-white     "
             onClick={handleUpdate}
           >
             Update

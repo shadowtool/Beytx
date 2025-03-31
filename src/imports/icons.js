@@ -8,11 +8,9 @@ import { IoMdMail as MailIcon } from "react-icons/io";
 import { FaWhatsapp as WhatsappIcon } from "react-icons/fa";
 import { LuBedSingle as BedIcon } from "react-icons/lu";
 import { MdOutlineBathroom as BathroomIcon } from "react-icons/md";
-import { FaLandmark as AreaIcon } from "react-icons/fa";
 import { CiLogout as LogoutIcon } from "react-icons/ci";
 import { CiLogin as LoginIcon } from "react-icons/ci";
 import { MdOutlinePostAdd as AddPropertyIcon } from "react-icons/md";
-import { IoLocationSharp as LocationIcon } from "react-icons/io5";
 import { IoMdShare as ShareIcon } from "react-icons/io";
 import { FaUserTie as UserIcon } from "react-icons/fa";
 import { MdOutlineModeEdit as EditIcon } from "react-icons/md";
@@ -45,11 +43,9 @@ export {
   WhatsappIcon,
   BedIcon,
   BathroomIcon,
-  AreaIcon,
   LogoutIcon,
   LoginIcon,
   AddPropertyIcon,
-  LocationIcon,
   UserIcon,
   EditIcon,
   DeleteIcon,

@@ -21,22 +21,13 @@ const DesktopNav = () => {
               className="max-w-36 max-h-12"
             />
             <div className="flex items-center gap-8">
-              <Link
-                href={`/${locale}`}
-                className="text-white font-medium text-sm"
-              >
+              <Link href={`/${locale}`} className="text-white    ">
                 {translate("home")}
               </Link>
-              <Link
-                href={`/${locale}/properties`}
-                className="text-white font-medium text-sm"
-              >
+              <Link href={`/${locale}/properties`} className="text-white    ">
                 {translate("properties")}
               </Link>
-              <Link
-                href={`/${locale}/contact`}
-                className="text-white font-medium text-sm"
-              >
+              <Link href={`/${locale}/contact`} className="text-white    ">
                 {translate("contactUs")}
               </Link>
             </div>
@@ -45,7 +36,7 @@ const DesktopNav = () => {
           <div className="flex justify-center items-center gap-2">
             <Link
               href={`/${locale}/properties/create`}
-              className="h-fit w-fit py-2.5 px-6 flex items-center gap-2 text-white border-2 border-solid border-white rounded-lg font-semibold whitespace-nowrap"
+              className="h-fit w-fit py-2.5 px-6 flex items-center gap-2 text-white border-2 border-solid border-white rounded-lg    whitespace-nowrap"
             >
               {translate("addProperty")}
               <AddPropertyIcon size={28} color="#fff" />

@@ -1,17 +1,7 @@
 "use client";
-import {
-  CloseIcon,
-  FilterIcon,
-  LeftArrowIcon,
-  SearchIcon,
-} from "@/imports/icons";
-import React, { useMemo, useRef, useState } from "react";
-import {
-  Controller,
-  FormProvider,
-  useFormContext,
-  useWatch,
-} from "react-hook-form";
+import { CloseIcon, FilterIcon, SearchIcon } from "@/imports/icons";
+import React, { useMemo, useState } from "react";
+import { useFormContext, useWatch } from "react-hook-form";
 import MobilePropertyCard from "../Cards/MobilePropertyCard";
 import Loader from "../Reusables/Loader";
 import MobileFilterModal from "../Modals/MobileFilterModal";
@@ -21,7 +11,6 @@ import BedsFilterModal from "../Modals/MobileDropdownModal/DropdownModals/BedsFi
 import BathsFilterModal from "../Modals/MobileDropdownModal/DropdownModals/BathsFilterModal";
 import PriceFilterModal from "../Modals/MobileDropdownModal/DropdownModals/PriceFilterModal";
 import MobileDropdownModal from "../Modals/MobileDropdownModal/MobileDropdownModal";
-import SearchableDropdown from "../Dropdowns/SearchableDropdown";
 import SortByModal from "../Modals/MobileDropdownModal/DropdownModals/SortByModal";
 import MobileSearchModal from "../Modals/MobileSearchModal";
 
@@ -29,8 +18,8 @@ const itemsPerPage = 9;
 
 const defaultValues = {
   location: [],
-  propertyType: [],
-  propertyStatus: "",
+  type: [],
+  status: "",
   beds: "",
   baths: "",
   sortBy: "",
@@ -56,17 +45,17 @@ const MobilePropertyListings = ({
   const filterModalOptions = [
     { title: "Sort By", id: "sortBy", content: <SortByModal /> },
     {
-      title: "Listing Type",
+      title: "Status",
       id: "propertyStatus",
       content: <ListingTypeFilterModal />,
     },
     {
-      title: "Property Type",
+      title: "Type",
       id: "type",
       content: <PropertyTypeFilterModal />,
     },
-    { title: "Bed Rooms", id: "beds", content: <BedsFilterModal /> },
-    { title: "Bath Rooms", id: "baths", content: <BathsFilterModal /> },
+    { title: "BedRooms", id: "beds", content: <BedsFilterModal /> },
+    { title: "BathRooms", id: "baths", content: <BathsFilterModal /> },
     { title: "Price", id: "price", content: <PriceFilterModal /> },
   ];
 
@@ -88,8 +77,6 @@ const MobilePropertyListings = ({
         JSON.stringify(formValues[key]) !== JSON.stringify(defaultValues[key])
     );
   }, [formValues, defaultValues]);
-
-  console.log({ isDifferentFromDefault });
 
   return (
     <>
@@ -161,7 +148,7 @@ const MobilePropertyListings = ({
             {isFetchingNextPage && (
               <>
                 <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-green-600 mb-4"></div>
-                <div className="text-green-600 text-xl">
+                <div className="text-green-600  ">
                   Loading more properties...
                 </div>
               </>

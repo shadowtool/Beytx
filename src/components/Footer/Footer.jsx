@@ -16,14 +16,14 @@ const Footer = () => {
       ) : (
         <footer className="bg-gradient-to-r from-emerald-600 from-20% via-emerald-500 via-30% to-emerald-500 to-90%  text-white py-6 md:p-6 md:px-16">
           <div className="flex flex-col md:flex-row justify-between items-center">
-            <div className="mt-4">
+            <div className="mt-4 mb-16">
               <img
                 src="/images/beyt.png"
                 alt="Logo"
                 className="min-h-10 max-h-10 w-auto object-contain"
               />
-              <div className="flex gap-6 mt-6 mb-16">
-                <img
+              {/* <div className="flex gap-6 mt-6 mb-16"> */}
+              {/* <img
                   src="/images/app-store.png"
                   alt="App Store"
                   className="w-32 h-auto object-contain"
@@ -32,8 +32,8 @@ const Footer = () => {
                   src="/images/google-play.png"
                   alt="Google Play"
                   className="w-32 h-auto object-contain"
-                />
-              </div>
+                /> */}
+              {/* </div> */}
             </div>
 
             <div className="w-fit flex gap-16">

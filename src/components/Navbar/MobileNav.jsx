@@ -42,7 +42,7 @@ const MobileNav = () => {
           isOpen ? "left-0 opacity-100" : "-left-[100%] opacity-0"
         }`}
       >
-        <ul className="flex flex-col gap-4 text-gray-800 font-medium text-lg">
+        <ul className="flex flex-col gap-4 text-gray-800    ">
           <li>
             <Link href={`/${locale}`} onClick={() => setIsOpen(false)}>
               {translate("home")}

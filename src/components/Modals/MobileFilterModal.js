@@ -30,7 +30,7 @@ const MobileFilterModal = ({ open, handleClose, refetchListings }) => {
           onClick={(e) => e.stopPropagation()}
         >
           <div className="flex items-center justify-between py-3 px-6 border-b border-solid border-gray-200 shadow">
-            <h5 className="font-semibold text-lg">Filters</h5>
+            <h5 className="    ">Filters</h5>
             <CloseIcon size={28} onClick={handleClose} />
           </div>
           <div className="border-b border-solid border-gray-200 shadow p-6">
@@ -57,9 +57,7 @@ const MobileFilterModal = ({ open, handleClose, refetchListings }) => {
             </div>
           </div>
           <div className="border-b border-solid border-gray-200 shadow p-6">
-            <h5 className="font-semibold text-green-900 text-base mb-2">
-              Property Type :
-            </h5>
+            <h5 className="   text-green-900   mb-2">Property Type :</h5>
             <div className="flex gap-4 flex-nowrap hide-scrollbar p-2 overflow-x-auto w-full h-fit">
               {PROPERTY_TYPES?.map((el) => (
                 <div
@@ -83,7 +81,7 @@ const MobileFilterModal = ({ open, handleClose, refetchListings }) => {
             </div>
           </div>
           <div className="border-b border-solid border-gray-200 shadow p-6">
-            <h5 className="font-semibold text-green-900 text-base mb-2 flex items-center gap-1">
+            <h5 className="   text-green-900   mb-2 flex items-center gap-1">
               <BedIcon size={21} color="#14532d" />
               Beds :
             </h5>
@@ -108,7 +106,7 @@ const MobileFilterModal = ({ open, handleClose, refetchListings }) => {
             </div>
           </div>
           <div className="border-b border-solid border-gray-200 shadow p-6">
-            <h5 className="font-semibold text-green-900 text-base mb-2 flex items-center gap-1">
+            <h5 className="   text-green-900   mb-2 flex items-center gap-1">
               <BathroomIcon size={21} color="#14532d" />
               Baths :
             </h5>
@@ -131,7 +129,7 @@ const MobileFilterModal = ({ open, handleClose, refetchListings }) => {
             </div>
           </div>
           <div className="border-b border-solid border-gray-200 shadow p-6">
-            <h5 className="font-semibold text-green-900 text-base mb-2 flex items-center gap-1">
+            <h5 className="   text-green-900   mb-2 flex items-center gap-1">
               <PriceIcon size={21} color="#14532d" />
               Price :
             </h5>{" "}
@@ -164,7 +162,7 @@ const MobileFilterModal = ({ open, handleClose, refetchListings }) => {
           </div>
           <div className="h-fit w-full flex gap-6 absolute z-[10] bottom-0 border-2 border-solid border-gray-300 bg-white p-4">
             <button
-              className="w-full grow py-3 px-6 rounded-md bg-green-600 text-white font-semibold text-base"
+              className="w-full grow py-3 px-6 rounded-md bg-green-600 text-white     "
               onClick={() => {
                 reset();
                 setTimeout(() => {
@@ -176,7 +174,7 @@ const MobileFilterModal = ({ open, handleClose, refetchListings }) => {
               Reset Filters
             </button>
             <button
-              className="w-full grow py-3 px-6 rounded-md bg-green-600 text-white font-semibold text-base"
+              className="w-full grow py-3 px-6 rounded-md bg-green-600 text-white     "
               onClick={() => {
                 refetchListings();
                 handleClose();

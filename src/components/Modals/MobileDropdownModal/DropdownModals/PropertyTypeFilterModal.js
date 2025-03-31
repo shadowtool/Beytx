@@ -8,14 +8,14 @@ const PropertyTypeFilterModal = () => {
   const formValues = useWatch({ control: control });
 
   const handlePropertyTypeClick = (type) => {
-    const currentTypes = formValues?.propertyType || [];
+    const currentTypes = formValues?.type || [];
     if (currentTypes.includes(type)) {
       setValue(
-        "propertyType",
+        "type",
         currentTypes.filter((t) => t !== type)
       );
     } else {
-      setValue("propertyType", [...currentTypes, type]);
+      setValue("type", [...currentTypes, type]);
     }
   };
 
@@ -24,7 +24,7 @@ const PropertyTypeFilterModal = () => {
       {PROPERTY_TYPES?.map((el) => (
         <div
           className={`h-fit w-fit border border-solid rounded-md shadow px-6 py-2 cursor-pointer min-w-fit transition-all duration-200 ${
-            formValues?.propertyType?.includes(el)
+            formValues?.type?.includes(el)
               ? "bg-green-100 border-green-600 text-green-600"
               : "bg-white border-white text-black"
           }`}
