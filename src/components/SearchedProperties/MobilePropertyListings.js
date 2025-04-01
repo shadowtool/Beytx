@@ -43,7 +43,7 @@ const MobilePropertyListings = ({
   const formValues = useWatch({ control });
 
   const filterModalOptions = [
-    { title: "Sort By", id: "sortBy", content: <SortByModal /> },
+    
     {
       title: "Status",
       id: "propertyStatus",
@@ -54,9 +54,10 @@ const MobilePropertyListings = ({
       id: "type",
       content: <PropertyTypeFilterModal />,
     },
-    { title: "BedRooms", id: "beds", content: <BedsFilterModal /> },
-    { title: "BathRooms", id: "baths", content: <BathsFilterModal /> },
+    { title: "Beds", id: "beds", content: <BedsFilterModal /> },
+    { title: "Bath", id: "baths", content: <BathsFilterModal /> },
     { title: "Price", id: "price", content: <PriceFilterModal /> },
+    { title: "Sort By", id: "sortBy", content: <SortByModal /> }
   ];
 
   const filterOptions = useMemo(() => {
