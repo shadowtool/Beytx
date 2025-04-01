@@ -71,12 +71,12 @@ const MobilePropertyCard = ({ property, cardType }) => {
   };
 
   const handleSwipeRelease = (offsetX, velocityX) => {
-    if (offsetX > 100 || velocityX > 0.5) {
+    if (offsetX > 200 || velocityX > 0.5) { // Increase threshold to allow more swipe before releasing
       // Swipe Right -> Previous Image
       setSelectedImageIndex((prevIndex) =>
         prevIndex === 0 ? images.length - 1 : prevIndex - 1
       );
-    } else if (offsetX < -100 || velocityX < -0.5) {
+    } else if (offsetX < -200 || velocityX < -0.5) { // Increase threshold for left swipe
       // Swipe Left -> Next Image
       setSelectedImageIndex((prevIndex) =>
         prevIndex === images.length - 1 ? 0 : prevIndex + 1
@@ -105,7 +105,7 @@ const MobilePropertyCard = ({ property, cardType }) => {
           className="flex w-full h-full"
           drag="x"
           dragConstraints={{ left: 0, right: 0 }}
-          dragElastic={0.2} // Allow partial drag to show part of the next/previous image
+          dragElastic={0.5} // Increase elasticity to allow more of the next image to be previewed
           onDragStart={() => setDragging(true)}
           onDragEnd={(event, info) => {
             setDragging(false);
