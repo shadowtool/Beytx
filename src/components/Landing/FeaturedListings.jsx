@@ -101,7 +101,7 @@ const FeaturedListings = () => {
       )}
       <div className="w-full flex mt-12 mb-8 items-center justify-center">
         <button
-          className="py-4 rounded-md px-8 w-fit h-fit border-2  border-solid border-green-600 bg-green-100 backdrop-blur-sm text-green-600   "
+          className="py-4 rounded-md px-8 w-fit h-fit border-2  border-solid border-emerald-600 bg-emerald-500 backdrop-blur-sm text-white   "
           onClick={() => router.push(`/${locale}/properties`)}
         >
           All Properties

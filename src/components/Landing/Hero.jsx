@@ -82,11 +82,11 @@ const Hero = () => {
                   button:
                     "!text-gray-700 !px-0 !h-full !border-none !rounded-l-xl focus-within:ring-0 focus-within:ring-transparent",
                 }}
-                placeholder="Filter by location ..."
+                placeholder="Search by location ..."
               />
 
               <button
-                className="self-stretch min-h-full w-fit py-1 px-3 bg-green-600 text-white   rounded-r-md min-w-fit"
+                className="self-stretch min-h-full w-fit py-1 px-3 bg-emerald-600 text-white   rounded-r-md min-w-fit"
                 onClick={() =>
                   router.push(
                     `/${locale}/properties?loc=${locationMobileInputValue}`

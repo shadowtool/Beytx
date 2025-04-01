@@ -19,12 +19,13 @@ const LinksSection = () => {
   ];
 
   return (
-    <div className="h-fit w-full p-4 bg-green-100 backdrop-blur-sm py-10 md:hidden">
-      <h4 className="  mb-8">Explore by major locations</h4>
+    <div className="h-fit w-full p-4 bg-gradient-to-r from-emerald-600 via-emerald-500 to-emerald-500 z-[1]
+     backdrop-blur-sm py-10 md:hidden">
+      <h4 className="  mb-8 text-white">Explore by major locations</h4>
       <div className="w-full h-fit max-w-full overflow-x-auto hide-scrollbar flex flex-nowrap items-center gap-6">
         {LOCATIONS?.map((el) => (
           <button
-            className="h-fit w-fit min-w-28 py-2.5 border border-solid rounded-md border-green-600 bg-white flex items-center justify-center text-green-600"
+            className="h-fit w-fit min-w-28 py-2.5 border border-solid rounded-md border-emerald-600 bg-white flex items-center justify-center text-emerald-600"
             key={el}
           >
             {el}
@@ -33,7 +34,7 @@ const LinksSection = () => {
       </div>
       <div className="my-6 flex flex-col gap-3">
         {LINKS?.map((el) => (
-          <a href="#" className="  underline text-black" key={el}>
+          <a href="#" className="  underline text-zinc-100" key={el}>
             {el}
           </a>
         ))}
