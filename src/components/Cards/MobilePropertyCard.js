@@ -70,6 +70,20 @@ const MobilePropertyCard = ({ property, cardType }) => {
     }
   };
 
+  const handleSwipeRelease = (offsetX, velocityX) => {
+    if (offsetX > 100 || velocityX > 0.5) {
+      // Swipe Right -> Previous Image
+      setSelectedImageIndex((prevIndex) =>
+        prevIndex === 0 ? images.length - 1 : prevIndex - 1
+      );
+    } else if (offsetX < -100 || velocityX < -0.5) {
+      // Swipe Left -> Next Image
+      setSelectedImageIndex((prevIndex) =>
+        prevIndex === images.length - 1 ? 0 : prevIndex + 1
+      );
+    }
+  };
+
   const { mutateAsync: toggleSaveListing } = useMutation({
     mutationFn: () =>
       toggleListingInSavedListings(session?.user?.id, property?._id),
@@ -91,22 +105,35 @@ const MobilePropertyCard = ({ property, cardType }) => {
           className="flex w-full h-full"
           drag="x"
           dragConstraints={{ left: 0, right: 0 }}
-          dragElastic={0.2}
+          dragElastic={0.2} // Allow partial drag to show part of the next/previous image
           onDragStart={() => setDragging(true)}
           onDragEnd={(event, info) => {
             setDragging(false);
-            handleSwipe(info.offset.x);
+            handleSwipeRelease(info.offset.x, info.velocity.x);
+          }}
+          style={{
+            display: "flex", // Ensure images are side-by-side
           }}
         >
-          <motion.img
-            key={selectedImageIndex}
-            src={images[selectedImageIndex]}
-            alt="Property"
-            className="w-full h-52 object-cover flex-shrink-0"
-            initial={{ x: 0 }}
-            animate={{ x: 0 }}
-            transition={{ type: "tween", duration: 0.4 }}
-          />
+          {images.map((image, index) => (
+            <motion.img
+              key={index}
+              src={image}
+              alt="Property"
+              className="w-full h-52 object-cover flex-shrink-0"
+              style={{
+                flex: "0 0 100%", // Each image takes up 100% of the container width
+              }}
+              animate={{
+                x: `-${selectedImageIndex * 100}%`, // Move the selected image to the center
+              }}
+              transition={{
+                type: "spring", // Use spring for a natural glide effect
+                stiffness: 100, // Lower stiffness for smoother movement
+                damping: 20, // Higher damping for slower glide
+              }}
+            />
+          ))}
         </motion.div>
         <div className="absolute bottom-2 left-1/2 transform -translate-x-1/2 flex gap-2">
           {images.map((_, index) => (
