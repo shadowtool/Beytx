@@ -42,15 +42,6 @@ const PropertyFilter = ({ onReset, locationsData }) => {
             }}
             placeholder="Filter by location ..."
           />
-          <GeneralDropdown
-            name={"sortBy"}
-            placeholder={"Sort by : "}
-            classes={{
-              dropdown: "!min-w-48 !max-w-48 !h-full",
-              button: "!text-gray-700 !  !h-full",
-            }}
-            options={SORT_OPTIONS}
-          />
           <div className="flex max-w-fit gap-4 xl:hidden">
             {hasActiveFilters && (
               <button
@@ -72,6 +63,7 @@ const PropertyFilter = ({ onReset, locationsData }) => {
               { label: "Rent", value: "rent" },
             ]}
             classes={{ dropdown: "w-full grow xl:!min-w-36 xl:!max-w-36" }}
+            showSelectedEffect={true}
           />
           <GeneralDropdown
             name={"type"}
@@ -79,6 +71,7 @@ const PropertyFilter = ({ onReset, locationsData }) => {
             options={PROPERTY_TYPES.map((el) => ({ label: el, value: el }))}
             classes={{ dropdown: "w-full grow xl:!min-w-36 xl:!max-w-36" }}
             isMulti
+            showSelectedEffect={true}
           />
           <BedsAndBathsDropdown
             classes={{ dropdown: "w-full grow xl:!min-w-48" }}
@@ -90,6 +83,16 @@ const PropertyFilter = ({ onReset, locationsData }) => {
             placeholder="Select Price Range"
             classes={{ dropdown: "xl:!min-w-44" }}
             customOnChange={(value) => console.log("Changed:", value)}
+          />
+          <GeneralDropdown
+            name={"sortBy"}
+            placeholder={"Sort by : "}
+            classes={{
+              dropdown: "!min-w-48 !max-w-48 !h-full",
+              button: "!text-gray-700 !  !h-full",
+            }}
+            options={SORT_OPTIONS}
+            showSelectedEffect={true}
           />
         </div>
         <div className="hidden xl:flex xl:max-w-fit w-full grow gap-4">

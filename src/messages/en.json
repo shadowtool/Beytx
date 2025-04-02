@@ -19,7 +19,7 @@
     "forSale": "For Sale",
     "forRent": "For Rent",
     "title": "Title",
-    "typeOfProperty": "Type Of Property",
+    "type": "Type",
     "price": "Price",
     "location": "location",
     "bedrooms": "Bedrooms",

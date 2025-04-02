@@ -1,1 +1,1 @@
-export const PROPERTY_STATUS = ["Sale", "Rent"];
+export const PROPERTY_STATUS = ["sale", "rent"];

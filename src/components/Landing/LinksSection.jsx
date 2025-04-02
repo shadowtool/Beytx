@@ -1,42 +1,55 @@
+"use client";
+import { ROUTES } from "@/constants/routes";
+import { fetchCities } from "@/lib/queryFunctions";
+import { useQuery } from "@tanstack/react-query";
 import React from "react";
+import { PROPERTY_TYPES } from "@/constants/propertyTypes";
+import { useParams, useRouter } from "next/navigation";
+import Link from "next/link";
 
 const LinksSection = () => {
-  const LOCATIONS = ["Salmiya", "Farwaniya", "Jahra", "Fahaheel", "Bayan"];
-  const LINKS = [
-    "Apartments for Rent in Dubai",
-    "Apartments for Rent in Downtown Dubai",
-    "Apartments for Rent in Dubai Marina",
-    "Apartments for Rent in Jumeirah Village Circle (JVC)",
-    "Apartments for Rent in Business Bay",
-    "Apartments for Rent in Dubai Creek Harbour (The Lagoons)",
-    "Apartments For Rent in Deira",
-    "Studio Apartments For Rent in Dubai",
-    "Apartments For Rent in Dubai Monthly",
-    "Apartments For Rent in Dubai Silicon Oasis",
-    "Apartments For Rent in Jumeirah Lake Towers (JLT)",
-    "Apartments For Rent in Bur Dubai",
-    "Apartments For Rent in International City",
-  ];
+  const router = useRouter();
+
+  const { locale } = useParams();
+
+  const { data: locationsData } = useQuery({
+    queryKey: [ROUTES.GET_LOCATIONS],
+    queryFn: fetchCities,
+  });
+
+  const LINKS = locationsData
+    ?.map((location) =>
+      PROPERTY_TYPES.map((type) => ({
+        type,
+        city: location.city,
+        text: `${type} in ${location.city}`,
+      }))
+    )
+    .flat();
 
   return (
-    <div className="h-fit w-full p-4 bg-gradient-to-r from-emerald-600 via-emerald-500 to-emerald-500 z-[1]
-     backdrop-blur-sm py-10 md:hidden">
-      <h4 className="  mb-8 text-white">Explore by major locations</h4>
+    <div className="h-fit w-full p-4 bg-gradient-to-r from-emerald-600 via-emerald-500 to-emerald-500 z-[1] backdrop-blur-sm py-10 md:hidden">
+      <h4 className="mb-8 text-white">Explore by major locations</h4>
       <div className="w-full h-fit max-w-full overflow-x-auto hide-scrollbar flex flex-nowrap items-center gap-6">
-        {LOCATIONS?.map((el) => (
+        {locationsData?.map((el) => (
           <button
             className="h-fit w-fit min-w-28 py-2.5 border border-solid rounded-md border-emerald-600 bg-white flex items-center justify-center text-emerald-600"
             key={el}
+            onClick={() => router.push(`/${locale}/properties?loc=${el?.city}`)}
           >
-            {el}
+            {el?.city}
           </button>
         ))}
       </div>
       <div className="my-6 flex flex-col gap-3">
         {LINKS?.map((el) => (
-          <a href="#" className="  underline text-zinc-100" key={el}>
-            {el}
-          </a>
+          <Link
+            href={`/${locale}/properties?loc=${el?.city}&type=${el?.type}`}
+            className="underline text-zinc-100"
+            key={el?.text}
+          >
+            {el?.text}
+          </Link>
         ))}
       </div>
     </div>

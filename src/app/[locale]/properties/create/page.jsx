@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { useSession, signIn } from "next-auth/react";
 import { FormProvider, useForm, useWatch } from "react-hook-form";
 import MultiTagInput from "@/components/Reusables/TagInput";
@@ -13,6 +13,10 @@ import { createPropertyMutation } from "@/lib/mutationFunctions";
 import { useTranslations } from "next-intl";
 import { useParams, useRouter } from "next/navigation";
 import MapPicker from "@/components/Misc/MapPicker";
+import PlacesSearchDropdown from "@/components/Dropdowns/PlacesSearchDropdown";
+import GeneralInput from "@/components/Inputs/GeneralInput";
+import GeneralDropdown from "@/components/Dropdowns/GeneralDropdown";
+import { PROPERTY_TYPES } from "@/constants/propertyTypes";
 
 export default function AddProperty() {
   const translate = useTranslations("PropertyPage");
@@ -48,6 +52,18 @@ export default function AddProperty() {
   const { register, handleSubmit, reset, control, setValue } = methods;
 
   const formValues = useWatch({ control: control });
+
+  useEffect(() => {
+    setValue("status", "sale");
+    setValue("title", "Default Title");
+    setValue("price", 100000);
+    setValue("area", 1000);
+    setValue("type", "Villa");
+    setValue("beds", 3);
+    setValue("baths", 2);
+    setValue("description", "Default Description");
+    setValue("amenities", ["pool", "gym", "parking"]);
+  }, [setValue]);
 
   const { mutateAsync } = useMutation({
     mutationFn: uploadImage,
@@ -155,27 +171,20 @@ export default function AddProperty() {
         <div className="p-8">
           <FormProvider {...methods}>
             <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-              <div className="grid grid-cols-1 gap-6">
-                <div className="flex flex-col md:flex-row justify-center gap-4">
+              <div className="flex flex-col gap-6">
+                <div className="flex flex-col md:flex-row justify-center gap-4 px-12 py-4">
                   <button
                     type="button"
                     onClick={() => {
                       setValue("status", status === "sale" ? "" : "sale");
                       setStatus(status === "sale" ? "" : "sale");
                     }}
-                    className={`mt-4 px-10 py-2 rounded-full transition duration-300 md:max-w-48 border w-full grow ${
-                      status === "sale" ? "border-green-600" : "border-gray-400"
+                    className={`px-6 py-2 w-full border-none rounded-lg transition-all duration-300 shadow-lg ${
+                      status === "sale"
+                        ? "bg-emerald-500 hover:bg-emerald-400 text-white"
+                        : "bg-gray-300 hover:bg-gray-200 text-gray-700"
                     }`}
                   >
-                    <input
-                      type="checkbox"
-                      checked={status === "sale"}
-                      onChange={() => {
-                        setValue("status", status === "sale" ? "" : "sale");
-                        setStatus(status === "sale" ? "" : "sale");
-                      }}
-                      className="mr-2 accent-green-600"
-                    />
                     {translate("forSale")}
                   </button>
 
@@ -185,109 +194,72 @@ export default function AddProperty() {
                       setValue("status", status === "rent" ? "" : "rent");
                       setStatus(status === "rent" ? "" : "rent");
                     }}
-                    className={`mt-4 px-10 py-2 rounded-full transition duration-300 md:max-w-48 border w-full grow ${
-                      status === "rent" ? "border-green-600" : "border-gray-400"
+                    className={`px-6 py-2 w-full border-none rounded-lg transition-all duration-300 shadow-lg ${
+                      status === "rent"
+                        ? "bg-emerald-500 hover:bg-emerald-400 text-white"
+                        : "bg-gray-300 hover:bg-gray-200 text-gray-700"
                     }`}
                   >
-                    <input
-                      type="checkbox"
-                      checked={status === "rent"}
-                      onChange={() => {
-                        setValue("status", status === "rent" ? "" : "rent");
-                        setStatus(status === "rent" ? "" : "rent");
-                      }}
-                      className="mr-2 accent-green-600"
-                    />
                     {translate("forRent")}
                   </button>
                 </div>
 
                 <div>
-                  <label
-                    htmlFor="title"
-                    className="block     text-gray-700 mb-1"
-                  >
+                  <label htmlFor="title" className="block text-gray-700 mb-1">
                     {translate("title")}
                   </label>
-                  <input
-                    type="text"
-                    id="title"
-                    {...register("title", { required: true })}
-                    className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-all duration-300 text-black"
+                  <GeneralInput
+                    name={"title"}
+                    placeholder={"Enter property title"}
+                  />
+                </div>
+                <div>
+                  <label htmlFor="type" className="block text-gray-700 mb-1">
+                    {translate("type")}
+                  </label>
+                  <GeneralDropdown
+                    name={"type"}
+                    options={PROPERTY_TYPES?.map((el) => {
+                      return {
+                        label: propertyTypeTranslations(el?.toLowerCase()),
+                        value: el?.toLowerCase(),
+                      };
+                    })}
+                    showSelectedEffect={false}
+                    placeholder="Select property type"
                   />
                 </div>
 
-                {/* Property Type */}
                 <div>
-                  <label
-                    htmlFor="type"
-                    className="block     text-gray-700 mb-1"
-                  >
-                    {translate("typeOfProperty")}
-                  </label>
-                  <select
-                    id="type"
-                    {...register("type", { required: true })}
-                    className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-all duration-300 text-black"
-                  >
-                    <option value="Villa">
-                      {propertyTypeTranslations("villa")}
-                    </option>
-                    <option value="Apartment">
-                      {propertyTypeTranslations("apartment")}
-                    </option>
-                    <option value="Land">
-                      {propertyTypeTranslations("land")}
-                    </option>
-                    <option value="Office">
-                      {propertyTypeTranslations("office")}
-                    </option>
-                    <option value="Townhouse">
-                      {propertyTypeTranslations("townhouse")}
-                    </option>
-                  </select>
-                </div>
-
-                <div>
-                  <label
-                    htmlFor="price"
-                    className="block     text-gray-700 mb-1"
-                  >
+                  <label htmlFor="price" className="block text-gray-700 mb-1">
                     {translate("price")}
                   </label>
-                  <input
-                    type="text"
-                    id="price"
-                    {...register("price", { required: true })}
-                    className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-all duration-300 text-black"
+                  <GeneralInput
+                    name={"price"}
+                    placeholder={"Enter price"}
+                    type="number"
                   />
                 </div>
 
                 <div>
                   <label
                     htmlFor="location"
-                    className="block     text-gray-700 mb-1"
+                    className="block text-gray-700 mb-1"
                   >
                     {translate("location")}
                   </label>
-                  <MapPicker
-                    onLocationSelect={(value) => setValue("location", value)}
-                  />
+                  <PlacesSearchDropdown name={"location"} />
                 </div>
 
                 {/* Beds */}
                 <div>
-                  <label
-                    htmlFor="beds"
-                    className="block     text-gray-700 mb-1"
-                  >
+                  <label htmlFor="beds" className="block text-gray-700 mb-1">
                     {translate("bedrooms")}
                   </label>
-                  <input
+                  <GeneralInput
+                    name={"beds"}
+                    placeholder={"Enter number of beds"}
                     type="number"
-                    id="beds"
-                    {...register("beds", { required: true })}
-                    className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-all duration-300 text-black"
                   />
                 </div>
 
@@ -299,11 +271,10 @@ export default function AddProperty() {
                   >
                     {translate("bathrooms")}
                   </label>
-                  <input
+                  <GeneralInput
+                    name={"baths"}
+                    placeholder={"Enter number of baths"}
                     type="number"
-                    id="baths"
-                    {...register("baths", { required: true })}
-                    className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-all duration-300 text-black"
                   />
                 </div>
 
@@ -315,23 +286,21 @@ export default function AddProperty() {
                   >
                     {translate("area")}
                   </label>
-                  <input
+                  <GeneralInput
+                    name={"area"}
+                    placeholder={"Enter property area"}
                     type="number"
-                    id="area"
-                    {...register("area", { required: true })}
-                    className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-all duration-300 text-black"
                   />
                 </div>
 
                 <div>
                   <label
-                    htmlFor="area"
-                    className="block     text-gray-700 mb-1"
+                    htmlFor="amenities"
+                    className="block text-gray-700 mb-1"
                   >
                     {translate("amenities")}
                   </label>
                   <MultiTagInput
-                    control={control}
                     name={"amenities"}
                     placeholder="Enter amenities here"
                     emptyTagsBlockPlaceholder={
@@ -346,7 +315,7 @@ export default function AddProperty() {
                 <div>
                   <label
                     htmlFor="description"
-                    className="block     text-gray-700 mb-1"
+                    className="block text-gray-700 mb-1"
                   >
                     {translate("description")}
                   </label>

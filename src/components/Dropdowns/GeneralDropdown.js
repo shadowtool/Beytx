@@ -13,6 +13,7 @@ export default function GeneralDropdown({
   customOnChange,
   classes = {},
   isMulti = false,
+  showSelectedEffect = false,
 }) {
   const [open, setOpen] = useState(false);
   const dropdownRef = useRef(null);
@@ -82,14 +83,25 @@ export default function GeneralDropdown({
           {/* Dropdown Button */}
           <button
             type="button"
-            className={`w-full border rounded text-left flex justify-between items-center focus:ring-2 focus:ring-emerald-500 transition-all duration-300 p-2 ${
-              field.value && (isMulti ? field.value.length > 0 : field.value)
-                ? "bg-emerald-100 border-emerald-600"
+            className={`w-full border rounded text-left flex justify-between items-center focus:ring-2 focus:ring-emerald-500 transition-all duration-300 px-4 py-2 ${
+              showSelectedEffect
+                ? field.value &&
+                  (isMulti ? field.value.length > 0 : field.value)
+                  ? "bg-green-100 border-emerald-600"
+                  : "bg-white border-gray-200"
                 : "bg-white"
             } ${classes.button || ""}`}
             onClick={() => setOpen(!open)}
           >
-            <span>{getDisplayValue(field.value)}</span>
+            <span
+              className={`${
+                getDisplayValue(field.value) === placeholder
+                  ? "text-gray-400"
+                  : "text-black"
+              }`}
+            >
+              {getDisplayValue(field.value)}
+            </span>
             <motion.div
               animate={{ rotate: open ? 180 : 0 }}
               transition={{ duration: 0.2 }}

@@ -71,12 +71,14 @@ const MobilePropertyCard = ({ property, cardType }) => {
   };
 
   const handleSwipeRelease = (offsetX, velocityX) => {
-    if (offsetX > 200 || velocityX > 0.5) { // Increase threshold to allow more swipe before releasing
+    if (offsetX > 200 || velocityX > 0.5) {
+      // Increase threshold to allow more swipe before releasing
       // Swipe Right -> Previous Image
       setSelectedImageIndex((prevIndex) =>
         prevIndex === 0 ? images.length - 1 : prevIndex - 1
       );
-    } else if (offsetX < -200 || velocityX < -0.5) { // Increase threshold for left swipe
+    } else if (offsetX < -200 || velocityX < -0.5) {
+      // Increase threshold for left swipe
       // Swipe Left -> Next Image
       setSelectedImageIndex((prevIndex) =>
         prevIndex === images.length - 1 ? 0 : prevIndex + 1
@@ -169,11 +171,10 @@ const MobilePropertyCard = ({ property, cardType }) => {
         }}
       >
         <div className="flex-1">
-          <p className="text-pretty   md:  text-zinc-600">{property?.type}</p>
-          <p className="text-green-700    mt-1 mb-2  ">{property?.price} KWD</p>
-
+          <p className="text-zinc-600">{property?.type}</p>
+          <h4 className="text-green-700 mt-1 mb-2 ">{property?.price} KWD</h4>
           <div className="mt-2 flex flex-col items-start text-balance">
-            <p className="text-gray-500      flex items-center mb-2 mt-1 ">
+            <p className="text-gray-500 flex items-center mb-2 mt-1 ">
               <Image
                 src={LocationIcon}
                 alt="location-icon"

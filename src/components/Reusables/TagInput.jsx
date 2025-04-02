@@ -1,13 +1,15 @@
-import React, { useState } from "react";
-import { useController } from "react-hook-form";
+import React from "react";
+import { useController, useFormContext, useWatch } from "react-hook-form";
+import GeneralInput from "../Inputs/GeneralInput";
 
 const MultiTagInput = ({
-  control,
   name,
   placeholder = "List skills.",
   emptyTagsBlockPlaceholder,
   typingTagsBlockPlaceholder,
 }) => {
+  const { control, setValue } = useFormContext();
+
   const {
     field: { onChange, value },
     fieldState: { error },
@@ -17,13 +19,13 @@ const MultiTagInput = ({
     defaultValue: [],
   });
 
-  const [inputValue, setInputValue] = useState("");
+  const inputFieldValue = useWatch({ name: `${name}-input`, control });
 
   const handleKeyDown = (e) => {
-    if (e.key === "Enter" && inputValue.trim()) {
+    if (e.key === "Enter" && inputFieldValue?.trim()) {
       e.preventDefault();
-      addTag(inputValue.trim());
-      setInputValue("");
+      addTag(inputFieldValue?.trim());
+      setValue(`${name}-input`, "");
     }
   };
 
@@ -39,10 +41,10 @@ const MultiTagInput = ({
 
   return (
     <div className="flex flex-col w-full">
-      <div className="border border-solid border-gray-300 rounded-md flex flex-wrap gap-2 p-2">
+      <div className="border border-solid border-gray-300 rounded-md flex flex-wrap gap-2 px-4 py-2">
         {value.length === 0 ? (
-          <div className="text-jet-black  ">
-            {inputValue.length > 0
+          <div className="text-jet-black text-sm text-gray-400">
+            {inputFieldValue?.length > 0
               ? typingTagsBlockPlaceholder
               : emptyTagsBlockPlaceholder}
           </div>
@@ -51,7 +53,7 @@ const MultiTagInput = ({
             {value.map((tag, index) => (
               <div
                 key={index}
-                className="flex items-center bg-green-600 text-white      px-1 py-1 pl-3 rounded-full"
+                className="flex items-center bg-green-600 text-white px-1 py-1 pl-3 rounded-full"
               >
                 <span className="mr-2">{tag}</span>
                 <button
@@ -66,13 +68,10 @@ const MultiTagInput = ({
           </>
         )}
 
-        <input
-          type="text"
-          className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-all duration-300 text-black"
+        <GeneralInput
+          name={`${name}-input`}
           placeholder={placeholder}
-          value={inputValue}
           onKeyDown={handleKeyDown}
-          onChange={(e) => setInputValue(e.target.value)}
         />
       </div>
 

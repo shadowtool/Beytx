@@ -5,12 +5,12 @@
 @layer base {
   h1,
   h2 {
-    @apply text-5xl md:text-6xl font-extrabold;
+    @apply text-5xl md:text-6xl font-medium;
     font-family: var(--font-raleway), sans-serif;
   }
 
   h2 {
-    @apply text-4xl font-bold;
+    @apply text-4xl;
   }
 
   h3,
@@ -22,22 +22,23 @@
   div,
   li {
     font-family: var(--font-montserrat), sans-serif;
+    @apply font-medium;
   }
 
   h3 {
-    @apply text-3xl font-semibold;
+    @apply text-3xl;
   }
 
   h4 {
-    @apply text-2xl font-semibold;
+    @apply text-2xl;
   }
 
   h5 {
-    @apply text-xl font-medium;
+    @apply text-xl;
   }
 
   h6 {
-    @apply text-lg font-medium;
+    @apply text-lg;
   }
 
   p,

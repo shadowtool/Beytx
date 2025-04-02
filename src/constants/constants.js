@@ -1,7 +1,7 @@
 import {
+  AgentIcon,
   CallIcon,
   HeartIcon,
-  MailIcon,
   ReportIcon,
   ShareIcon,
   WhatsappIcon,
@@ -15,8 +15,8 @@ export const USER_ACTIONS = [
 
 export const CREATOR_ACTIONS = [
   { icon: <CallIcon size={21} color="#fff" />, label: "Call" },
-  { icon: <MailIcon size={21} color="#fff" />, label: "Mail" },
   { icon: <WhatsappIcon size={21} color="#fff" />, label: "Whatsapp" },
+  { icon: <AgentIcon size={21} color="#fff" />, label: "Agent Properties" },
 ];
 
 export const LIBRARIES = ["places"];

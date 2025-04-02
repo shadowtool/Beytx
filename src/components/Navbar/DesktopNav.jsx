@@ -4,6 +4,7 @@ import AuthButton from "@/components/Reusables/AuthButton";
 import { AddPropertyIcon } from "@/imports/icons";
 import { useTranslations } from "next-intl";
 import { useParams } from "next/navigation";
+import GeneralButton from "../Buttons/GeneralButton";
 
 const DesktopNav = () => {
   const { locale } = useParams();
@@ -34,12 +35,14 @@ const DesktopNav = () => {
           </div>
 
           <div className="flex justify-center items-center gap-2">
-            <Link
-              href={`/${locale}/properties/create`}
-              className="h-fit w-fit py-2.5 px-6 flex items-center gap-2 text-white border-2 border-solid border-white rounded-lg    whitespace-nowrap"
-            >
-              {translate("addProperty")}
-              <AddPropertyIcon size={28} color="#fff" />
+            <Link href={`/${locale}/properties/create`}>
+              <GeneralButton
+                type="outlined"
+                className="text-white border-white flex items-center gap-3 !py-3 !px-4 hover:bg-transparent whitespace-nowrap"
+              >
+                {translate("addProperty")}
+                <AddPropertyIcon size={21} color="#fff" />
+              </GeneralButton>
             </Link>
             <AuthButton />
           </div>

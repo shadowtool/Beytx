@@ -32,7 +32,7 @@ const BedsAndBathsDropdown = ({
           beds || baths ? "bg-emerald-100 border-emerald-600" : "bg-white"
         } ${classes.button || ""}`}
       >
-        <span>
+        <span className={`${beds || baths ? "text-black" : "text-gray-400"}`}>
           {beds || baths
             ? `${beds || "Any"} Beds, ${baths || "Any"} Baths`
             : placeholder}

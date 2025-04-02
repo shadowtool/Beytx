@@ -11,6 +11,7 @@ const GeneralInput = ({
   error,
   debounce = false,
   debounceTime = 500,
+  ...rest
 }) => {
   const { control } = useFormContext();
   const debounceRef = useRef(null);
@@ -40,10 +41,11 @@ const GeneralInput = ({
               type={type}
               placeholder={placeholder}
               disabled={disabled}
-              className={`w-full px-4 py-2 border rounded-md outline-none focus:outline-none focus:ring-2 focus:ring-green-500 transition-all duration-300 text-black disabled:bg-gray-300   placeholder:  ${
+              className={`w-full px-4 py-2 border rounded-md outline-none focus:outline-none focus:ring-2 focus:ring-emerald-600 transition-all duration-300 text-black disabled:bg-gray-300 ${
                 error ? "border-red-500" : "border-gray-300"
               } ${classes}`}
               {...field}
+              {...rest}
             />
           );
         }}

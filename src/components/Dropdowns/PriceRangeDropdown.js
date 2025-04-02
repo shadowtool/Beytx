@@ -18,8 +18,8 @@ export default function PriceRangeDropdown({
   const dropdownRef = useRef(null);
   const { control, watch } = useFormContext();
 
-  const fromValue = watch(`${name}From`);
-  const toValue = watch(`${name}To`);
+  const fromValue = watch(`${name}_from`);
+  const toValue = watch(`${name}_to`);
 
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -49,8 +49,8 @@ export default function PriceRangeDropdown({
         type="button"
         className={`w-full border rounded text-left flex justify-between items-center focus:ring-2 focus:ring-emerald-500 transition-all duration-300 p-2 ${
           fromValue || toValue
-            ? "bg-emerald-100 border-emerald-600"
-            : "bg-white"
+            ? "bg-emerald-100 border-emerald-600 text-black"
+            : "bg-white text-gray-400"
         } ${classes.button || ""}`}
         onClick={() => setOpen(!open)}
       >
@@ -59,7 +59,7 @@ export default function PriceRangeDropdown({
           animate={{ rotate: open ? 180 : 0 }}
           transition={{ duration: 0.2 }}
         >
-          <DownIcon className="w-4 h-4" />
+          <DownIcon className="w-4 h-4 text-black" />
         </motion.div>
       </button>
 

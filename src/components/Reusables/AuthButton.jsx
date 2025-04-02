@@ -8,6 +8,7 @@ import EditProfile from "@/components/Modals/EditProfile";
 import { useParams, useRouter } from "next/navigation";
 import { useTranslations } from "next-intl";
 import AuthModal from "../Modals/AuthModals/AuthModal";
+import GeneralButton from "../Buttons/GeneralButton";
 
 export default function AuthButton({ buttonClasses }) {
   const translate = useTranslations("UserOptions");
@@ -32,15 +33,16 @@ export default function AuthButton({ buttonClasses }) {
           containerClasses={"!w-fit"}
         >
           <div className="relative">
-            <div
-              className="h-fit w-fit py-2.5 px-2 md:px-6 flex cursor-pointer items-center gap-2 text-white border-0 md:border-2 border-solid border-white rounded-lg   "
+            <GeneralButton
+              type="outlined"
+              className="text-white border-white flex items-center gap-3 !py-3 !px-4 hover:bg-transparent"
               onClick={() => {
                 setShowProfileOptions(!showProfileOptions);
               }}
             >
               <p className="hidden md:block">{session?.user?.name}</p>
               <UserIcon size={21} color="#fff" />
-            </div>
+            </GeneralButton>
             {showProfileOptions && (
               <div className="h-fit w-fit min-w-36 absolute top-[110%] right-0 bg-white rounded-md shadow-md z-[9] overflow-hidden">
                 <div
@@ -53,7 +55,7 @@ export default function AuthButton({ buttonClasses }) {
                   {translate("dashboard")}
                 </div>
                 <div
-                  className="py-3 px-6 flex items-center text-black   cursor-pointer hover:bg-gray-200 transition-all duration-300  "
+                  className="py-3 px-6 flex items-center text-black cursor-pointer hover:bg-gray-200 transition-all duration-300  "
                   onClick={(e) => {
                     e.stopPropagation();
                     signOut();
@@ -66,17 +68,16 @@ export default function AuthButton({ buttonClasses }) {
           </div>
         </ClickAwayListener>
       ) : (
-        <button
-          className={`h-fit w-fit p-0 md:py-2.5 md:px-6 text-white border-2 border-none md:border-solid border-white rounded-lg    ${buttonClasses}`}
+        <GeneralButton
+          type="outlined"
+          className="text-white border-white flex items-center gap-2 !py-3 !px-4 hover:bg-transparent"
           onClick={() => {
             setShowAuthModal(true);
           }}
         >
-          <div className="flex gap-2">
-            <p className="hidden md:inline">{translate("login")}</p>
-            <LoginIcon size={28} color="#fff" />
-          </div>
-        </button>
+          <p className="hidden md:inline">{translate("login")}</p>
+          <LoginIcon size={21} color="#fff" />
+        </GeneralButton>
       )}
 
       <EditProfile

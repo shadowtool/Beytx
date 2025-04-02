@@ -3,25 +3,25 @@ import { PROPERTY_TYPES } from "@/constants/propertyTypes";
 import mongoose from "mongoose";
 
 const propertySchema = new mongoose.Schema({
-  title: { type: String, required: true },
-  status: { type: String, required: true, enum: PROPERTY_STATUS },
-  price: { type: Number, required: true },
+  title: { type: String },
+  status: { type: String, enum: PROPERTY_STATUS },
+  price: { type: Number },
   location: {
-    lat: { type: String, required: true },
-    lng: { type: String, required: true },
-    address: { type: String, required: true },
-    city: { type: String, required: true },
-    pincode: { type: String, required: true },
-    country: { type: String, required: true },
+    lat: { type: String },
+    lng: { type: String },
+    address: { type: String },
+    city: { type: String },
+    pincode: { type: String },
+    country: { type: String },
   },
-  size: { type: Number, required: true },
+  size: { type: Number },
   type: {
     type: String,
-    required: true,
+
     enum: PROPERTY_TYPES,
   },
-  bedrooms: { type: Number, required: true },
-  bathrooms: { type: Number, required: true },
+  bedrooms: { type: Number },
+  bathrooms: { type: Number },
   description: { type: String },
   images: [{ type: String }],
   amenities: [{ type: String }],

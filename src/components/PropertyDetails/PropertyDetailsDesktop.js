@@ -4,20 +4,13 @@ import Loader from "../Reusables/Loader";
 import { CREATOR_ACTIONS, USER_ACTIONS } from "@/constants/constants";
 import Image from "next/image";
 import { motion } from "framer-motion";
-import {
-  AgentIcon,
-  BathroomIcon,
-  BedIcon,
-  DownIcon,
-  UpIcon, // Added UpIcon for "Show Less"
-} from "@/imports/icons";
+import { AgentIcon, BathroomIcon, BedIcon, DownIcon } from "@/imports/icons";
 import PropertyImagesModal from "../Modals/PropertyImagesModal";
 import MapPicker from "../Misc/MapPicker";
 import { AreaIcon, LocationIcon } from "@/imports/images";
 
 const PropertyDetailsDesktop = ({ loading, propertyData }) => {
   const [openImagesModal, setOpenImagesModal] = useState(false);
-  const [selectedImageIndex, setSelectedImageIndex] = useState(0);
   const [isDescriptionExpanded, setIsDescriptionExpanded] = useState(false);
 
   const [height, setHeight] = useState(0);
@@ -87,19 +80,16 @@ const PropertyDetailsDesktop = ({ loading, propertyData }) => {
           <div className="flex flex-col lg-xl:flex-row gap-6 mt-8 px-4 md:px-12 mb-24">
             <div className="w-full grow">
               <div
-                className={`p-6 bg-white rounded-lg shadow-lg ${
+                className={`p-6 bg-white border border-solid border-gray-200   rounded-lg shadow-lg ${
                   isDescriptionExpanded ? "pb-24" : "pb-6"
                 }`}
               >
                 {/* Price & Features */}
                 <div className="flex flex-col md:flex-row items-start md:items-end justify-between mb-4">
                   <div className="flex flex-col gap-1 items-start">
-                    <h2 className="     text-gray-800 text-left">
-                      <span className="text-black">
-                        {propertyData?.price} KWD
-                      </span>{" "}
-                      <span className=" "> / year</span>
-                    </h2>
+                    <h4 className="text-gray-800 text-left">
+                      {propertyData?.price} KWD / year
+                    </h4>
                     <p className="text-gray-500      flex items-center mb-2 mt-1 ">
                       <Image
                         src={LocationIcon}
@@ -169,7 +159,7 @@ const PropertyDetailsDesktop = ({ loading, propertyData }) => {
                 </div>
 
                 <div className="border-t border-solid border-gray-300 py-6">
-                  <h2 className="    "> Amenities</h2>
+                  <h2 className="font-medium"> Amenities</h2>
                   <div className="mt-4 flex flex-col gap-2">
                     {propertyData?.amenities?.map((amenity, index) => (
                       <div key={index} className="flex items-center gap-2">
@@ -192,13 +182,18 @@ const PropertyDetailsDesktop = ({ loading, propertyData }) => {
               <div className="bg-green-100 px-4 py-12 rounded-md flex flex-col items-center justify-center">
                 <div className="flex flex-col items-center justify-center gap-3 mt-4">
                   <img
-                    src={propertyData?.user?.image}
+                    src={
+                      propertyData?.user?.image ?? "/images/portrait-image.jpg"
+                    }
+                    onError={(e) => {
+                      e.target.src = "/images/portrait-image.jpg";
+                    }}
                     alt="#"
                     className="min-h-28 max-h-28 min-w-28 max-w-28 object-cover rounded-full border-2 border-solid border-green-600"
                   />
                   <div className="h-fit w-fit py-1 px-4 bg-green-600 flex items-center justify-center gap-2 text-white rounded-md">
                     <AgentIcon size={24} color="#fff" />
-                    <p className="    ">New Agent</p>
+                    <p className="font-semibold text-xs">New Agent</p>
                   </div>
                   <div className="flex gap-1 flex-col">
                     <h5 className="  text-black  ">
@@ -208,28 +203,38 @@ const PropertyDetailsDesktop = ({ loading, propertyData }) => {
                 </div>
                 <div className="h-fit w-full my-2 min-w-80 max-w-80">
                   <div className="flex items-center my-3">
-                    <h5 className="    min-w-28">Response Time</h5>
-                    <p className="    ">within 5 minutes</p>
+                    <p className="min-w-32 text-[13px]">Response Time</p>
+                    <h6 className="">within 5 minutes</h6>
                   </div>
                   <div className="flex items-center my-3">
-                    <h5 className="    min-w-28">Closed Deals</h5>
-                    <p className="    ">3</p>
+                    <p className="min-w-32 text-[13px]">Closed Deals</p>
+                    <h6 className="">3</h6>
                   </div>
                   <div className="flex items-center my-3">
-                    <h5 className="    min-w-28">Languages </h5>
-                    <p className="    ">English</p>
+                    <p className="min-w-32 text-[13px]">Languages </p>
+                    <h6 className="">English</h6>
                   </div>
                 </div>
-                <div className="flex items-center justify-between gap-3 mt-6 min-w-80 max-w-80">
-                  {CREATOR_ACTIONS?.map((el, idx) => (
-                    <button
-                      key={idx}
-                      className="h-fit w-fit grow px-4 rounded-md py-3 flex items-center   md:  gap-1 md:gap-2 text-white bg-green-600"
-                    >
-                      {el.icon}
-                      {el.label}
-                    </button>
-                  ))}
+                <div className="flex items-center flex-col justify-between gap-3 mt-6 min-w-80 max-w-80">
+                  <div className="flex gap-3 w-full">
+                    {CREATOR_ACTIONS?.slice(0, 2).map((el, idx) => (
+                      <button
+                        key={idx}
+                        className="h-fit w-full px-4 rounded-md py-3 flex items-center justify-center gap-3 text-[13px] font-semibold text-white bg-green-600"
+                      >
+                        {el.icon}
+                        {el.label}
+                      </button>
+                    ))}
+                  </div>
+                  <div className="w-full mt-3">
+                    {CREATOR_ACTIONS?.[2] && (
+                      <button className="w-full px-4 rounded-md py-3 flex items-center justify-center gap-3 text-[13px] font-semibold text-white bg-green-600">
+                        {CREATOR_ACTIONS[2].icon}
+                        {CREATOR_ACTIONS[2].label}
+                      </button>
+                    )}
+                  </div>
                 </div>
               </div>
             </div>

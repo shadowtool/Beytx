@@ -15,6 +15,7 @@ const Footer = () => {
         <></>
       ) : (
         <footer className="bg-gradient-to-r from-emerald-600 via-emerald-500 to-emerald-500 z-[1]  text-white py-6 md:p-6 md:px-16">
+          {" "}
           <div className="flex flex-col md:flex-row justify-between items-center">
             <div className="mt-4 mb-16">
               <img
@@ -80,7 +81,6 @@ const Footer = () => {
               </div>
             </div>
           </div>
-
           <div className="border-t border-gray-700 flex flex-col md:flex-row mt-8 md:mt-3 items-center gap-6 justify-center py-4">
             <a
               href="/sitemap"
