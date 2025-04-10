@@ -28,7 +28,8 @@ const PropertyCard = ({ property, cardType, selectedView }) => {
 
   const queryClient = useQueryClient();
 
-  const cardsTranslations = useTranslations("Cards");
+  const translateCards = useTranslations("cards");
+  const translatePropertyTypes = useTranslations("propertyTypes");
 
   const { data: session } = useSession();
 
@@ -61,7 +62,7 @@ const PropertyCard = ({ property, cardType, selectedView }) => {
   return (
     <div
       key={property?._id}
-      className="min-w-[250px] max-w-[250px] md:w-full md:grow md:max-w-full border rounded-lg bg-white shadow-md hover:shadow-xl cursor-pointer transition-all duration-300 hover:scale-[1.02] relative overflow-hidden"
+      className="min-w-[220px] max-w-[220px] md:w-full md:grow md:max-w-full border rounded-lg bg-white shadow-md hover:shadow-xl cursor-pointer transition-all duration-300 hover:scale-[1.02] relative overflow-hidden"
       onClick={() => {
         return router.push(
           `/${locale}/${property?.status}/${property?.location?.country}/${property?.location?.city}/${property?._id}`
@@ -75,7 +76,9 @@ const PropertyCard = ({ property, cardType, selectedView }) => {
             : "bg-red-800 border border-zinc-400 "
         }`}
       >
-        {property?.status === "sale" ? "Buy" : "Rent"}
+        {property?.status === "sale"
+          ? translateCards("forSale")
+          : translateCards("forRent")}
       </div>
       {cardType !== "userListing" && cardType !== "savedListing" && (
         <div className="min-h-10 max-h-10 min-w-10 max-w-10 flex items-center justify-center rounded-full shadow absolute top-4 right-4 bg-white">
@@ -93,10 +96,12 @@ const PropertyCard = ({ property, cardType, selectedView }) => {
         alt={property?.title}
         className="w-full h-36 md:h-48 object-cover"
       />
-      <div className="p-4 flex">
+      <div className="p-2 md:p-4 flex">
         <div className="flex-1">
-          <p className="md:text-zinc-600">{property?.type}</p>
-          <h4 className="text-green-700 mt-1 mb-2  ">{property?.price} KWD</h4>
+          <p className="md:text-zinc-600">
+            {translatePropertyTypes(property?.type?.toLowerCase())}
+          </p>
+          <h4 className="text-green-700 mt-1 mb-2">{property?.price} KWD</h4>
           <p className="text-zinc-600 transition-colors duration-500">
             {property?.title}
           </p>
@@ -107,27 +112,35 @@ const PropertyCard = ({ property, cardType, selectedView }) => {
                 alt="area-icon"
                 className="h-5 w-auto object-contain"
               />
-
               {property?.location?.city}
             </p>
             <div className="text-gray-500 mt-2 flex items-center space-x-2">
-              <p className="flex items-center  ">
+              <p className="flex items-center">
                 <BedIcon size={14} className="mr-1" />
-                {property?.bedrooms} {cardsTranslations("beds")}
+                <span className="text-xs">{property?.bedrooms} </span>
+                <span className="text-xs hidden md:inline ml-1">
+                  {translateCards("beds")}
+                </span>
               </p>
               <div className="border-l border-gray-300 h-6 mx-2"></div>
-              <p className="flex items-center  ">
+              <p className="flex items-center">
                 <BathroomIcon size={14} className="mr-1" />
-                {property?.bathrooms} {cardsTranslations("baths")}
+                <span className="text-xs">{property?.bathrooms} </span>
+                <span className="text-xs hidden md:inline ml-1">
+                  {translateCards("baths")}
+                </span>
               </p>
               <div className="border-l border-gray-300 h-6 mx-2"></div>
-              <p className="flex items-center  ">
+              <p className="flex items-center">
                 <Image
                   src={AreaIcon}
                   alt="area-icon"
                   className="h-5 w-auto object-contain"
                 />
-                {property?.size} Sq. ft.
+                {property?.size}{" "}
+                <span className="ml-1  text-xs">
+                  {translateCards("areaNotation")}
+                </span>
               </p>
             </div>
           </div>
@@ -142,7 +155,7 @@ const PropertyCard = ({ property, cardType, selectedView }) => {
             <>
               <div className="flex gap-2 w-full">
                 <button
-                  className="text-white px-0 pl-2 md:px-4 py-2 rounded-md flex items-center bg-green-600 backdrop-blur   md:     w-full grow"
+                  className="text-white px-0 pl-2 md:px-4 py-2 rounded-md flex items-center bg-green-600 backdrop-blur text-xs md:text-sm w-full grow"
                   onClick={() => {
                     router.push(
                       `/${locale}/properties/create/${property?._id}`
@@ -150,40 +163,40 @@ const PropertyCard = ({ property, cardType, selectedView }) => {
                   }}
                 >
                   <EditIcon size={18} color="#fff" className="mr-2" />
-                  {cardsTranslations("edit")}
+                  {translateCards("edit")}
                 </button>
 
                 <button
-                  className="text-white px-0 pl-2 md:px-4 py-2 rounded-md flex items-center bg-green-600 backdrop-blur   md:     w-full grow"
+                  className="text-white px-0 pl-2 md:px-4 py-2 rounded-md flex items-center bg-red-700 backdrop-blur text-xs md:text-sm w-full grow"
                   onClick={() => {
                     deletePropertyCall(property?._id);
                   }}
                 >
                   <DeleteIcon size={18} color="#fff" className="mr-2" />
-                  {cardsTranslations("delete")}
+                  {translateCards("delete")}
                 </button>
               </div>
             </>
           ) : cardType === "savedListing" ? (
             <>
               <button
-                className="text-white px-0 pl-2 md:px-4 py-2 rounded-md flex items-center bg-green-600 backdrop-blur   md:     w-full grow"
+                className="text-white px-0 pl-2 md:px-4 py-2 rounded-md flex items-center bg-red-700 backdrop-blur text-xs md:text-sm w-full grow"
                 onClick={() => toggleSaveListing()}
               >
                 <DeleteIcon size={18} color="#fff" className="mr-2" />
-                {cardsTranslations("removeSavedListing")}
+                {translateCards("removeSavedListing")}
               </button>
             </>
           ) : (
             <>
               <div className="flex gap-2 w-full">
-                <button className="text-white px-0 pl-2 md:px-4 py-2 rounded-md flex items-center bg-green-600 backdrop-blur   md:     w-full grow">
+                <button className="text-white px-3 md:px-4 py-2 rounded-md flex items-center bg-green-600 backdrop-blur text-xs md:text-sm w-full grow max-w-fit md:max-w-full">
                   <CallIcon size={18} color="#fff" className="mr-2" />
-                  {cardsTranslations("call")}
+                  {translateCards("call")}
                 </button>
-                <button className="text-white px-0 pl-2 md:px-4 py-2 rounded-md flex items-center bg-green-600 backdrop-blur   md:     w-full grow">
+                <button className="text-white px-0 pl-2 md:px-4 py-2 rounded-md flex items-center bg-green-600 backdrop-blur text-xs md:text-sm w-full grow">
                   <WhatsappIcon size={18} color="#fff" className="mr-2" />
-                  {cardsTranslations("whatsapp")}
+                  {translateCards("whatsapp")}
                 </button>
               </div>
             </>

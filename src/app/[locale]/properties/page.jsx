@@ -8,12 +8,11 @@ import { useSearchParams } from "next/navigation";
 import { useEffect, useMemo, useRef } from "react";
 import { FormProvider, useForm, useWatch } from "react-hook-form";
 
-const itemsPerPage = 9;
+const itemsPerPage = 10;
 
 export default function index() {
   const searchParams = useSearchParams();
 
-  // Function to extract filters from URL
   const getFiltersFromURL = () => {
     const params = Object.fromEntries(searchParams.entries());
 
@@ -27,7 +26,6 @@ export default function index() {
     };
   };
 
-  // Initialize react-hook-form with default values from URL
   const methods = useForm({
     defaultValues: getFiltersFromURL(),
   });
@@ -55,7 +53,6 @@ export default function index() {
       })
     );
 
-    // Stringify array values in filters
     Object.entries(filtersToReturn).forEach(([key, value]) => {
       if (Array.isArray(value)) {
         filtersToReturn[key] = JSON.stringify(value);
@@ -64,8 +61,6 @@ export default function index() {
     return filtersToReturn;
   }, [formValues]);
 
-  console.log({ formValues });
-
   const {
     data,
     fetchNextPage,
@@ -73,12 +68,12 @@ export default function index() {
     isFetchingNextPage,
     isPending,
     refetch,
-    error,
   } = useInfiniteQuery({
     queryKey: [ROUTES.GET_PROPERTIES, filters],
     queryFn: ({ pageParam = 1 }) =>
       fetchPropertyListings(pageParam, itemsPerPage, filters),
     getNextPageParam: (lastPage) => {
+      console.log({ lastPage });
       return lastPage?.currentPage < lastPage?.totalPages
         ? lastPage.currentPage + 1
         : undefined;
@@ -101,7 +96,7 @@ export default function index() {
           fetchNextPage();
         }
       },
-      { threshold: 1.0 }
+      { threshold: 0.1 }
     );
 
     if (loadMoreRef.current) {
@@ -121,6 +116,8 @@ export default function index() {
           isFetchingData={isPending}
           isFetchingNextPage={isFetchingNextPage}
           loadMoreRef={loadMoreRef}
+          hasNextPage={hasNextPage}
+          fetchNextPage={fetchNextPage}
         />
         <MobilePropertyListings
           properties={properties}

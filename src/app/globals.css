@@ -2,6 +2,16 @@
 @tailwind components;
 @tailwind utilities;
 
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  overflow-x: hidden;
+}
+
 @layer base {
   h1,
   h2 {
@@ -10,7 +20,7 @@
   }
 
   h2 {
-    @apply text-4xl;
+    @apply text-3xl;
   }
 
   h3,
@@ -26,19 +36,19 @@
   }
 
   h3 {
-    @apply text-3xl;
-  }
-
-  h4 {
     @apply text-2xl;
   }
 
-  h5 {
+  h4 {
     @apply text-xl;
   }
 
-  h6 {
+  h5 {
     @apply text-lg;
+  }
+
+  h6 {
+    @apply text-base;
   }
 
   p,
@@ -70,6 +80,7 @@ button:focus {
 
 *::-webkit-scrollbar {
   width: 6px;
+  height: 6px;
   background-color: rgb(255, 255, 255);
 }
 

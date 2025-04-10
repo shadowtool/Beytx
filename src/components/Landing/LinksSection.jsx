@@ -6,11 +6,13 @@ import React from "react";
 import { PROPERTY_TYPES } from "@/constants/propertyTypes";
 import { useParams, useRouter } from "next/navigation";
 import Link from "next/link";
+import { useTranslations } from "next-intl";
 
 const LinksSection = () => {
   const router = useRouter();
-
   const { locale } = useParams();
+  const translate = useTranslations("linksSection");
+  const translatePropertyTypes = useTranslations("propertyTypes");
 
   const { data: locationsData } = useQuery({
     queryKey: [ROUTES.GET_LOCATIONS],
@@ -22,14 +24,18 @@ const LinksSection = () => {
       PROPERTY_TYPES.map((type) => ({
         type,
         city: location.city,
-        text: `${type} in ${location.city}`,
+        text: `${translatePropertyTypes(type.toLowerCase())} ${translate(
+          "in"
+        )} ${location.city}`,
       }))
     )
     .flat();
 
   return (
     <div className="h-fit w-full p-4 bg-gradient-to-r from-emerald-600 via-emerald-500 to-emerald-500 z-[1] backdrop-blur-sm py-10 md:hidden">
-      <h4 className="mb-8 text-white">Explore by major locations</h4>
+      <h4 className="mb-8 text-white">
+        {translate("exploreByMajorLocations")}
+      </h4>
       <div className="w-full h-fit max-w-full overflow-x-auto hide-scrollbar flex flex-nowrap items-center gap-6">
         {locationsData?.map((el) => (
           <button

@@ -13,15 +13,14 @@ import { CgArrowLeft } from "react-icons/cg";
 import { signIn } from "next-auth/react";
 import { useParams } from "next/navigation";
 import axios from "axios";
+import { useTranslations } from "next-intl";
 
 const AuthModal = ({ open, handleClose }) => {
   const [userExist, setUserExist] = useState(false);
-
   const [hasUserProceeded, setHasUserProceeded] = useState(false);
-
   const methods = useForm({ defaultValues: { userInputEmail: "" } });
-
   const { locale } = useParams();
+  const t = useTranslations("authModal");
 
   const {
     setValue,
@@ -31,14 +30,13 @@ const AuthModal = ({ open, handleClose }) => {
   } = methods;
 
   const userInputEmailValue = useWatch({ name: "userInputEmail", control });
-
   const enteredSigninPasswordValue = useWatch({
     name: "signinPassword",
     control,
   });
 
   const checkUserAccountStatus = async () => {
-    toast.loading("Checking status");
+    toast.loading(t("checkingStatus"));
     const doesUserExist = await fetchUserAccountStatus(userInputEmailValue);
     setHasUserProceeded(true);
     if (doesUserExist?.exists) {
@@ -61,17 +59,17 @@ const AuthModal = ({ open, handleClose }) => {
       if (result.error) {
         toast.error(result.error);
       } else {
-        toast.success("Logged in successfully");
+        toast.success(t("loginSuccess"));
         handleClose();
       }
     } catch (error) {
       console.log({ error });
-      toast.error("An error occurred during login");
+      toast.error(t("loginError"));
     }
   };
 
   const handleSignup = async (data) => {
-    toast.loading("Signing up...");
+    toast.loading(t("signingUp"));
 
     try {
       await axios.post("/api/auth/signup", {
@@ -81,7 +79,7 @@ const AuthModal = ({ open, handleClose }) => {
         password: data.signinPassword,
       });
       toast.dismiss();
-      toast.success("Signup successful!");
+      toast.success(t("signupSuccess"));
 
       const result = await signIn("credentials", {
         identifier: data.signinEmail,
@@ -94,7 +92,7 @@ const AuthModal = ({ open, handleClose }) => {
       }
     } catch (error) {
       toast.dismiss();
-      toast.error(error.response?.data?.message || "Signup failed!");
+      toast.error(error.response?.data?.message || t("signupFailed"));
     }
   };
 
@@ -103,52 +101,50 @@ const AuthModal = ({ open, handleClose }) => {
       <div>
         <FormProvider {...methods}>
           <div
-            className="h-screen w-screen py-24 flex items-center justify-center"
+            className="h-screen w-screen py-16 flex items-center justify-center"
             onClick={handleClose}
           >
             <div
-              className="bg-white rounded-md overflow-hidden shadow h-full w-full max-w-3xl"
+              className="bg-white rounded-md overflow-hidden shadow h-full w-full max-w-sm"
               onClick={(e) => e.stopPropagation()}
             >
-              <div className="h-full w-full flex">
-                <div className="h-full w-full max-w-80 pt-16 flex flex-col items-center gap-12 bg-green-100">
-                  <div className="h-fit w-fit p-8 bg-green-600 rounded-full">
+              <div className="h-full w-full flex flex-col">
+                <div className="h-fit p-4 w-full flex items-center gap-4 bg-green-100">
+                  <div className="min-h-12 min-w-12 max-h-12 max-w-12 bg-green-600 rounded-full flex items-center justify-center">
                     <Image
                       src={LogoImage}
-                      className="h-24 w-24 object-contain"
+                      className="h-8 w-8 object-contain"
                       height={192}
                       width={288}
                     />
                   </div>
-                  <h3 className="    text-center">
-                    Continue your Journey <br /> With Us
-                  </h3>
+                  <h6 className="text-center">{t("continueJourney")}</h6>
                 </div>
                 {hasUserProceeded ? (
-                  <div className="relative w-full">
+                  <div className="relative w-full h-fit">
                     <div className="absolute top-8 left-8">
                       <button
                         onClick={() => setHasUserProceeded(false)}
                         className="flex items-center gap-2 text-gray-600 hover:text-gray-800"
                       >
                         <CgArrowLeft className="h-5 w-5" />
-                        Back
+                        {t("back")}
                       </button>
                     </div>
                     {userExist ? (
-                      <div className="h-full w-full grow flex items-center justify-center p-8 flex-col gap-4">
-                        <h5>Login with your password to continue.</h5>
+                      <div className="h-fit w-full flex items-center justify-center p-8 flex-col gap-4 mt-12">
+                        <h5>{t("loginWithPassword")}</h5>
                         <GeneralInput
                           name="loginEmail"
-                          placeholder="Enter email"
+                          placeholder={t("enterEmail")}
                           type="email"
                           disabled
                           validation={{
-                            required: "Email is required",
+                            required: t("emailRequired"),
                             pattern: {
                               value:
                                 /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/,
-                              message: "Invalid email format",
+                              message: t("invalidEmailFormat"),
                             },
                           }}
                           error={errors.loginEmail}
@@ -162,24 +158,24 @@ const AuthModal = ({ open, handleClose }) => {
                           type="outlined"
                           onClick={handleSubmit(handleLogin)}
                         >
-                          Proceed
+                          {t("proceed")}
                         </GeneralButton>
                       </div>
                     ) : (
                       <>
-                        <div className="h-full w-full grow flex items-center justify-center p-8 flex-col gap-4">
-                          <h5 className="   ">Create your account</h5>
+                        <div className="h-fit w-full flex items-center justify-center p-8 flex-col gap-4 mt-12">
+                          <h5>{t("createAccount")}</h5>
                           <GeneralInput
                             name="signinEmail"
-                            placeholder="Enter email"
+                            placeholder={t("enterEmail")}
                             type="email"
                             disabled
                             validation={{
-                              required: "Email is required",
+                              required: t("emailRequired"),
                               pattern: {
                                 value:
                                   /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/,
-                                message: "Invalid email format",
+                                message: t("invalidEmailFormat"),
                               },
                             }}
                             error={errors.email}
@@ -187,33 +183,32 @@ const AuthModal = ({ open, handleClose }) => {
                           <PasswordInput
                             name="signinPassword"
                             error={errors?.signinPassword}
-                            placeholder="Enter your password"
+                            placeholder={t("enterYourPassword")}
                             validation={{
-                              required: "Password is required",
+                              required: t("passwordRequired"),
                               pattern: {
                                 value: /^(?=.*[A-Z])(?=.*[!@#$&*])(?=.{8,})/,
-                                message:
-                                  "Password must be at least 8 characters, contain one uppercase letter, and one special character",
+                                message: t("passwordCriteria"),
                               },
                             }}
-                          />{" "}
+                          />
                           <PasswordInput
                             name="confirmSigninPassword"
                             error={errors?.confirmSigninPassword}
-                            placeholder="Confirm your password"
+                            placeholder={t("confirmYourPassword")}
                             validation={{
-                              required: "Confirm Password is required",
+                              required: t("confirmPasswordRequired"),
                               validate: (value) =>
                                 value === enteredSigninPasswordValue ||
-                                "Passwords do not match",
+                                t("passwordsDoNotMatch"),
                             }}
                           />
                           <GeneralInput
                             name="phoneNumber"
-                            placeholder="Enter your phone number"
+                            placeholder={t("enterYourPhoneNumber")}
                             type="text"
                             validation={{
-                              required: "Phone number is required",
+                              required: t("phoneNumberRequired"),
                             }}
                             error={errors.phoneNumber}
                           />
@@ -221,30 +216,30 @@ const AuthModal = ({ open, handleClose }) => {
                             type="outlined"
                             onClick={handleSubmit(handleSignup)}
                           >
-                            Sign Up
+                            {t("signUp")}
                           </GeneralButton>
                         </div>
                       </>
                     )}
                   </div>
                 ) : (
-                  <div className="h-full w-full grow flex items-center justify-center p-8 flex-col gap-6">
+                  <div className="h-fit w-full flex items-center justify-center p-8 flex-col gap-6">
                     <GoogleLoginButton />
                     <div className="w-full flex gap-4 items-center">
                       <div className="h-[1.5px] w-full grow bg-gray-500"></div>
-                      <h5 className="text-gray-500">Or</h5>
+                      <h5 className="text-gray-500">{t("or")}</h5>
                       <div className="h-[1.5px] w-full grow bg-gray-500"></div>
                     </div>
                     <GeneralInput
                       name="userInputEmail"
-                      placeholder="Enter email"
+                      placeholder={t("enterEmail")}
                       type="email"
                       validation={{
-                        required: "Email is required",
+                        required: t("emailRequired"),
                         pattern: {
                           value:
                             /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/,
-                          message: "Invalid email format",
+                          message: t("invalidEmailFormat"),
                         },
                       }}
                       error={errors.email}
@@ -255,22 +250,22 @@ const AuthModal = ({ open, handleClose }) => {
                         checkUserAccountStatus();
                       }}
                     >
-                      Continue with Email
+                      {t("continueWithEmail")}
                     </GeneralButton>
-                    <p className="  text-gray-600 text-center">
-                      By continuing, you agree to our{" "}
+                    <p className="text-gray-600 text-center">
+                      {t("agreeToPolicies")}{" "}
                       <a
                         href={`/${locale}/privacy-policy`}
                         className="text-green-600"
                       >
-                        privacy policy
+                        {t("privacyPolicy")}
                       </a>{" "}
-                      and{" "}
+                      {t("and")}{" "}
                       <a
                         href={`/${locale}/terms-and-conditions`}
                         className="text-green-600"
                       >
-                        terms & conditions
+                        {t("termsAndConditions")}
                       </a>
                     </p>
                   </div>

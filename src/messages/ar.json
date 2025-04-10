@@ -1,12 +1,13 @@
 {
-  "Header": {
+  "header": {
     "home": "الرئيسية",
     "properties": "العقارات",
     "contactUs": "اتصل بنا",
     "login": "تسجيل الدخول",
-    "addProperty": "إضافة عقار"
+    "addProperty": "إضافة عقار",
+    "adminPanel": "لوحة التحكم"
   },
-  "Footer": {
+  "footer": {
     "aboutUs": "من نحن",
     "contact": "اتصل بنا",
     "addProperty": "إضافة عقار",
@@ -14,39 +15,38 @@
     "privacyPolicy": "سياسة الخصوصية",
     "termsandconditions": "الشروط والأحكام"
   },
-  "PropertyPage": {
-    "loginMessageText": "يجب تسجيل الدخول لإضافة عقار",
+  "createPropertyPage": {
+    "loginMessageText": "يجب تسجيل الدخول لإضافة عقار.",
     "forSale": "للبيع",
     "forRent": "للإيجار",
     "title": "العنوان",
-    "typeOfProperty": "نوع العقار",
+    "type": "النوع",
     "price": "السعر",
     "location": "الموقع",
     "bedrooms": "غرف النوم",
     "bathrooms": "الحمامات",
     "area": "المساحة (بالمتر المربع)",
-    "amenities": "المميزات",
+    "amenities": "المرافق",
     "description": "الوصف",
-    "dragAndDropPlaceholderText": "اسحب وأفلت الصور هنا، أو انقر لاختيار الملفات",
-    "adding": "جاري الإضافة ...",
+    "dragAndDropPlaceholderText": "اسحب وأفلت الصور هنا، أو انقر لتحديد الملفات",
+    "adding": "يتم الإضافة...",
     "addProperty": "إضافة عقار",
     "login": "تسجيل الدخول"
   },
-  "PropertyTypes": {
+  "propertyTypes": {
     "villa": "فيلا",
     "apartment": "شقة",
     "land": "أرض",
     "office": "مكتب",
     "townhouse": "تاون هاوس"
   },
-  "UserOptions": {
-    "editProfile": "تعديل الملف الشخصي",
-    "myListings": "عقاراتي",
+  "userOptions": {
+    "dashboard": "لوحة التحكم",
     "logout": "تسجيل الخروج",
     "login": "تسجيل الدخول"
   },
-  "Cards": {
-    "beds": "غرف نوم",
+  "cards": {
+    "beds": "غرف",
     "baths": "حمامات",
     "view": "عرض",
     "edit": "تعديل",
@@ -54,6 +54,138 @@
     "call": "اتصال",
     "whatsapp": "واتساب",
     "email": "بريد إلكتروني",
-    "share": "مشاركة"
+    "share": "مشاركة",
+    "removeSavedListing": "إزالة من المحفوظات",
+    "saveListing": "حفظ العقار",
+    "areaNotation": "قدم²",
+    "forSale": "للبيع",
+    "forRent": "للإيجار",
+    "errorArchivingProperty": "خطأ في أرشفة العقار."
+  },
+  "hero": {
+    "findYourProperty": "ابحث عن عقارك التالي",
+    "buy": "شراء",
+    "rent": "استئجار",
+    "search": "بحث",
+    "searchByLocation": "ابحث حسب الموقع",
+    "selectCity": "اختر مدينة",
+    "type": "النوع",
+    "bedrooms": "غرف النوم",
+    "bathrooms": "الحمامات"
+  },
+  "featuredListings": {
+    "discoverProperties": "اكتشف العقارات المميزة لدينا",
+    "fetchingProperties": "جارٍ جلب العقارات...",
+    "allProperties": "كل العقارات"
+  },
+  "linksSection": {
+    "in": "في",
+    "exploreByMajorLocations": "استكشف حسب المواقع الرئيسية"
+  },
+  "authModal": {
+    "checkingStatus": "جارٍ التحقق من حالة الحساب...",
+    "continueJourney": "تابع رحلتك",
+    "back": "رجوع",
+    "loginWithPassword": "تسجيل الدخول باستخدام كلمة المرور",
+    "enterEmail": "أدخل بريدك الإلكتروني",
+    "emailRequired": "البريد الإلكتروني مطلوب",
+    "invalidEmailFormat": "صيغة البريد الإلكتروني غير صحيحة",
+    "proceed": "متابعة",
+    "createAccount": "أنشئ حسابك",
+    "enterYourPassword": "أدخل كلمة المرور",
+    "passwordRequired": "كلمة المرور مطلوبة",
+    "passwordCriteria": "يجب أن تكون كلمة المرور 8 أحرف على الأقل، وتحتوي على حرف كبير ورمز خاص.",
+    "confirmYourPassword": "تأكيد كلمة المرور",
+    "confirmPasswordRequired": "يرجى تأكيد كلمة المرور",
+    "passwordsDoNotMatch": "كلمتا المرور غير متطابقتين",
+    "enterYourPhoneNumber": "أدخل رقم هاتفك",
+    "phoneNumberRequired": "رقم الهاتف مطلوب",
+    "signUp": "إنشاء حساب",
+    "signingUp": "جاري إنشاء الحساب...",
+    "signupSuccess": "تم إنشاء الحساب بنجاح!",
+    "signupFailed": "فشل إنشاء الحساب. حاول مرة أخرى.",
+    "loginSuccess": "تم تسجيل الدخول بنجاح!",
+    "loginError": "فشل تسجيل الدخول. حاول مرة أخرى.",
+    "or": "أو",
+    "continueWithEmail": "المتابعة باستخدام البريد الإلكتروني",
+    "agreeToPolicies": "بالمتابعة، فإنك توافق على",
+    "privacyPolicy": "سياسة الخصوصية",
+    "termsAndConditions": "الشروط والأحكام",
+    "and": "و"
+  },
+  "sortOptions": {
+    "price_asc": "السعر: من الأقل إلى الأعلى",
+    "price_desc": "السعر: من الأعلى إلى الأقل",
+    "listing_date": "الأحدث",
+    "beds_asc": "عدد الغرف: من الأقل إلى الأعلى",
+    "beds_desc": "عدد الغرف: من الأعلى إلى الأقل",
+    "baths_asc": "عدد الحمامات: من الأقل إلى الأعلى",
+    "baths_desc": "عدد الحمامات: من الأعلى إلى الأقل"
+  },
+  "filterKeys": {
+    "status": "الحالة",
+    "type": "النوع",
+    "sortBy": "ترتيب حسب",
+    "sale": "بيع",
+    "rent": "إيجار",
+    "reset": "إعادة تعيين",
+    "locationPlaceholder": "تصفية حسب الموقع ...",
+    "priceRange": "اختر نطاق السعر",
+    "bedsAndBaths": "غرف النوم والحمامات",
+    "bedrooms": "غرف النوم",
+    "bathrooms": "الحمامات",
+    "any": "أي",
+    "filterKeys": "الفلاتر",
+    "beds": "الأسرة",
+    "baths": "الحمامات",
+    "price": "السعر",
+    "from": "من",
+    "to": "إلى",
+    "apply": "تطبيق"
+  },
+  "propertyListings": {
+    "fetchingData": "جارٍ تحميل العقارات...",
+    "noPropertiesFound": "لم يتم العثور على عقارات.",
+    "loadingMoreProperties": "جارٍ تحميل المزيد من العقارات...",
+    "status": "الحالة",
+    "type": "النوع",
+    "beds": "غرف نوم",
+    "bath": "حمامات",
+    "price": "السعر",
+    "sortBy": "ترتيب حسب",
+    "searchPlaceholder": "ابحث بالموقع",
+    "loadingMessage": "جارٍ تحميل العقارات...",
+    "loadingMore": "جارٍ تحميل المزيد..."
+  },
+  "propertyDetails": {
+    "year": "سنوياً",
+    "bedrooms": "{count} غرف النوم",
+    "bathrooms": "{count} الحمامات",
+    "area": "{size} قدم²",
+    "seeMoreDetails": "عرض المزيد من التفاصيل",
+    "seeLessDetails": "عرض تفاصيل أقل",
+    "amenities": "وسائل الراحة",
+    "location": "الموقع",
+    "newAgent": "وكيل جديد",
+    "propertyImageAlt": "صورة العقار",
+    "locationIconAlt": "أيقونة الموقع",
+    "areaIconAlt": "أيقونة المساحة",
+    "save": "حفظ",
+    "share": "مشاركة",
+    "call": "اتصال",
+    "message": "رسالة",
+    "bookVisit": "حجز زيارة",
+    "whatsapp": "واتساب",
+    "agentProperties": "عقارات الوكيل",
+    "report": "تقرير",
+    "pricePerYear": "{price} دينار كويتي / سنويًا"
+  },
+  "contactUs": {
+    "contactUs": "اتصل بنا",
+    "name": "الاسم",
+    "email": "البريد الإلكتروني",
+    "phone": "الهاتف",
+    "inquiry": "رسالتك",
+    "sendMessage": "إرسال الرسالة"
   }
 }

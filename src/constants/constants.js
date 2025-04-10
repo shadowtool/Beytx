@@ -14,9 +14,17 @@ export const USER_ACTIONS = [
 ];
 
 export const CREATOR_ACTIONS = [
-  { icon: <CallIcon size={21} color="#fff" />, label: "Call" },
-  { icon: <WhatsappIcon size={21} color="#fff" />, label: "Whatsapp" },
-  { icon: <AgentIcon size={21} color="#fff" />, label: "Agent Properties" },
+  { icon: <CallIcon size={21} color="#fff" />, label: "Call", value: "call" },
+  {
+    icon: <WhatsappIcon size={21} color="#fff" />,
+    label: "Whatsapp",
+    value: "whatsapp",
+  },
+  {
+    icon: <AgentIcon size={21} color="#fff" />,
+    label: "Agent Properties",
+    value: "agentProperties",
+  },
 ];
 
 export const LIBRARIES = ["places"];
@@ -52,7 +60,7 @@ export const SORT_OPTIONS = [
   },
 ];
 
-export const PRICE_OPTIONS = [
+export const PRICE_OPTIONS_SALE = [
   { label: "100,000", value: 100000 },
   { label: "200,000", value: 200000 },
   { label: "300,000", value: 300000 },
@@ -64,3 +72,18 @@ export const PRICE_OPTIONS = [
   { label: "900,000", value: 900000 },
   { label: "1,000,000", value: 1000000 },
 ];
+
+export const PRICE_OPTIONS_RENT = [
+  { label: "100", value: 100 },
+  { label: "200", value: 200 },
+  { label: "300", value: 300 },
+  { label: "400", value: 400 },
+  { label: "500", value: 500 },
+  { label: "600", value: 600 },
+  { label: "700", value: 700 },
+  { label: "800", value: 800 },
+  { label: "900", value: 900 },
+  { label: "1000", value: 1000 },
+];
+
+export const USER_ROLES = ["user", "admin"];

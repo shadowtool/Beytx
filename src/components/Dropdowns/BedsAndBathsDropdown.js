@@ -2,18 +2,17 @@ import React, { useState } from "react";
 import { useFormContext } from "react-hook-form";
 import { motion, AnimatePresence } from "framer-motion";
 import { DownIcon } from "@/imports/icons";
+import { useTranslations } from "next-intl";
 
 const BedsAndBathsDropdown = ({
   classes = {}, // Container, button, menu, section, heading, optionsContainer, option
-  placeholder = "Beds & Baths",
   menuPlacement = "bottom",
   bedOptions = [1, 2, 3, 4, 5, 6, 7],
   bathOptions = [1, 2, 3, 4, 5, 6, 7],
-  bedLabel = "Bedrooms",
-  bathLabel = "Bathrooms",
 }) => {
   const { register, setValue, watch } = useFormContext();
   const [isOpen, setIsOpen] = useState(false);
+  const translate = useTranslations("filterKeys");
 
   const beds = watch("beds");
   const baths = watch("baths");
@@ -34,8 +33,10 @@ const BedsAndBathsDropdown = ({
       >
         <span className={`${beds || baths ? "text-black" : "text-gray-400"}`}>
           {beds || baths
-            ? `${beds || "Any"} Beds, ${baths || "Any"} Baths`
-            : placeholder}
+            ? `${beds || translate("any")} ${translate("bedrooms")}, ${
+                baths || translate("any")
+              } ${translate("bathrooms")}`
+            : translate("bedsAndBaths")}
         </span>
         <motion.div
           animate={{ rotate: isOpen ? 180 : 0 }}
@@ -62,7 +63,7 @@ const BedsAndBathsDropdown = ({
                   classes.heading || ""
                 }`}
               >
-                {bedLabel}
+                {translate("bedrooms")}
               </h5>
               <div
                 className={`flex flex-wrap gap-2 ${
@@ -95,7 +96,7 @@ const BedsAndBathsDropdown = ({
                   classes.heading || ""
                 }`}
               >
-                {bathLabel}
+                {translate("bathrooms")}
               </h5>
               <div
                 className={`flex flex-wrap gap-2 ${

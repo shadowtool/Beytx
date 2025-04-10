@@ -8,11 +8,13 @@ import { AgentIcon, BathroomIcon, BedIcon, DownIcon } from "@/imports/icons";
 import PropertyImagesModal from "../Modals/PropertyImagesModal";
 import MapPicker from "../Misc/MapPicker";
 import { AreaIcon, LocationIcon } from "@/imports/images";
+import { useTranslations } from "next-intl";
+import SimilarProperties from "./SimilarProperties";
 
 const PropertyDetailsDesktop = ({ loading, propertyData }) => {
+  const t = useTranslations("propertyDetails");
   const [openImagesModal, setOpenImagesModal] = useState(false);
   const [isDescriptionExpanded, setIsDescriptionExpanded] = useState(false);
-
   const [height, setHeight] = useState(0);
   const contentRef = useRef(null);
 
@@ -30,19 +32,18 @@ const PropertyDetailsDesktop = ({ loading, propertyData }) => {
         </div>
       ) : (
         <>
-          {/* Property Details Page */}
           <div className="p-0 md:px-12 w-full md:py-8">
-            {/* User Actions */}
             <div className="hidden md:flex justify-end gap-6 w-full px-4">
               {USER_ACTIONS.map((el, idx) => (
                 <div key={idx} className="flex gap-2 items-center">
                   {el.icon}
-                  <p className="text-green-600">{el.label}</p>
+                  <p className="text-green-600">
+                    {t(`${el.label.toLowerCase()}`)}
+                  </p>
                 </div>
               ))}
             </div>
 
-            {/* Property Images */}
             <div className="hidden md:flex flex-col md:flex-row gap-6 mt-8">
               <div className="grow w-full relative">
                 <Image
@@ -50,7 +51,7 @@ const PropertyDetailsDesktop = ({ loading, propertyData }) => {
                     propertyData?.images?.[0] ||
                     "https://images.pexels.com/photos/28216688/pexels-photo-28216688/free-photo-of-autumn-camping.png"
                   }
-                  alt="Property"
+                  alt={"property-image-0"}
                   className="h-full w-full object-cover rounded-lg max-h-[500px]"
                   onClick={() => setOpenImagesModal(true)}
                   height={500}
@@ -65,7 +66,7 @@ const PropertyDetailsDesktop = ({ loading, propertyData }) => {
                       img ||
                       "https://images.pexels.com/photos/28216688/pexels-photo-28216688/free-photo-of-autumn-camping.png"
                     }
-                    alt="Property"
+                    alt={"property-image-2"}
                     className="h-full w-full grow object-cover rounded-lg max-h-[238px]"
                     onClick={() => setOpenImagesModal(true)}
                     height={500}
@@ -76,52 +77,57 @@ const PropertyDetailsDesktop = ({ loading, propertyData }) => {
             </div>
           </div>
 
-          {/* Property Details & Description */}
           <div className="flex flex-col lg-xl:flex-row gap-6 mt-8 px-4 md:px-12 mb-24">
             <div className="w-full grow">
               <div
-                className={`p-6 bg-white border border-solid border-gray-200   rounded-lg shadow-lg ${
+                className={`p-6 bg-white border border-solid border-gray-200 rounded-lg shadow-lg ${
                   isDescriptionExpanded ? "pb-24" : "pb-6"
                 }`}
               >
-                {/* Price & Features */}
                 <div className="flex flex-col md:flex-row items-start md:items-end justify-between mb-4">
                   <div className="flex flex-col gap-1 items-start">
-                    <h4 className="text-gray-800 text-left">
-                      {propertyData?.price} KWD / year
-                    </h4>
-                    <p className="text-gray-500      flex items-center mb-2 mt-1 ">
+                    <h3 className="text-gray-800 text-left font-semibold">
+                      {t("pricePerYear", {
+                        price: propertyData?.price,
+                      })}{" "}
+                    </h3>
+                    <p className="text-gray-500 flex items-center mb-2 mt-1 ">
                       <Image
                         src={LocationIcon}
-                        alt="location-icon"
+                        alt={t("locationIconAlt")}
                         className="h-5 w-auto object-contain"
                       />
                       {propertyData?.location?.city}
                     </p>
                   </div>
                   <div className="flex gap-6 items-end mt-4 text-gray-600">
-                    <div className="flex flex-col gap-1 items-center   md: ">
+                    <div className="flex flex-col gap-1 items-center">
                       <BedIcon color="#aaa" size={21} />
-                      {propertyData?.bedrooms} Bedrooms
+                      {t("bedrooms", {
+                        count: propertyData?.bedrooms,
+                      })}
                     </div>
                     <div className="h-8 w-[1.5px] bg-[#aaa]"></div>
-                    <div className="flex flex-col gap-1 items-center   md: ">
+                    <div className="flex flex-col gap-1 items-center">
                       <BathroomIcon color="#aaa" size={21} />
-                      {propertyData?.bathrooms} Bathrooms
+                      {t("bathrooms", {
+                        count: propertyData?.bathrooms,
+                      })}{" "}
                     </div>
                     <div className="h-8 w-[1.5px] bg-[#aaa]"></div>
-                    <div className="flex flex-col gap-1 items-center   md: ">
+                    <div className="flex flex-col gap-1 items-center">
                       <Image
                         src={AreaIcon}
-                        alt="area-icon"
+                        alt={t("areaIconAlt")}
                         className="h-5 w-auto object-contain"
                       />
-                      {propertyData?.size} Sq. Ft.
+                      {t("area", {
+                        size: propertyData?.size,
+                      })}
                     </div>
                   </div>
                 </div>
 
-                {/* Description with Expand/Collapse Logic */}
                 <div className="relative my-20">
                   <motion.div
                     initial={{ height: 250 }}
@@ -145,39 +151,42 @@ const PropertyDetailsDesktop = ({ loading, propertyData }) => {
                     }`}
                   >
                     <button
-                      className="flex items-center gap-3     "
+                      className="flex items-center gap-3"
                       onClick={() =>
                         setIsDescriptionExpanded(!isDescriptionExpanded)
                       }
                     >
                       {isDescriptionExpanded
-                        ? "See Less Details"
-                        : "See More Details"}
+                        ? t("seeLessDetails")
+                        : t("seeMoreDetails")}
                       <DownIcon size={21} color="#000" />
                     </button>
                   </div>
                 </div>
 
-                <div className="border-t border-solid border-gray-300 py-6">
-                  <h2 className="font-medium"> Amenities</h2>
-                  <div className="mt-4 flex flex-col gap-2">
-                    {propertyData?.amenities?.map((amenity, index) => (
-                      <div key={index} className="flex items-center gap-2">
-                        <div className="w-2 h-2 bg-green-600 rounded-full" />
-                        <span className="text-gray-700">{amenity}</span>
-                      </div>
-                    ))}
+                {propertyData?.amenities?.length > 0 && (
+                  <div className="border-t border-solid border-gray-300 py-6">
+                    <h2 className="font-medium">{t("amenities")}</h2>
+                    <div className="mt-4 flex flex-col gap-2">
+                      {propertyData?.amenities.map((amenity, index) => (
+                        <div key={index} className="flex items-center gap-2">
+                          <div className="w-2 h-2 bg-green-600 rounded-full" />
+                          <span className="text-gray-700">{amenity}</span>
+                        </div>
+                      ))}
+                    </div>
                   </div>
-                </div>
+                )}
 
-                <div className="my-12 ">
-                  <h2 className="     mb-4">Location</h2>
+                <div className="my-12">
+                  <h2 className="mb-4">{t("location")}</h2>
                   <MapPicker location={propertyData?.location} isReadable />
                 </div>
+
+                <SimilarProperties propertyData={propertyData} />
               </div>
             </div>
 
-            {/* Contact & Actions Section */}
             <div className="lg-xl:min-w-96 lg-xl:max-w-96 h-fit">
               <div className="bg-green-100 px-4 py-12 rounded-md flex flex-col items-center justify-center">
                 <div className="flex flex-col items-center justify-center gap-3 mt-4">
@@ -193,28 +202,13 @@ const PropertyDetailsDesktop = ({ loading, propertyData }) => {
                   />
                   <div className="h-fit w-fit py-1 px-4 bg-green-600 flex items-center justify-center gap-2 text-white rounded-md">
                     <AgentIcon size={24} color="#fff" />
-                    <p className="font-semibold text-xs">New Agent</p>
+                    <p className="font-semibold text-xs">{t("newAgent")}</p>
                   </div>
                   <div className="flex gap-1 flex-col">
-                    <h5 className="  text-black  ">
-                      {propertyData?.user?.name}
-                    </h5>
+                    <h5 className="text-black">{propertyData?.user?.name}</h5>
                   </div>
                 </div>
-                <div className="h-fit w-full my-2 min-w-80 max-w-80">
-                  <div className="flex items-center my-3">
-                    <p className="min-w-32 text-[13px]">Response Time</p>
-                    <h6 className="">within 5 minutes</h6>
-                  </div>
-                  <div className="flex items-center my-3">
-                    <p className="min-w-32 text-[13px]">Closed Deals</p>
-                    <h6 className="">3</h6>
-                  </div>
-                  <div className="flex items-center my-3">
-                    <p className="min-w-32 text-[13px]">Languages </p>
-                    <h6 className="">English</h6>
-                  </div>
-                </div>
+
                 <div className="flex items-center flex-col justify-between gap-3 mt-6 min-w-80 max-w-80">
                   <div className="flex gap-3 w-full">
                     {CREATOR_ACTIONS?.slice(0, 2).map((el, idx) => (
@@ -223,7 +217,7 @@ const PropertyDetailsDesktop = ({ loading, propertyData }) => {
                         className="h-fit w-full px-4 rounded-md py-3 flex items-center justify-center gap-3 text-[13px] font-semibold text-white bg-green-600"
                       >
                         {el.icon}
-                        {el.label}
+                        {t(`${el.value}`)}
                       </button>
                     ))}
                   </div>
@@ -231,7 +225,7 @@ const PropertyDetailsDesktop = ({ loading, propertyData }) => {
                     {CREATOR_ACTIONS?.[2] && (
                       <button className="w-full px-4 rounded-md py-3 flex items-center justify-center gap-3 text-[13px] font-semibold text-white bg-green-600">
                         {CREATOR_ACTIONS[2].icon}
-                        {CREATOR_ACTIONS[2].label}
+                        {t(`${CREATOR_ACTIONS[2].value}`)}
                       </button>
                     )}
                   </div>
@@ -240,7 +234,6 @@ const PropertyDetailsDesktop = ({ loading, propertyData }) => {
             </div>
           </div>
 
-          {/* Modals */}
           <PropertyImagesModal
             open={openImagesModal}
             handleClose={() => setOpenImagesModal(false)}

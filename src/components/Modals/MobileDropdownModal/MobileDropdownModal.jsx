@@ -1,6 +1,7 @@
 import { CloseIcon } from "@/imports/icons";
 import React from "react";
 import ModalWrapper from "../ModalWrapper";
+import { useTranslations } from "next-intl";
 
 const MobileDropdownModal = ({
   open,
@@ -9,10 +10,12 @@ const MobileDropdownModal = ({
   filterBody,
   refetchListings,
 }) => {
+  const translate = useTranslations("filterKeys");
+
   return (
     <ModalWrapper open={open} handleClose={handleClose}>
       <div
-        className="h-screen w-screen bg-black/25 flex items-end justify-end"
+        className="fixed inset-0 bg-black/25 flex items-end justify-center z-50"
         onClick={handleClose}
       >
         <div
@@ -20,7 +23,7 @@ const MobileDropdownModal = ({
           onClick={(e) => e.stopPropagation()}
         >
           <div className="flex items-center justify-between h-14 border-b border-solid border-gray-200 px-6">
-            <h5 className="    ">{filterTitle}</h5>
+            <h5 className="">{filterTitle}</h5>
             <CloseIcon size={28} color="#000" onClick={() => handleClose()} />
           </div>
 
@@ -28,7 +31,7 @@ const MobileDropdownModal = ({
 
           <div className="h-16 w-full flex items-center justify-end px-6 border-t border-solid border-gray-300">
             <button
-              className="h-fit w-fit px-6 py-2 rounded-md bg-green-600      text-white"
+              className="h-fit w-fit px-6 py-2 rounded-md bg-green-600 text-white"
               onClick={() => {
                 setTimeout(() => {
                   refetchListings();
@@ -36,7 +39,7 @@ const MobileDropdownModal = ({
                 }, 100);
               }}
             >
-              Apply
+              {translate("apply")}
             </button>
           </div>
         </div>

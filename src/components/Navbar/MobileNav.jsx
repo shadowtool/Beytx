@@ -11,7 +11,7 @@ const MobileNav = () => {
 
   const { locale } = useParams();
 
-  const translate = useTranslations("Header");
+  const translate = useTranslations("header");
 
   const router = useRouter();
 
@@ -38,7 +38,7 @@ const MobileNav = () => {
 
       {/* Mobile Menu */}
       <nav
-        className={`absolute top-20 w-full bg-white shadow-lg rounded-b-lg p-6 px-8 z-[99] transform transition-all duration-300 ease-in-out ${
+        className={`absolute top-20 w-full bg-white shadow-lg rounded-b-lg p-6 px-8 z-[9] transform transition-all duration-300 ease-in-out ${
           isOpen ? "left-0 opacity-100" : "-left-[100%] opacity-0"
         }`}
       >
@@ -46,6 +46,11 @@ const MobileNav = () => {
           <li>
             <Link href={`/${locale}`} onClick={() => setIsOpen(false)}>
               {translate("home")}
+            </Link>
+          </li>
+          <li>
+            <Link href={`/${locale}/admin`} onClick={() => setIsOpen(false)}>
+              {translate("adminPanel")}
             </Link>
           </li>
           <li>
@@ -59,6 +64,14 @@ const MobileNav = () => {
           <li>
             <Link href={`/${locale}/contact`} onClick={() => setIsOpen(false)}>
               {translate("contactUs")}
+            </Link>
+          </li>
+          <li>
+            <Link
+              href={`/${locale === "en" ? "ar" : "en"}`}
+              onClick={() => setIsOpen(false)}
+            >
+              {locale === "en" ? "تبديل إلى العربية" : "Switch to english"}
             </Link>
           </li>
           <li>

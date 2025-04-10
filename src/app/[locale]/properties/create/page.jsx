@@ -19,9 +19,9 @@ import GeneralDropdown from "@/components/Dropdowns/GeneralDropdown";
 import { PROPERTY_TYPES } from "@/constants/propertyTypes";
 
 export default function AddProperty() {
-  const translate = useTranslations("PropertyPage");
+  const translate = useTranslations("createPropertyPage");
 
-  const propertyTypeTranslations = useTranslations("PropertyTypes");
+  const propertyTypeTranslations = useTranslations("propertyTypes");
 
   const { data: session } = useSession();
 

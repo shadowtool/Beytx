@@ -30,12 +30,15 @@ import { CiBadgeDollar as PriceIcon } from "react-icons/ci";
 import { MdSupportAgent as AgentIcon } from "react-icons/md";
 import { FaArrowLeftLong as LongArrowIcon } from "react-icons/fa6";
 import { MdOutlineHomeWork as MyListingIcon } from "react-icons/md";
+import { FaRegCheckCircle as TickIcon } from "react-icons/fa";
+import { AiOutlineCloseCircle as CloseIconCircle } from "react-icons/ai";
 
 export {
   HeartIcon,
   ShareIcon,
   ReportIcon,
   CloseIcon,
+  CloseIconCircle,
   PreviousIcon,
   NextIcon,
   CallIcon,
@@ -64,4 +67,5 @@ export {
   AgentIcon,
   LongArrowIcon,
   MyListingIcon,
+  TickIcon,
 };

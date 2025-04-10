@@ -1,16 +1,26 @@
 "use client";
 import { useFormContext } from "react-hook-form";
-import { CloseIcon, SearchIcon } from "@/imports/icons";
+import { CloseIcon } from "@/imports/icons";
 import { PROPERTY_TYPES } from "@/constants/propertyTypes";
-import { useState } from "react";
+import {
+  PRICE_OPTIONS,
+  PRICE_OPTIONS_RENT,
+  PRICE_OPTIONS_SALE,
+  SORT_OPTIONS,
+} from "@/constants/constants";
+import { useTranslations } from "next-intl";
 import SearchableDropdown from "../Dropdowns/SearchableDropdown";
 import GeneralDropdown from "../Dropdowns/GeneralDropdown";
-import { PRICE_OPTIONS, SORT_OPTIONS } from "@/constants/constants";
 import BedsAndBathsDropdown from "../Dropdowns/BedsAndBathsDropdown";
 import PriceRangeDropdown from "../Dropdowns/PriceRangeDropdown";
+import { useMemo } from "react";
 
 const PropertyFilter = ({ onReset, locationsData }) => {
   const { control, watch } = useFormContext();
+
+  const translateFilters = useTranslations("filterKeys");
+  const translatePropertyTypes = useTranslations("propertyTypes");
+  const translateSortOptions = useTranslations("sortOptions");
 
   const hasActiveFilters = Object.values(watch()).some((value) => {
     if (value === "" || value === null || value === undefined) return false;
@@ -19,28 +29,38 @@ const PropertyFilter = ({ onReset, locationsData }) => {
     return true;
   });
 
+  const statusFilterValue = watch("status");
+
   const priceFrom = watch("price_from");
 
-  const priceToOptions = PRICE_OPTIONS.filter((option) => {
-    if (!priceFrom) return true;
-    return option.value > priceFrom;
-  });
+  const priceToOptions = useMemo(() => {
+    const priceOptionsToUse =
+      statusFilterValue === "sale" ? PRICE_OPTIONS_SALE : PRICE_OPTIONS_RENT;
+
+    const priceToOptions = priceOptionsToUse?.filter((option) => {
+      if (!priceFrom) return true;
+      return option.value > priceFrom;
+    });
+
+    return priceToOptions;
+  }, [statusFilterValue, PRICE_OPTIONS_RENT, PRICE_OPTIONS_SALE]);
 
   return (
-    <div className="sticky top-0 z-50 w-screen bg-white border-b border-gray-200 py-6 px-12 shadow-md">
+    <div className="sticky top-0 z-[8] w-screen bg-white border-b border-gray-200 py-6 px-12 shadow-md">
       <div className="w-full h-fit items-center flex flex-col xl:flex-row gap-6">
         <div className="w-full flex gap-6">
           <SearchableDropdown
             name="location"
             control={control}
-            options={locationsData?.map((el) => {
-              return { label: el?.city, value: el?.city };
-            })}
+            options={locationsData?.map((el) => ({
+              label: el?.city,
+              value: el?.city,
+            }))}
             classes={{
               dropdown: "w-full grow !h-full",
-              button: "!text-gray-700 !  !h-full",
+              button: "!text-gray-700 !h-full",
             }}
-            placeholder="Filter by location ..."
+            placeholder={translateFilters("locationPlaceholder")}
           />
           <div className="flex max-w-fit gap-4 xl:hidden">
             {hasActiveFilters && (
@@ -49,26 +69,29 @@ const PropertyFilter = ({ onReset, locationsData }) => {
                 className="px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700 transition flex items-center gap-2"
               >
                 <CloseIcon size={21} color="#fff" />
-                Reset
+                {translateFilters("reset")}
               </button>
             )}
           </div>
         </div>
         <div className="flex gap-4 w-full xl:max-w-fit grow items-center">
           <GeneralDropdown
-            name={"status"}
-            placeholder={"Status"}
+            name="status"
+            placeholder={translateFilters("status")}
             options={[
-              { label: "Sale", value: "sale" },
-              { label: "Rent", value: "rent" },
+              { label: translateFilters("sale"), value: "sale" },
+              { label: translateFilters("rent"), value: "rent" },
             ]}
             classes={{ dropdown: "w-full grow xl:!min-w-36 xl:!max-w-36" }}
             showSelectedEffect={true}
           />
           <GeneralDropdown
-            name={"type"}
-            placeholder={"Type"}
-            options={PROPERTY_TYPES.map((el) => ({ label: el, value: el }))}
+            name="type"
+            placeholder={translateFilters("type")}
+            options={PROPERTY_TYPES.map((type) => ({
+              label: translatePropertyTypes(type.toLowerCase()),
+              value: type,
+            }))}
             classes={{ dropdown: "w-full grow xl:!min-w-36 xl:!max-w-36" }}
             isMulti
             showSelectedEffect={true}
@@ -76,22 +99,31 @@ const PropertyFilter = ({ onReset, locationsData }) => {
           <BedsAndBathsDropdown
             classes={{ dropdown: "w-full grow xl:!min-w-48" }}
           />
-          <PriceRangeDropdown
-            name="price"
-            fromOptions={PRICE_OPTIONS}
-            toOptions={priceToOptions}
-            placeholder="Select Price Range"
-            classes={{ dropdown: "xl:!min-w-44" }}
-            customOnChange={(value) => console.log("Changed:", value)}
-          />
+          {statusFilterValue?.length > 0 && (
+            <PriceRangeDropdown
+              name="price"
+              fromOptions={
+                statusFilterValue === "sale"
+                  ? PRICE_OPTIONS_SALE
+                  : PRICE_OPTIONS_RENT
+              }
+              toOptions={priceToOptions}
+              placeholder={translateFilters("priceRange")}
+              classes={{ dropdown: "xl:!min-w-44" }}
+              customOnChange={(value) => console.log("Changed:", value)}
+            />
+          )}
           <GeneralDropdown
-            name={"sortBy"}
-            placeholder={"Sort by : "}
+            name="sortBy"
+            placeholder={translateFilters("sortBy")}
             classes={{
               dropdown: "!min-w-48 !max-w-48 !h-full",
-              button: "!text-gray-700 !  !h-full",
+              button: "!text-gray-700 !h-full",
             }}
-            options={SORT_OPTIONS}
+            options={SORT_OPTIONS.map((option) => ({
+              ...option,
+              label: translateSortOptions(option.value),
+            }))}
             showSelectedEffect={true}
           />
         </div>
@@ -102,12 +134,11 @@ const PropertyFilter = ({ onReset, locationsData }) => {
               className="px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700 transition flex items-center gap-2"
             >
               <CloseIcon size={21} color="#fff" />
-              Reset
+              {translateFilters("reset")}
             </button>
           )}
         </div>
       </div>
-      {/* Filter Controls */}
     </div>
   );
 };

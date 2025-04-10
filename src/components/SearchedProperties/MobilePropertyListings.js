@@ -13,6 +13,7 @@ import PriceFilterModal from "../Modals/MobileDropdownModal/DropdownModals/Price
 import MobileDropdownModal from "../Modals/MobileDropdownModal/MobileDropdownModal";
 import SortByModal from "../Modals/MobileDropdownModal/DropdownModals/SortByModal";
 import MobileSearchModal from "../Modals/MobileSearchModal";
+import { useTranslations } from "next-intl";
 
 const itemsPerPage = 9;
 
@@ -33,6 +34,7 @@ const MobilePropertyListings = ({
   loadMoreRef,
   totalCount,
 }) => {
+  const translate = useTranslations("propertyListings");
   const [openFilters, setOpenFilters] = useState(false);
   const [openLocationSearch, setOpenLocationSearch] = useState(false);
   const [openDropdownFilterModal, setOpenDropdownFilterModal] = useState(false);
@@ -43,21 +45,20 @@ const MobilePropertyListings = ({
   const formValues = useWatch({ control });
 
   const filterModalOptions = [
-    
     {
-      title: "Status",
+      title: translate("status"),
       id: "propertyStatus",
       content: <ListingTypeFilterModal />,
     },
     {
-      title: "Type",
+      title: translate("type"),
       id: "type",
       content: <PropertyTypeFilterModal />,
     },
-    { title: "Beds", id: "beds", content: <BedsFilterModal /> },
-    { title: "Bath", id: "baths", content: <BathsFilterModal /> },
-    { title: "Price", id: "price", content: <PriceFilterModal /> },
-    { title: "Sort By", id: "sortBy", content: <SortByModal /> }
+    { title: translate("beds"), id: "beds", content: <BedsFilterModal /> },
+    { title: translate("bath"), id: "baths", content: <BathsFilterModal /> },
+    { title: translate("price"), id: "price", content: <PriceFilterModal /> },
+    { title: translate("sortBy"), id: "sortBy", content: <SortByModal /> },
   ];
 
   const filterOptions = useMemo(() => {
@@ -88,7 +89,7 @@ const MobilePropertyListings = ({
             onClick={() => setOpenLocationSearch(true)}
           >
             <SearchIcon size={21} className="text-gray-600" />
-            <p>Search by city, community or state</p>
+            <p>{translate("searchPlaceholder")}</p>
           </div>
         </div>
         <div className="relative px-4 pr-5">
@@ -136,7 +137,7 @@ const MobilePropertyListings = ({
         <div className="w-full">
           {isFetchingData ? (
             <div className="flex flex-col items-center mt-8">
-              <Loader customMessage={"Loading properties"} />
+              <Loader customMessage={translate("loadingMessage")} />
             </div>
           ) : (
             <div className="flex flex-col gap-4">
@@ -150,7 +151,7 @@ const MobilePropertyListings = ({
               <>
                 <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-green-600 mb-4"></div>
                 <div className="text-green-600  ">
-                  Loading more properties...
+                  {translate("loadingMore")}
                 </div>
               </>
             )}

@@ -1,6 +1,8 @@
 import { NextResponse } from "next/server";
 import dbConnect from "@/lib/mongodb";
 import Property from "@/models/Property";
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/lib/authOptions";
 
 export async function GET(req, { params }) {
   try {
@@ -37,6 +39,14 @@ export async function GET(req, { params }) {
     propertyObj.user = propertyObj.userId;
     delete propertyObj.userId;
 
+    const similarProperties = await Property.find({
+      _id: { $ne: id },
+      "location.city": property.location.city,
+      archived: { $ne: true },
+    }).limit(5);
+
+    propertyObj.similarProperties = similarProperties;
+
     return NextResponse.json(propertyObj, { status: 200 });
   } catch (error) {
     console.error("Error fetching property:", error);
@@ -48,7 +58,13 @@ export async function PUT(req, { params }) {
   try {
     await dbConnect();
 
-    const { id } = await params;
+    const session = await getServerSession(authOptions);
+
+    if (!session) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
+
+    const { id } = params;
     const updates = await req.json();
 
     if (!id) {
@@ -58,56 +74,33 @@ export async function PUT(req, { params }) {
       );
     }
 
-    const updatedProperty = await Property.findByIdAndUpdate(id, updates, {
-      new: true,
-    });
+    const property = await Property.findById(id);
 
-    if (!updatedProperty) {
+    if (!property) {
       return NextResponse.json(
         { error: "Property not found" },
         { status: 404 }
       );
     }
+
+    const isOwner = property.userId?.toString() === session.user._id;
+    const isAdmin = session.user.role === "admin";
+
+    if (!isAdmin && !isOwner) {
+      return NextResponse.json(
+        { error: "You are not authorized to update this property" },
+        { status: 403 }
+      );
+    }
+
+    const updatedProperty = await Property.findByIdAndUpdate(id, updates, {
+      new: true,
+      runValidators: true,
+    });
 
     return NextResponse.json(updatedProperty, { status: 200 });
   } catch (error) {
     console.error("Error updating property:", error);
-    return NextResponse.json({ error: "Server error" }, { status: 500 });
-  }
-}
-
-export async function DELETE(req, { params }) {
-  try {
-    await dbConnect();
-
-    const { id } = params; // No need for 'await' here, params is already an object
-
-    if (!id) {
-      return NextResponse.json(
-        { error: "Property ID is required" },
-        { status: 400 }
-      );
-    }
-
-    const updatedProperty = await Property.findByIdAndUpdate(
-      id,
-      { archived: true },
-      { new: true, runValidators: true }
-    );
-
-    if (!updatedProperty) {
-      return NextResponse.json(
-        { error: "Property not found" },
-        { status: 404 }
-      );
-    }
-
-    return NextResponse.json(
-      { message: "Property archived successfully" },
-      { status: 200 }
-    );
-  } catch (error) {
-    console.error("Error archiving property:", error);
     return NextResponse.json({ error: "Server error" }, { status: 500 });
   }
 }

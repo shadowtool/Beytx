@@ -25,7 +25,7 @@ const PropertyListCard = ({ property, cardType, selectedView }) => {
 
   const queryClient = useQueryClient();
 
-  const cardsTranslations = useTranslations("Cards");
+  const cardsTranslations = useTranslations("cards");
 
   const { mutate } = useMutation({
     mutationFn: (propertyId) => deletePropertyMutation(propertyId),

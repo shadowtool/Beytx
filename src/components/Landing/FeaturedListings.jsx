@@ -16,37 +16,41 @@ import { useParams, useRouter } from "next/navigation";
 
 const FeaturedListings = () => {
   const [activeTab, setActiveTab] = useState("Villa");
-
   const [selectedView, setSelectedView] = useState("grid");
 
   const { isLoading, data: propertyData } = useQuery({
-    queryKey: [ROUTES.GET_PROPERTIES],
-    queryFn: () => fetchPropertyListings(1, 9, { featured: "true" }),
+    queryKey: [ROUTES.GET_PROPERTIES, activeTab],
+    queryFn: () =>
+      fetchPropertyListings(1, 9, {
+        featured: "true",
+        type: JSON.stringify([activeTab]),
+      }),
   });
 
   const { locale } = useParams();
-
   const router = useRouter();
-
-  const translate = useTranslations("PropertyTypes");
+  const translatePropertyTypes = useTranslations("propertyTypes");
+  const translateFeaturedListings = useTranslations("featuredListings");
 
   return (
     <section className="p-6 md:px-12 md:py-16">
-      <h3 className="my-8   md:    ">Discover Properties Around you</h3>
+      <h3 className="my-8">
+        {translateFeaturedListings("discoverProperties")}
+      </h3>
       <div className="w-full flex flex-col items-center">
         <div className="w-full overflow-x-auto hide-scrollbar whitespace-nowrap scrollbar-hide">
           <div className="flex gap-6 justify-start border-b border-gray-300 relative">
             {PROPERTY_TYPES.map((tab) => (
               <button
                 key={tab}
-                className={`pb-2 transition-all min-w-[100px] max-w-[100px]     ${
+                className={`pb-2 transition-all min-w-[100px] max-w-[100px] ${
                   activeTab === tab
                     ? "text-emerald-600"
                     : "text-gray-500 hover:text-emerald-500"
                 }`}
                 onClick={() => setActiveTab(tab)}
               >
-                {translate(`${tab?.toLowerCase()}`)}
+                {translatePropertyTypes(`${tab?.toLowerCase()}`)}
               </button>
             ))}
             <div
@@ -68,11 +72,7 @@ const FeaturedListings = () => {
                 locale === "ar" ? "mr-auto" : "ml-auto"
               }`}
               onClick={() => {
-                if (selectedView === "list") {
-                  setSelectedView("grid");
-                } else {
-                  setSelectedView("list");
-                }
+                setSelectedView(selectedView === "list" ? "grid" : "list");
               }}
             >
               <ListIcon size={21} color="#000" />
@@ -82,7 +82,9 @@ const FeaturedListings = () => {
       </div>
       {isLoading ? (
         <div className="h-64 w-full flex items-center justify-center">
-          <Loader customMessage={"Fetching properties"} />
+          <Loader
+            customMessage={translateFeaturedListings("fetchingProperties")}
+          />
         </div>
       ) : (
         <div
@@ -101,10 +103,10 @@ const FeaturedListings = () => {
       )}
       <div className="w-full flex mt-12 mb-8 items-center justify-center">
         <button
-          className="py-4 rounded-md px-8 w-fit h-fit border-2  border-solid border-emerald-600 bg-emerald-500 backdrop-blur-sm text-white   "
+          className="py-4 rounded-md px-8 w-fit h-fit border-2 border-solid border-emerald-600 bg-emerald-500 backdrop-blur-sm text-white"
           onClick={() => router.push(`/${locale}/properties`)}
         >
-          All Properties
+          {translateFeaturedListings("allProperties")}
         </button>
       </div>
     </section>

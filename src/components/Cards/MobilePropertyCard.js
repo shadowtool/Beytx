@@ -23,17 +23,12 @@ import Image from "next/image";
 
 const MobilePropertyCard = ({ property, cardType }) => {
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
-
   const [isLiked, setIsLiked] = useState(false);
-
   const { locale } = useParams();
-
   const router = useRouter();
-
   const queryClient = useQueryClient();
-
-  const cardsTranslations = useTranslations("Cards");
-
+  const cardsTranslations = useTranslations("cards");
+  const translatePropertyTypes = useTranslations("propertyTypes");
   const { data: session } = useSession();
 
   const { mutate: deleteProperty } = useMutation({
@@ -42,7 +37,7 @@ const MobilePropertyCard = ({ property, cardType }) => {
       queryClient.invalidateQueries([ROUTES.GET_PROPERTIES]);
     },
     onError: (error) => {
-      console.error("Error archiving property:", error);
+      console.error(cardsTranslations("errorArchivingProperty"), error);
     },
   });
 
@@ -58,12 +53,10 @@ const MobilePropertyCard = ({ property, cardType }) => {
 
   const handleSwipe = (offsetX) => {
     if (offsetX > 100) {
-      // Swipe Right -> Previous Image
       setSelectedImageIndex((prevIndex) =>
         prevIndex === 0 ? images.length - 1 : prevIndex - 1
       );
     } else if (offsetX < -100) {
-      // Swipe Left -> Next Image
       setSelectedImageIndex((prevIndex) =>
         prevIndex === images.length - 1 ? 0 : prevIndex + 1
       );
@@ -72,14 +65,10 @@ const MobilePropertyCard = ({ property, cardType }) => {
 
   const handleSwipeRelease = (offsetX, velocityX) => {
     if (offsetX > 200 || velocityX > 0.5) {
-      // Increase threshold to allow more swipe before releasing
-      // Swipe Right -> Previous Image
       setSelectedImageIndex((prevIndex) =>
         prevIndex === 0 ? images.length - 1 : prevIndex - 1
       );
     } else if (offsetX < -200 || velocityX < -0.5) {
-      // Increase threshold for left swipe
-      // Swipe Left -> Next Image
       setSelectedImageIndex((prevIndex) =>
         prevIndex === images.length - 1 ? 0 : prevIndex + 1
       );
@@ -107,32 +96,32 @@ const MobilePropertyCard = ({ property, cardType }) => {
           className="flex w-full h-full"
           drag="x"
           dragConstraints={{ left: 0, right: 0 }}
-          dragElastic={0.5} // Increase elasticity to allow more of the next image to be previewed
+          dragElastic={0.5}
           onDragStart={() => setDragging(true)}
           onDragEnd={(event, info) => {
             setDragging(false);
             handleSwipeRelease(info.offset.x, info.velocity.x);
           }}
           style={{
-            display: "flex", // Ensure images are side-by-side
+            display: "flex",
           }}
         >
           {images.map((image, index) => (
             <motion.img
               key={index}
               src={image}
-              alt="Property"
+              alt={`property-image-${index}`}
               className="w-full h-52 object-cover flex-shrink-0"
               style={{
-                flex: "0 0 100%", // Each image takes up 100% of the container width
+                flex: "0 0 100%",
               }}
               animate={{
-                x: `-${selectedImageIndex * 100}%`, // Move the selected image to the center
+                x: `-${selectedImageIndex * 100}%`,
               }}
               transition={{
-                type: "spring", // Use spring for a natural glide effect
-                stiffness: 100, // Lower stiffness for smoother movement
-                damping: 20, // Higher damping for slower glide
+                type: "spring",
+                stiffness: 100,
+                damping: 20,
               }}
             />
           ))}
@@ -171,13 +160,15 @@ const MobilePropertyCard = ({ property, cardType }) => {
         }}
       >
         <div className="flex-1">
-          <p className="text-zinc-600">{property?.type}</p>
+          <p className="text-zinc-600">
+            {translatePropertyTypes(property?.type?.toLowerCase())}
+          </p>
           <h4 className="text-green-700 mt-1 mb-2 ">{property?.price} KWD</h4>
           <div className="mt-2 flex flex-col items-start text-balance">
             <p className="text-gray-500 flex items-center mb-2 mt-1 ">
               <Image
                 src={LocationIcon}
-                alt="location-icon"
+                alt={"location-icon"}
                 className="h-5 w-auto object-contain"
               />
               {property?.location?.city}
@@ -196,10 +187,10 @@ const MobilePropertyCard = ({ property, cardType }) => {
               <p className="flex items-center  ">
                 <Image
                   src={AreaIcon}
-                  alt="area-icon"
+                  alt={"area-icon"}
                   className="h-5 w-auto object-contain"
                 />
-                {property?.size} Sq. ft.
+                {property?.size} {cardsTranslations("areaNotation")}
               </p>
             </div>
           </div>
@@ -243,16 +234,6 @@ const MobilePropertyCard = ({ property, cardType }) => {
                 <button className="text-white px-0 pl-2 md:px-4 py-2 rounded-md flex items-center bg-green-600 backdrop-blur   md:     w-full grow">
                   <WhatsappIcon size={18} color="#fff" className="mr-2" />
                   {cardsTranslations("whatsapp")}
-                </button>
-              </div>
-              <div className="flex gap-1 w-full">
-                <button className="text-white px-0 pl-2 md:px-4 py-2 rounded-md flex items-center bg-green-600 backdrop-blur   md:     w-full grow">
-                  <MailIcon size={18} color="#fff" className="mr-2" />
-                  {cardsTranslations("email")}
-                </button>
-                <button className="text-white px-0 pl-2 md:px-4 py-2 rounded-md flex items-center bg-green-600 backdrop-blur   md:     w-full grow">
-                  <ShareIcon size={18} color="#fff" className="mr-2" />
-                  {cardsTranslations("share")}
                 </button>
               </div>
             </>

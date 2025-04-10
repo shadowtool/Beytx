@@ -1,11 +1,9 @@
 import GeneralDropdown from "@/components/Dropdowns/GeneralDropdown";
+import { useTranslations } from "next-intl";
 import React from "react";
-import { Controller, useFormContext, useWatch } from "react-hook-form";
 
 const PriceFilterModal = () => {
-  const { setValue, control } = useFormContext();
-
-  const formValues = useWatch({ control: control });
+  const translate = useTranslations("filterKeys");
 
   const priceOptions = Array.from({ length: 21 }, (_, i) => i * 100000)?.map(
     (el) => {
@@ -16,29 +14,18 @@ const PriceFilterModal = () => {
 
   return (
     <div className="w-full flex gap-4 pt-6 pb-32 px-6">
-      <Controller
+      <GeneralDropdown
         name={`price_from`}
-        control={control}
-        render={({ field }) => (
-          <GeneralDropdown
-            field={field}
-            placeholder={"From"}
-            options={priceOptions}
-            menuPlacement="bottom"
-          />
-        )}
+        placeholder={translate("from")}
+        options={priceOptions}
+        menuPlacement="bottom"
       />
-      <Controller
+
+      <GeneralDropdown
         name={`price_to`}
-        control={control}
-        render={({ field }) => (
-          <GeneralDropdown
-            field={field}
-            placeholder={"To"}
-            options={priceOptions}
-            menuPlacement="bottom"
-          />
-        )}
+        placeholder={translate("to")}
+        options={priceOptions}
+        menuPlacement="bottom"
       />
     </div>
   );

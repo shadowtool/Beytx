@@ -1,9 +1,12 @@
 import { PROPERTY_TYPES } from "@/constants/propertyTypes";
+import { useTranslations } from "next-intl";
 import React from "react";
 import { useFormContext, useWatch } from "react-hook-form";
 
 const PropertyTypeFilterModal = () => {
   const { setValue, control } = useFormContext();
+
+  const translate = useTranslations("propertyTypes");
 
   const formValues = useWatch({ control: control });
 
@@ -31,7 +34,7 @@ const PropertyTypeFilterModal = () => {
           onClick={() => handlePropertyTypeClick(el)}
           key={el}
         >
-          {el}
+          {translate(el?.toLowerCase())}
         </div>
       ))}
     </div>

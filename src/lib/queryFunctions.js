@@ -30,6 +30,25 @@ export const fetchPropertyListings = async (
   }
 };
 
+export const fetchPropertyListingsAdmin = async (
+  pageParam = 1,
+  itemsPerPage,
+  filters
+) => {
+  try {
+    const response = await axiosInstance.get(
+      `${ROUTES.GET_ALL_PROPERTIES_ADMIN}`,
+      {
+        params: { page: pageParam, limit: itemsPerPage, ...filters },
+      }
+    );
+    return response?.data;
+  } catch (error) {
+    console.error("Error fetching property listings:", error);
+    throw error;
+  }
+};
+
 export const fetchPropertiesOfLoggedUser = async (userId) => {
   try {
     const response = await axiosInstance.get(
@@ -76,5 +95,12 @@ export const fetchUserAccountStatus = async (email) => {
   const { data } = await axiosInstance.get(
     `${ROUTES.CHECK_USER_EXISTS}?email=${email}`
   );
+  return data;
+};
+
+export const fetchAllUsers = async (pageParam = 1, itemsPerPage) => {
+  const { data } = await axiosInstance.get(`${ROUTES.GET_ALL_USERS_ADMIN}`, {
+    params: { page: pageParam, limit: itemsPerPage },
+  });
   return data;
 };

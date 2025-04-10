@@ -10,13 +10,14 @@ import { ROUTES } from "@/constants/routes";
 import { fetchCities } from "@/lib/queryFunctions";
 import GeneralDropdown from "../Dropdowns/GeneralDropdown";
 import { PROPERTY_TYPES } from "@/constants/propertyTypes";
+import { useTranslations } from "next-intl";
 
 const Hero = () => {
   const [filterStatus, setFilterStatus] = useState("sale");
 
   const router = useRouter();
-
   const { locale } = useParams();
+  const translate = useTranslations("hero");
 
   const methods = useForm({
     defaultValues: {
@@ -68,8 +69,34 @@ const Hero = () => {
         <div className="hidden md:block h-full w-full bg-black/15  absolute top-0 left-0 z-[1]"></div>
 
         <div className="md:hidden h-full w-full flex flex-col items-center justify-center gap-6 p-6 py-10 bg-gradient-to-r from-emerald-600 via-emerald-500 to-emerald-500 z-[1]">
-          <h2 className="  leading-10   text-white">Find your property</h2>
-          <div className="w-full">
+          <h2 className="leading-10 text-white">
+            {translate("findYourProperty")}
+          </h2>
+
+          <div className="w-full max-w-sm flex items-center justify-center flex-col">
+            <div className="flex justify-center space-x-4 relative z-[3] mb-4 w-full">
+              <button
+                onClick={() => setFilterStatus("sale")}
+                className={`px-6 py-2 w-full border-none rounded-lg transition-all duration-300 shadow-lg ${
+                  filterStatus === "sale"
+                    ? "bg-emerald-600 text-white"
+                    : "bg-white hover:bg-gray-100 text-gray-700"
+                }`}
+              >
+                {translate("buy")}
+              </button>
+
+              <button
+                onClick={() => setFilterStatus("rent")}
+                className={`px-6 py-2 w-full border-none rounded-lg transition-all duration-300 shadow-lg ${
+                  filterStatus === "rent"
+                    ? "bg-emerald-600 text-white"
+                    : "bg-white hover:bg-gray-100 text-gray-700"
+                }`}
+              >
+                {translate("rent")}
+              </button>
+            </div>
             <div className="relative w-full bg-white flex gap-4 items-center justify-between rounded-md pl-3">
               <SearchableDropdown
                 name={"locationMobileInput"}
@@ -82,7 +109,7 @@ const Hero = () => {
                   button:
                     "!text-gray-700 !px-0 !h-full !border-none !rounded-l-xl focus-within:ring-0 focus-within:ring-transparent",
                 }}
-                placeholder="Search by location ..."
+                placeholder={translate("searchByLocation")}
               />
 
               <button
@@ -93,7 +120,7 @@ const Hero = () => {
                   )
                 }
               >
-                Search
+                {translate("search")}
               </button>
             </div>
           </div>
@@ -109,7 +136,7 @@ const Hero = () => {
                   : "bg-gray-300 text-gray-700 border-2 border-solid rounded-lg hover:border-emerald-500 transition-all duration-700 hover:bg-emerald-400 hover:text-white "
               }`}
             >
-              Buy
+              {translate("buy")}
             </button>
 
             <button
@@ -120,7 +147,7 @@ const Hero = () => {
                   : "bg-gray-300 text-gray-700 border-2 border-solid hover:border-emerald-500 transition-all duration-700 hover:bg-emerald-400 hover:text-white rounded-lg"
               }`}
             >
-              Rent
+              {translate("rent")}
             </button>
           </div>
 
@@ -132,7 +159,7 @@ const Hero = () => {
             <div className="flex h-fit items-center bg-white rounded-xl shadow-md w-full max-w-3xl mb-2">
               <GeneralDropdown
                 name={"type"}
-                placeholder={"Type"}
+                placeholder={translate("type")}
                 options={PROPERTY_TYPES?.map((el) => {
                   return { label: el, value: el };
                 })}
@@ -144,7 +171,7 @@ const Hero = () => {
 
               <GeneralDropdown
                 name={"beds"}
-                placeholder={"Bedrooms"}
+                placeholder={translate("bedrooms")}
                 options={[
                   "studio",
                   "1",
@@ -165,7 +192,7 @@ const Hero = () => {
 
               <GeneralDropdown
                 name={"baths"}
-                placeholder={"Bathrooms"}
+                placeholder={translate("bathrooms")}
                 options={[
                   "studio",
                   "1",
@@ -192,7 +219,7 @@ const Hero = () => {
 
               <SearchableDropdown
                 name={"location"}
-                placeholder="Select a city"
+                placeholder={translate("selectCity")}
                 options={locationsData?.map((el) => {
                   return { label: el?.city, value: el?.city };
                 })}
@@ -208,7 +235,7 @@ const Hero = () => {
                 type="submit"
                 className="bg-emerald-500 text-white px-10 py-3    hover:bg-emerald-600 transition !rounded-r-xl"
               >
-                Search
+                {translate("search")}
               </button>
             </div>
           </form>

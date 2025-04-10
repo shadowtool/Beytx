@@ -17,7 +17,6 @@ const propertySchema = new mongoose.Schema({
   size: { type: Number },
   type: {
     type: String,
-
     enum: PROPERTY_TYPES,
   },
   bedrooms: { type: Number },

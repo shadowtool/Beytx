@@ -4,8 +4,8 @@ import { useTranslations } from "next-intl";
 import { usePathname } from "next/navigation";
 
 const Footer = () => {
-  const propertyTypesTranslations = useTranslations("PropertyTypes");
-  const footerTranslations = useTranslations("Footer");
+  const propertyTypesTranslations = useTranslations("propertyTypes");
+  const footerTranslations = useTranslations("footer");
 
   const pathname = usePathname();
 

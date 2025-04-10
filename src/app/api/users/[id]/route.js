@@ -1,6 +1,8 @@
 import { NextResponse } from "next/server";
 import dbConnect from "@/lib/mongodb";
 import User from "@/models/User";
+import { authOptions } from "@/lib/authOptions";
+import { getServerSession } from "next-auth";
 
 // GET: Fetch user details by ID
 export async function GET(req, { params }) {
@@ -34,7 +36,11 @@ export async function PUT(req, { params }) {
     await dbConnect();
 
     const { id } = params;
-    const { email, phoneNumber, image, name } = await req.json();
+
+    const { email, phoneNumber, image, name, isVerified, role } =
+      await req.json();
+
+    const session = await getServerSession(authOptions);
 
     if (!id) {
       return NextResponse.json(
@@ -43,7 +49,12 @@ export async function PUT(req, { params }) {
       );
     }
 
+    if (session?.user?.role !== "admin" && id !== session?.user?._id) {
+      return NextResponse.json({ error: "Unauthorised" }, { status: 400 });
+    }
+
     const user = await User.findById(id);
+
     if (!user) {
       return NextResponse.json({ error: "User not found" }, { status: 404 });
     }
@@ -72,6 +83,14 @@ export async function PUT(req, { params }) {
       user.name = name;
     }
 
+    if (isVerified && session?.user?.role === "admin") {
+      user.isVerified = isVerified;
+    }
+
+    if (role && session?.user?.role === "admin") {
+      user.role = role;
+    }
+
     await user.save();
     return NextResponse.json(
       { message: "User updated successfully", user },
@@ -80,5 +99,33 @@ export async function PUT(req, { params }) {
   } catch (error) {
     console.error("Update error:", error);
     return NextResponse.json({ error: "Server error" }, { status: 500 });
+  }
+}
+
+export async function DELETE(req, { params }) {
+  try {
+    const session = await getServerSession(authOptions);
+
+    if (!session || session.user?.role !== "admin") {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
+
+    await dbConnect();
+
+    const userId = params.id;
+
+    const deletedUser = await User.findByIdAndDelete(userId);
+
+    if (!deletedUser) {
+      return NextResponse.json({ error: "User not found" }, { status: 404 });
+    }
+
+    return NextResponse.json({ message: "User deleted successfully" });
+  } catch (error) {
+    console.error("Error deleting user:", error);
+    return NextResponse.json(
+      { error: "Internal Server Error" },
+      { status: 500 }
+    );
   }
 }

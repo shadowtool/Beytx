@@ -20,26 +20,34 @@ export const authOptions = {
         try {
           await dbConnect();
           const { identifier, password } = credentials;
+
           const user = await User.findOne({
             $or: [{ email: identifier }, { phoneNumber: identifier }],
-          });
+          }).lean();
+
           if (!user) {
             throw new Error("Invalid credentials");
           }
+
           if (!user.password) {
             throw new Error(
               "This account uses Google login. Please sign in with Google."
             );
           }
+
           const isValid = await bcrypt.compare(password, user.password);
           if (!isValid) {
             throw new Error("Invalid credentials");
           }
+
+          // Return user object with needed fields
           return {
             id: user._id.toString(),
-            email: user.email,
-            phoneNumber: user.phoneNumber,
             name: user.name,
+            email: user.email,
+            phoneNumber: user.phoneNumber || null,
+            role: user.role || "user",
+            image: user.image || null,
           };
         } catch (error) {
           throw new Error("Authentication failed");
@@ -47,67 +55,82 @@ export const authOptions = {
       },
     }),
   ],
+
   secret: process.env.NEXTAUTH_SECRET,
+
   session: {
     strategy: "jwt",
-    maxAge: 30 * 24 * 60 * 60,
-    updateAge: 24 * 60 * 60,
+    maxAge: 30 * 24 * 60 * 60, // 30 days
+    updateAge: 24 * 60 * 60, // 24 hours
   },
+
   pages: {
     signIn: "/auth/login",
     error: "/auth/error",
   },
+
   callbacks: {
     async signIn({ user, account }) {
-      // For Google sign-in, find or create the user in MongoDB
       if (account?.provider === "google") {
         try {
           await dbConnect();
-          const existingUser = await User.findOne({ email: user.email });
+          let existingUser = await User.findOne({ email: user.email });
 
-          if (existingUser) {
-            // Update user info with the MongoDB _id
-            user.id = existingUser._id.toString();
-            return true;
-          } else {
-            // Create a new user with Google info
-            const newUser = await User.create({
+          if (!existingUser) {
+            existingUser = await User.create({
               name: user.name,
               email: user.email,
               image: user.image,
-              // No password for Google users
             });
-            user.id = newUser._id.toString();
-            return true;
           }
+
+          // Attach DB user info to user object
+          user.id = existingUser._id.toString();
+          user.role = existingUser.role || "user";
+          user.phoneNumber = existingUser.phoneNumber || null;
+          user.image = existingUser.image;
+
+          return true;
         } catch (error) {
           console.error("Error in signIn callback:", error);
           return false;
         }
       }
+
       return true;
     },
-    async jwt({ token, user, account }) {
+
+    async jwt({ token, user }) {
       if (user) {
         token.id = user.id;
+        token.name = user.name;
+        token.email = user.email;
         token.phoneNumber = user.phoneNumber || null;
+        token.role = user.role || "user";
+        token.image = user.image || null;
       }
       return token;
     },
+
     async session({ session, token }) {
       if (token) {
-        session.user.id = token.id;
-        session.user.phoneNumber = token.phoneNumber;
+        session.user = {
+          id: token.id,
+          name: token.name,
+          email: token.email,
+          phoneNumber: token.phoneNumber,
+          role: token.role,
+          image: token.image,
+        };
       }
       return session;
     },
+
     async redirect({ url, baseUrl }) {
-      if (url.startsWith(baseUrl)) {
-        return url;
-      }
-      return baseUrl;
+      return url.startsWith(baseUrl) ? url : baseUrl;
     },
   },
+
   events: {},
   debug: process.env.NODE_ENV === "development",
 };

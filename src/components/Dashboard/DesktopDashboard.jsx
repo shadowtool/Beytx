@@ -1,6 +1,8 @@
 import React, { useEffect } from "react";
 import PropertyCard from "../Cards/PropertyCard";
 import Image from "next/image";
+import PhoneNumberInput from "../Inputs/PhoneNumberInput";
+import { FormProvider, useForm, useFormContext } from "react-hook-form";
 
 const DesktopDashboard = ({
   userInfo,
@@ -11,11 +13,12 @@ const DesktopDashboard = ({
   handleFileChange,
   selectedImage,
   triggerFileInput,
-  methods,
   handleUpdate,
   properties,
   savedListings,
 }) => {
+  const methods = useFormContext();
+
   useEffect(() => {
     setSelectedTab("my-listings");
   }, []);
@@ -25,14 +28,14 @@ const DesktopDashboard = ({
       <div className="min-w-64 max-w-64 bg-white border border-solid border-gray-200 shadow-lg p-6 flex flex-col items-center gap-6">
         <div className="w-28 h-28 rounded-full overflow-hidden border-4 border-green-600">
           <Image
-            src={userInfo?.image || "/default-avatar.png"}
+            src={userInfo?.image || "/images/portrait-image.jpg"}
             alt="User Avatar"
             width={144}
             height={144}
             className="object-cover w-full h-full"
           />
         </div>
-        <h4 className="    ">{userInfo?.name}</h4>
+        <h4 className="">{userInfo?.name}</h4>
         <div className="w-full flex flex-col gap-2">
           {TABS?.map((el) => (
             <button
@@ -54,7 +57,7 @@ const DesktopDashboard = ({
         {selectedTab === "editProfile" ? (
           <>
             <div className="h-fit w-full p-8 bg-white rounded-xl shadow-lg relative border border-gray-200">
-              <h5 className="  mb-6    text-gray-800">Edit Your Info</h5>
+              <h5 className="mb-6 text-gray-800">Edit Your Info</h5>
 
               <div className="min-h-24 max-h-24 rounded-full bg-green-600 flex items-center justify-center min-w-24 max-w-24 mb-6 overflow-hidden shadow-md">
                 <input
@@ -66,7 +69,7 @@ const DesktopDashboard = ({
                 />
                 {selectedImage ? (
                   <Image
-                    src={selectedImage}
+                    src={selectedImage || "/images/portrait-image.jpg"}
                     alt="Profile"
                     className="min-h-24 max-h-24 min-w-24 max-w-24 object-cover rounded-full cursor-pointer border-2 border-white"
                     height={128}
@@ -75,7 +78,7 @@ const DesktopDashboard = ({
                   />
                 ) : (
                   <div
-                    className="h-full w-full flex flex-col items-center justify-center border-2 border-dashed border-gray-400 rounded-full text-gray-500 cursor-pointer hover:border-gray-600"
+                    className="h-full w-full flex flex-col items-center justify-center rounded-full text-white text-center cursor-pointer"
                     onClick={triggerFileInput}
                   >
                     Add Profile Image
@@ -84,7 +87,7 @@ const DesktopDashboard = ({
               </div>
 
               <div className="flex flex-col gap-2 w-full items-start mb-4">
-                <h5 className="     text-gray-700">Name</h5>
+                <h6 className="text-gray-700">Name</h6>
                 <input
                   {...methods.register("name")}
                   className="py-3 px-6 bg-gray-50 w-full rounded-lg focus:outline-none border border-solid border-gray-300 text-black placeholder-gray-500   focus:ring-2 focus:ring-green-500 focus:border-green-500"
@@ -92,7 +95,7 @@ const DesktopDashboard = ({
               </div>
 
               <div className="flex flex-col gap-2 w-full items-start mb-4">
-                <h5 className="     text-gray-700">Email</h5>
+                <h6 className="text-gray-700">Email</h6>
                 <input
                   {...methods.register("email")}
                   className="py-3 px-6 bg-gray-50 w-full rounded-lg focus:outline-none border border-solid border-gray-300 text-black placeholder-gray-500   focus:ring-2 focus:ring-green-500 focus:border-green-500"
@@ -100,11 +103,8 @@ const DesktopDashboard = ({
               </div>
 
               <div className="flex flex-col gap-2 w-full items-start mb-4">
-                <h5 className="     text-gray-700">Phone Number</h5>
-                <input
-                  {...methods.register("phoneNumber")}
-                  className="py-3 px-6 bg-gray-50 w-full rounded-lg focus:outline-none border border-solid border-gray-300 text-black placeholder-gray-500   focus:ring-2 focus:ring-green-500 focus:border-green-500"
-                />
+                <h6 className="text-gray-700">Phone Number</h6>
+                <PhoneNumberInput name="phoneNumber" />
               </div>
 
               <button

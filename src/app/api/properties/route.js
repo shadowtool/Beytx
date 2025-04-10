@@ -2,7 +2,6 @@ import { NextResponse } from "next/server";
 import dbConnect from "@/lib/mongodb";
 import Property from "@/models/Property";
 import User from "@/models/User";
-
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/authOptions";
 
@@ -10,11 +9,10 @@ export async function GET(req) {
   try {
     await dbConnect();
 
-    // Extract logged-in user session
     const session = await getServerSession(authOptions);
-    const userId = session?.user?.id || null; // Extract userId from session
 
-    // Extract search params
+    const userId = session?.user?.id || null;
+
     const { searchParams } = new URL(req.url);
     const featured = searchParams.get("featured");
     const name = searchParams.get("name");
@@ -26,20 +24,20 @@ export async function GET(req) {
     const minPrice = searchParams.get("minPrice");
     const maxPrice = searchParams.get("maxPrice");
     const sort = searchParams.get("sortBy");
-    const userIdParam = searchParams.get("userId"); // Extract userId from query params
+    const userIdParam = searchParams.get("userId");
     const page = parseInt(searchParams.get("page")) || 1;
     const limit = parseInt(searchParams.get("limit")) || 9;
+
     const skip = (page - 1) * limit;
 
-    // Build query object
-    const query = { archived: false };
+    const query = {};
 
-    // Filter Featured Properties
     if (featured === "true" || featured === "false") {
       query.featured = featured === "true";
     }
 
-    // Search by Name (case-insensitive)
+    query.archived = false;
+
     if (name) {
       query.title = { $regex: new RegExp(name, "i") };
     }
@@ -58,7 +56,6 @@ export async function GET(req) {
       query.userId = userIdParam;
     }
 
-    // 🔹 Multi-Select Location (Parse JSON)
     let locationsArray = [];
     try {
       locationsArray = JSON.parse(locationParam);
@@ -72,12 +69,10 @@ export async function GET(req) {
       };
     }
 
-    // Filter by Beds (greater than or equal to)
     if (bedrooms) {
       query.bedrooms = { $gte: parseInt(bedrooms) };
     }
 
-    // Filter by Bathrooms (greater than or equal to)
     if (bathrooms) {
       query.bathrooms = { $gte: parseInt(bathrooms) };
     }
@@ -119,7 +114,6 @@ export async function GET(req) {
       }
     }
 
-    // Fetch properties with filters, sorting, and pagination
     const properties = await Property.find(query)
       .sort(sortOptions)
       .skip(skip)
@@ -127,7 +121,6 @@ export async function GET(req) {
 
     const totalCount = await Property.countDocuments(query);
 
-    // Fetch user favorites if logged in
     let likedPropertyIds = new Set();
     if (userId) {
       const user = await User.findById(userId).select("favorites");
@@ -136,10 +129,9 @@ export async function GET(req) {
       }
     }
 
-    // Add `isLiked` field to each property
     const propertiesWithLikeStatus = properties.map((property) => ({
       ...property.toObject(),
-      isLiked: likedPropertyIds.has(property._id.toString()), // True if liked, otherwise false
+      isLiked: likedPropertyIds.has(property._id.toString()),
     }));
 
     return NextResponse.json(

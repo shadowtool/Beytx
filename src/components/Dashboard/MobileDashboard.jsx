@@ -3,6 +3,7 @@ import React, { useEffect } from "react";
 import PropertyCard from "../Cards/PropertyCard";
 import MobilePropertyCard from "../Cards/MobilePropertyCard";
 import { LeftArrowIcon } from "@/imports/icons";
+import { useFormContext } from "react-hook-form";
 
 const MobileDashboard = ({
   userInfo,
@@ -13,11 +14,12 @@ const MobileDashboard = ({
   handleFileChange,
   selectedImage,
   triggerFileInput,
-  methods,
   handleUpdate,
   properties,
   savedListings,
 }) => {
+  const methods = useFormContext();
+
   const handleUpdateModified = async () => {
     await handleUpdate();
     setSelectedTab(null);
@@ -33,14 +35,14 @@ const MobileDashboard = ({
         <div className="p-6 flex flex-col items-center gap-6">
           <div className="w-28 h-28 rounded-full overflow-hidden border-4 border-green-600">
             <Image
-              src={userInfo?.image || "/default-avatar.png"}
+              src={userInfo?.image || "/images/portrait-image.jpg"}
               alt="User Avatar"
               width={144}
               height={144}
               className="object-cover w-full h-full"
             />
           </div>
-          <h4 className="    ">{userInfo?.name}</h4>
+          <h4 className="">{userInfo?.name}</h4>
           <div className="w-full flex flex-col gap-2">
             {TABS?.map((el) => (
               <button
@@ -68,7 +70,7 @@ const MobileDashboard = ({
           {selectedTab === "editProfile" ? (
             <div className="p-4">
               <div className="h-fit w-full p-4 rounded-xl shadow-lg relative border border-gray-200 bg-white">
-                <h5 className="  mb-6    text-gray-800">Edit Your Info</h5>
+                <h5 className="mb-6 text-gray-800">Edit Your Info</h5>
                 <div className="min-h-24 max-h-24 rounded-full bg-green-600 flex items-center justify-center min-w-24 max-w-24 mb-6 overflow-hidden shadow-md">
                   <input
                     type="file"
@@ -88,7 +90,7 @@ const MobileDashboard = ({
                     />
                   ) : (
                     <div
-                      className="h-full w-full flex flex-col items-center justify-center border-2 border-dashed border-gray-400 rounded-full text-gray-500 cursor-pointer hover:border-gray-600"
+                      className="h-full w-full flex flex-col items-center justify-center text-center text-white"
                       onClick={triggerFileInput}
                     >
                       Add Profile Image
@@ -96,21 +98,21 @@ const MobileDashboard = ({
                   )}
                 </div>
                 <div className="flex flex-col gap-2 w-full items-start mb-4">
-                  <h5 className="     text-gray-700">Name</h5>
+                  <h6 className="text-gray-700 text-sm">Name</h6>
                   <input
                     {...methods.register("name")}
                     className="py-3 px-6 bg-gray-50 w-full rounded-lg border border-gray-300"
                   />
                 </div>
                 <div className="flex flex-col gap-2 w-full items-start mb-4">
-                  <h5 className="     text-gray-700">Email</h5>
+                  <h6 className="text-gray-700 text-sm">Email</h6>
                   <input
                     {...methods.register("email")}
                     className="py-3 px-6 bg-gray-50 w-full rounded-lg border border-gray-300"
                   />
                 </div>
                 <div className="flex flex-col gap-2 w-full items-start mb-4">
-                  <h5 className="     text-gray-700">Phone Number</h5>
+                  <h6 className="text-gray-700 text-sm">Phone Number</h6>
                   <input
                     {...methods.register("phoneNumber")}
                     className="py-3 px-6 bg-gray-50 w-full rounded-lg border border-gray-300"

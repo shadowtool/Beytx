@@ -5,18 +5,19 @@ import { Controller, useFormContext } from "react-hook-form";
 import { CheckboxIcon, DownIcon } from "@/imports/icons";
 import { motion, AnimatePresence } from "framer-motion";
 import GeneralDropdown from "./GeneralDropdown";
+import { useTranslations } from "next-intl";
 
 export default function PriceRangeDropdown({
   name,
   fromOptions = [],
   toOptions = [],
-  placeholder = "Price Range",
   menuPlacement = "bottom",
   classes = {},
 }) {
   const [open, setOpen] = useState(false);
   const dropdownRef = useRef(null);
   const { control, watch } = useFormContext();
+  const translate = useTranslations("filterKeys");
 
   const fromValue = watch(`${name}_from`);
   const toValue = watch(`${name}_to`);
@@ -35,9 +36,11 @@ export default function PriceRangeDropdown({
     if (fromValue && toValue) {
       return `${fromValue} - ${toValue}`;
     } else if (fromValue) {
-      return `From - ${fromValue}`;
+      return `${fromValue} - ${translate("any")}`;
+    } else if (toValue) {
+      return `${translate("any")} - ${toValue}`;
     }
-    return placeholder;
+    return translate("priceRange");
   };
 
   return (
@@ -78,12 +81,12 @@ export default function PriceRangeDropdown({
               <GeneralDropdown
                 name={`${name}_from`}
                 options={fromOptions}
-                placeholder="From"
+                placeholder={translate("from")}
               />
               <GeneralDropdown
                 name={`${name}_to`}
                 options={toOptions}
-                placeholder="To"
+                placeholder={translate("to")}
               />
             </div>
           </motion.div>

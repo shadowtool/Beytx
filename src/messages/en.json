@@ -1,12 +1,13 @@
 {
-  "Header": {
+  "header": {
     "home": "Home",
     "properties": "Properties",
     "contactUs": "Contact Us",
     "login": "Login",
-    "addProperty": "Add Property"
+    "addProperty": "Add Property",
+    "adminPanel": "Admin Panel"
   },
-  "Footer": {
+  "footer": {
     "aboutUs": "About Us",
     "contact": "Contact Us",
     "addProperty": "Add Property",
@@ -14,7 +15,7 @@
     "privacyPolicy": "Privacy Policy",
     "termsandconditions": "Terms & Conditions"
   },
-  "PropertyPage": {
+  "createPropertyPage": {
     "loginMessageText": "You must be logged in to add a property.",
     "forSale": "For Sale",
     "forRent": "For Rent",
@@ -32,19 +33,19 @@
     "addProperty": "Add Property",
     "login": "Login"
   },
-  "PropertyTypes": {
+  "propertyTypes": {
     "villa": "Villa",
     "apartment": "Apartment",
     "land": "Land",
     "office": "Office",
     "townhouse": "Townhouse"
   },
-  "UserOptions": {
+  "userOptions": {
     "dashboard": "Dashboard",
     "logout": "Logout",
     "login": "Login"
   },
-  "Cards": {
+  "cards": {
     "beds": "Beds",
     "baths": "Baths",
     "view": "View",
@@ -55,6 +56,136 @@
     "email": "Email",
     "share": "Share",
     "removeSavedListing": "Remove saved listing",
-    "saveListing": "Save Listing"
+    "saveListing": "Save Listing",
+    "areaNotation": "Sq. Ft.",
+    "forSale": "Sale",
+    "forRent": "Rent",
+    "errorArchivingProperty": "Error archiving property."
+  },
+  "hero": {
+    "findYourProperty": "Find your next property",
+    "buy": "Buy",
+    "rent": "Rent",
+    "search": "Search",
+    "searchByLocation": "Search by location",
+    "selectCity": "Select a city",
+    "type": "Type",
+    "bedrooms": "Bedrooms",
+    "bathrooms": "Bathrooms"
+  },
+  "featuredListings": {
+    "discoverProperties": "Discover Our Featured Properties",
+    "fetchingProperties": "Fetching properties...",
+    "allProperties": "All Properties"
+  },
+  "linksSection": {
+    "in": "in",
+    "exploreByMajorLocations": "Explore by major locations"
+  },
+  "authModal": {
+    "checkingStatus": "Checking account status...",
+    "continueJourney": "Continue your journey",
+    "back": "Back",
+    "loginWithPassword": "Login with your password",
+    "enterEmail": "Enter your email",
+    "emailRequired": "Email is required",
+    "invalidEmailFormat": "Invalid email format",
+    "proceed": "Proceed",
+    "createAccount": "Create your account",
+    "enterYourPassword": "Enter your password",
+    "passwordRequired": "Password is required",
+    "passwordCriteria": "Password must be at least 8 characters long, include an uppercase letter and a special character.",
+    "confirmYourPassword": "Confirm your password",
+    "confirmPasswordRequired": "Please confirm your password",
+    "passwordsDoNotMatch": "Passwords do not match",
+    "enterYourPhoneNumber": "Enter your phone number",
+    "phoneNumberRequired": "Phone number is required",
+    "signUp": "Sign Up",
+    "signingUp": "Signing you up...",
+    "signupSuccess": "Account created successfully!",
+    "signupFailed": "Sign up failed. Please try again.",
+    "loginSuccess": "Logged in successfully!",
+    "loginError": "Login failed. Please try again.",
+    "or": "or",
+    "continueWithEmail": "Continue with Email",
+    "agreeToPolicies": "By continuing, you agree to our",
+    "privacyPolicy": "Privacy Policy",
+    "termsAndConditions": "Terms & Conditions",
+    "and": "and"
+  },
+  "sortOptions": {
+    "price_asc": "Price - Low to High",
+    "price_desc": "Price - High to Low",
+    "listing_date": "Latest",
+    "beds_asc": "Beds - Low to High",
+    "beds_desc": "Beds - High to Low",
+    "baths_asc": "Baths - Low to High",
+    "baths_desc": "Baths - High to Low"
+  },
+  "filterKeys": {
+    "status": "Status",
+    "type": "Type",
+    "sortBy": "Sort by",
+    "sale": "Sale",
+    "rent": "Rent",
+    "reset": "Reset",
+    "locationPlaceholder": "Filter by location ...",
+    "priceRange": "Select Price Range",
+    "bedsAndBaths": "Beds & Baths",
+    "bedrooms": "Bedrooms",
+    "bathrooms": "Bathrooms",
+    "any": "Any",
+    "filterKeys": "Filters",
+    "beds": "Beds",
+    "baths": "Baths",
+    "price": "Price",
+    "from": "From",
+    "to": "To",
+    "apply": "Apply"
+  },
+  "propertyListings": {
+    "fetchingData": "Fetching properties...",
+    "noPropertiesFound": "No properties found.",
+    "loadingMoreProperties": "Loading more properties...",
+    "status": "Status",
+    "type": "Type",
+    "beds": "Beds",
+    "bath": "Baths",
+    "price": "Price",
+    "sortBy": "Sort by",
+    "searchPlaceholder": "Search by location",
+    "loadingMessage": "Loading properties...",
+    "loadingMore": "Loading more..."
+  },
+  "propertyDetails": {
+    "pricePerYear": "{price} KWD/ Year",
+    "bedrooms": "{count} Bedrooms",
+    "bathrooms": "{count} Bathrooms",
+    "area": "{size} Sq. Ft.",
+    "seeMoreDetails": "See More Details",
+    "seeLessDetails": "See Less Details",
+    "amenities": "Amenities",
+    "location": "Location",
+    "newAgent": "New Agent",
+    "propertyImageAlt": "Property image",
+    "locationIconAlt": "Location icon",
+    "areaIconAlt": "Area icon",
+    "save": "Save",
+    "share": "Share",
+    "call": "Call",
+    "message": "Message",
+    "bookVisit": "Book Visit",
+    "whatsapp": "Whatsapp",
+    "agentProperties": "Agent Properties",
+    "report": "Report",
+    "similarProperties": "Similar Properties"
+  },
+  "contactUs": {
+    "contactUs": "Contact Us",
+    "name": "Name",
+    "email": "Email",
+    "phone": "Phone",
+    "inquiry": "Your Message",
+    "sendMessage": "Send Message"
   }
 }

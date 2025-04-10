@@ -1,4 +1,5 @@
 import { PROPERTY_STATUS } from "@/constants/propertyStatus";
+import { useTranslations } from "next-intl";
 import React from "react";
 import { useFormContext, useWatch } from "react-hook-form";
 
@@ -6,6 +7,8 @@ const ListingTypeFilterModal = () => {
   const { setValue, control } = useFormContext();
 
   const formValues = useWatch({ control: control });
+
+  const translate = useTranslations("filterKeys");
 
   return (
     <div className="flex gap-6 flex-nowrap hide-scrollbar w-full h-fit p-8 ">
@@ -21,7 +24,7 @@ const ListingTypeFilterModal = () => {
           }}
           key={el}
         >
-          {el}
+          {translate(el)}
         </button>
       ))}
     </div>

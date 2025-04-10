@@ -2,8 +2,9 @@ import React, { useState } from "react";
 import { Controller, useFormContext } from "react-hook-form";
 
 const PhoneNumberInput = ({ name, error, validation = {} }) => {
-  const [selectedCountryCode, setSelectedCountryCode] = useState("+1"); // Default to US
+  const [selectedCountryCode, setSelectedCountryCode] = useState("+965"); // Default to KW
   const { control } = useFormContext();
+
   const countryCodes = [
     { code: "+973", country: "BH" }, // Bahrain
     { code: "+965", country: "KW" }, // Kuwait
@@ -43,14 +44,14 @@ const PhoneNumberInput = ({ name, error, validation = {} }) => {
               {...field}
               onChange={(e) => {
                 const value = e.target.value.replace(/[^0-9]/g, "");
-                field.onChange(selectedCountryCode + value);
+                field.onChange(selectedCountryCode + " " + value);
               }}
-              value={field.value?.replace(selectedCountryCode, "") || ""}
+              value={field.value?.replace(selectedCountryCode + " ", "") || ""}
             />
           )}
         />
       </div>
-      {error && <p className="text-red-500   mt-1">{error.message}</p>}
+      {error && <p className="text-red-500 mt-1">{error.message}</p>}
     </div>
   );
 };

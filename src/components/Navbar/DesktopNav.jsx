@@ -5,11 +5,14 @@ import { AddPropertyIcon } from "@/imports/icons";
 import { useTranslations } from "next-intl";
 import { useParams } from "next/navigation";
 import GeneralButton from "../Buttons/GeneralButton";
+import { useSession } from "next-auth/react";
 
 const DesktopNav = () => {
   const { locale } = useParams();
 
-  const translate = useTranslations("Header");
+  const { data: session } = useSession();
+
+  const translate = useTranslations("header");
 
   return (
     <section>
@@ -22,13 +25,18 @@ const DesktopNav = () => {
               className="max-w-36 max-h-12"
             />
             <div className="flex items-center gap-8">
-              <Link href={`/${locale}`} className="text-white    ">
+              <Link href={`/${locale}`} className="text-white">
                 {translate("home")}
               </Link>
-              <Link href={`/${locale}/properties`} className="text-white    ">
+              {session?.user?.role === "admin" && (
+                <Link href={`/${locale}/admin`} className="text-white">
+                  {translate("adminPanel")}
+                </Link>
+              )}
+              <Link href={`/${locale}/properties`} className="text-white">
                 {translate("properties")}
               </Link>
-              <Link href={`/${locale}/contact`} className="text-white    ">
+              <Link href={`/${locale}/contact`} className="text-white">
                 {translate("contactUs")}
               </Link>
             </div>

@@ -11,7 +11,7 @@ import AuthModal from "../Modals/AuthModals/AuthModal";
 import GeneralButton from "../Buttons/GeneralButton";
 
 export default function AuthButton({ buttonClasses }) {
-  const translate = useTranslations("UserOptions");
+  const translate = useTranslations("userOptions");
 
   const [showEditProfileModal, setShowEditProfileModal] = useState(false);
 
@@ -44,7 +44,7 @@ export default function AuthButton({ buttonClasses }) {
               <UserIcon size={21} color="#fff" />
             </GeneralButton>
             {showProfileOptions && (
-              <div className="h-fit w-fit min-w-36 absolute top-[110%] right-0 bg-white rounded-md shadow-md z-[9] overflow-hidden">
+              <div className="h-fit w-fit min-w-36 absolute top-[110%] right-0 bg-white rounded-md shadow-md z-[10] overflow-hidden">
                 <div
                   className="py-3 px-6 flex items-center text-black   cursor-pointer hover:bg-gray-200 transition-all duration-300  "
                   onClick={() => {
@@ -70,7 +70,7 @@ export default function AuthButton({ buttonClasses }) {
       ) : (
         <GeneralButton
           type="outlined"
-          className="text-white border-white flex items-center gap-2 !py-3 !px-4 hover:bg-transparent"
+          className="text-white border-white flex items-center gap-2 !py-3 !px-4 hover:bg-transparent max-w-fit"
           onClick={() => {
             setShowAuthModal(true);
           }}

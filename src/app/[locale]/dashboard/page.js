@@ -12,7 +12,7 @@ import {
   fetchPropertiesOfLoggedUser,
   uploadImage,
 } from "@/lib/queryFunctions";
-import { useForm, useWatch } from "react-hook-form";
+import { FormProvider, useForm, useWatch } from "react-hook-form";
 import { useUserInfoContext } from "@/context/UserInfoContext";
 import { updateUserMutation } from "@/lib/mutationFunctions";
 import { toast } from "react-toastify";
@@ -137,20 +137,19 @@ const index = () => {
     handleFileChange,
     selectedImage,
     triggerFileInput,
-    methods,
     handleUpdate,
     properties,
     savedListings,
   };
 
   return (
-    <>
+    <FormProvider {...methods}>
       {isBigScreen ? (
         <DesktopDashboard {...props} />
       ) : (
         <MobileDashboard {...props} />
       )}
-    </>
+    </FormProvider>
   );
 };
 

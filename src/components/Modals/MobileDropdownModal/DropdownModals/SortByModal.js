@@ -1,3 +1,4 @@
+import { useTranslations } from "next-intl";
 import React from "react";
 import { useFormContext, useWatch } from "react-hook-form";
 
@@ -6,33 +7,35 @@ const SortByModal = () => {
 
   const formValues = useWatch({ control: methods.control });
 
+  const translate = useTranslations("sortOptions");
+
   const sortOptions = [
     {
-      label: "Price - Low to High",
+      label: translate("price_asc"),
       value: "price_asc",
     },
     {
-      label: "Price - High to Low",
+      label: translate("price_desc"),
       value: "price_desc",
     },
     {
-      label: "Latest",
+      label: translate("listing_date"),
       value: "listing_date",
     },
     {
-      label: "Beds - Low to High",
+      label: translate("beds_asc"),
       value: "beds_asc",
     },
     {
-      label: "Beds - High to Low",
+      label: translate("beds_desc"),
       value: "beds_desc",
     },
     {
-      label: "Baths - Low to High",
+      label: translate("baths_asc"),
       value: "baths_asc",
     },
     {
-      label: "Baths - High to Low",
+      label: translate("baths_desc"),
       value: "baths_desc",
     },
   ];

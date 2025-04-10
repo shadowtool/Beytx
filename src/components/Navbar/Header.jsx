@@ -11,7 +11,8 @@ const Header = () => {
   const pathname = usePathname();
 
   useEffect(() => {
-    document.documentElement.dir = locale === "ar" ? "rtl" : "ltr";
+    // document.documentElement.dir = locale === "ar" ? "rtl" : "ltr";
+    document.documentElement.dir = "ltr";
   }, [locale]);
 
   const { isBigScreen } = useMediaQuery();
