@@ -32,7 +32,7 @@ const PropertyListings = ({
           }}
         />
 
-        <div className="px-4 md:px-12 py-10 w-full grow">
+        <div className="container mx-auto px-4 md:px-12 py-10 w-full grow">
           {isFetchingData ? (
             <Loader customMessage={translate("fetchingData")} />
           ) : (

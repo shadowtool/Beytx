@@ -17,7 +17,7 @@ const DesktopNav = () => {
   return (
     <section>
       <header className="hidden md:block text-white p-0 shadow-md bg-gradient-to-r from-emerald-600 from-20% via-emerald-500 via-30% to-emerald-500 to-90% px-12 min-h-24 max-h-24">
-        <div className="mx-auto flex justify-between items-center py-5">
+        <div className="container mx-auto flex justify-between items-center py-5">
           <div className="flex items-center gap-16">
             <img
               src="/images/beyt.png"
