@@ -32,7 +32,7 @@ const PropertyDetailsDesktop = ({ loading, propertyData }) => {
         </div>
       ) : (
         <>
-          <div className="p-0 md:px-12 w-full md:py-8">
+          <div className="container mx-auto p-0 md:px-12 w-full md:py-8">
             <div className="hidden md:flex justify-end gap-6 w-full px-4">
               {USER_ACTIONS.map((el, idx) => (
                 <div key={idx} className="flex gap-2 items-center">
@@ -77,7 +77,7 @@ const PropertyDetailsDesktop = ({ loading, propertyData }) => {
             </div>
           </div>
 
-          <div className="flex flex-col lg-xl:flex-row gap-6 mt-8 px-4 md:px-12 mb-24">
+          <div className="container mx-auto flex flex-col lg-xl:flex-row gap-6 mt-8 px-4 md:px-12 mb-24">
             <div className="w-full grow">
               <div
                 className={`p-6 bg-white border border-solid border-gray-200 rounded-lg shadow-lg ${

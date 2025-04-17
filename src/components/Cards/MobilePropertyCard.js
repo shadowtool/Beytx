@@ -227,13 +227,13 @@ const MobilePropertyCard = ({ property, cardType }) => {
           ) : (
             <>
               <div className="flex gap-2 w-full">
-                <button className="text-white px-0 pl-2 md:px-4 py-2 rounded-md flex items-center bg-green-600 backdrop-blur   md:     w-full grow">
+                <button className="text-white px-0 pl-2 md:px-4 py-2 rounded-md flex items-center justify-center bg-green-600 backdrop-blur w-full grow">
                   <CallIcon size={18} color="#fff" className="mr-2" />
-                  {cardsTranslations("call")}
+                  <span className="flex items-center">{cardsTranslations("call")}</span>
                 </button>
-                <button className="text-white px-0 pl-2 md:px-4 py-2 rounded-md flex items-center bg-green-600 backdrop-blur   md:     w-full grow">
+                <button className="text-white px-0 pl-2 md:px-4 py-2 rounded-md flex items-center justify-center bg-green-600 backdrop-blur w-full grow">
                   <WhatsappIcon size={18} color="#fff" className="mr-2" />
-                  {cardsTranslations("whatsapp")}
+                  <span className="flex items-center">{cardsTranslations("whatsapp")}</span>
                 </button>
               </div>
             </>

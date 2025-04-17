@@ -18,7 +18,6 @@ export async function generateMetadata({ params }) {
     description:
       property.description?.slice(0, 160) ||
       "View full details of this property.",
-    keywords: property.title.split(" "),
     openGraph: {
       title: property.title,
       description: property.description?.slice(0, 160),

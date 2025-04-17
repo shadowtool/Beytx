@@ -69,17 +69,6 @@ const PropertyCard = ({ property, cardType, selectedView }) => {
         );
       }}
     >
-      <div
-        className={`absolute top-2 left-0 w-16 px-3 py-1 rounded-r-full text-white ${
-          property?.status === "sale"
-            ? "bg-emerald-800 border border-zinc-400 "
-            : "bg-red-800 border border-zinc-400 "
-        }`}
-      >
-        {property?.status === "sale"
-          ? translateCards("forSale")
-          : translateCards("forRent")}
-      </div>
       {cardType !== "userListing" && cardType !== "savedListing" && (
         <div className="min-h-10 max-h-10 min-w-10 max-w-10 flex items-center justify-center rounded-full shadow absolute top-4 right-4 bg-white">
           <LikeButton
@@ -98,9 +87,22 @@ const PropertyCard = ({ property, cardType, selectedView }) => {
       />
       <div className="p-2 md:p-4 flex">
         <div className="flex-1">
-          <p className="md:text-zinc-600">
-            {translatePropertyTypes(property?.type?.toLowerCase())}
-          </p>
+          <div className="flex justify-between items-center">
+            <p className="md:text-zinc-600">
+              {translatePropertyTypes(property?.type?.toLowerCase())}
+            </p>
+            <span
+              className={`px-3 py-1 rounded-md text-white text-xs ${
+                property?.status === "sale"
+                  ? "bg-emerald-600"
+                  : "bg-amber-600"
+              }`}
+            >
+              {property?.status === "sale"
+                ? translateCards("forSale")
+                : translateCards("forRent")}
+            </span>
+          </div>
           <h4 className="text-green-700 mt-1 mb-2">{property?.price} KWD</h4>
           <p className="text-zinc-600 transition-colors duration-500">
             {property?.title}
@@ -190,13 +192,13 @@ const PropertyCard = ({ property, cardType, selectedView }) => {
           ) : (
             <>
               <div className="flex gap-2 w-full">
-                <button className="text-white px-3 md:px-4 py-2 rounded-md flex items-center bg-green-600 backdrop-blur text-xs md:text-sm w-full grow max-w-fit md:max-w-full">
+                <button className="text-white px-3 md:px-4 py-2 rounded-md flex items-center justify-center bg-green-600 backdrop-blur text-xs md:text-sm w-full grow max-w-fit md:max-w-full">
                   <CallIcon size={18} color="#fff" className="mr-2" />
-                  {translateCards("call")}
+                  <span className="flex items-center">{translateCards("call")}</span>
                 </button>
-                <button className="text-white px-0 pl-2 md:px-4 py-2 rounded-md flex items-center bg-green-600 backdrop-blur text-xs md:text-sm w-full grow">
+                <button className="text-white px-0 pl-2 md:px-4 py-2 rounded-md flex items-center justify-center bg-green-600 backdrop-blur text-xs md:text-sm w-full grow">
                   <WhatsappIcon size={18} color="#fff" className="mr-2" />
-                  {translateCards("whatsapp")}
+                  <span className="flex items-center">{translateCards("whatsapp")}</span>
                 </button>
               </div>
             </>
