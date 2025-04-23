@@ -65,6 +65,7 @@ export async function PUT(req, { params }) {
     }
 
     const { id } = params;
+
     const updates = await req.json();
 
     if (!id) {

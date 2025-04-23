@@ -1,23 +1,31 @@
 import { NextResponse } from "next/server";
 import dbConnect from "@/lib/mongodb";
 import Property from "@/models/Property";
-import { getServerSession } from "next-auth";
-import { authOptions } from "@/lib/authOptions";
+import User from "@/models/User";
 
 export async function POST(req) {
   try {
-    const session = await getServerSession(authOptions);
-
     await dbConnect();
 
     const body = await req.json();
 
-    // if (!session || body?.userId !== session?.user?._id) {
-    //   return NextResponse.json(
-    //     { error: "Unauthorized access" },
-    //     { status: 401 }
-    //   );
-    // }
+    const { userId } = body;
+
+    if (!userId) {
+      return NextResponse.json(
+        { error: "Missing userId in request body" },
+        { status: 400 }
+      );
+    }
+
+    const userExists = await User.findById(userId);
+
+    if (!userExists) {
+      return NextResponse.json(
+        { error: "User not found with the provided ID" },
+        { status: 404 }
+      );
+    }
 
     const newProperty = await Property.create(body);
 

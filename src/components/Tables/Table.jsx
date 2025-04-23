@@ -3,6 +3,16 @@
 import { CloseIconCircle, TickIcon } from "@/imports/icons";
 import React from "react";
 
+const formatHeader = (header) => {
+  if (header === "options") return "";
+
+  return header
+    .replace(/([A-Z])/g, " $1")
+    .replace(/^./, (str) => str.toUpperCase())
+    .replace(/ Id$/, " ID")
+    .trim();
+};
+
 function Table({ headers, data }) {
   return (
     <div className="w-full overflow-x-auto min-h-full">
@@ -11,7 +21,7 @@ function Table({ headers, data }) {
           <tr>
             {headers.map((header, idx) => (
               <th key={idx} className="text-left px-4 py-3 border-b">
-                {header !== "options" ? header : ""}
+                {header !== "options" ? formatHeader(header) : ""}
               </th>
             ))}
           </tr>
@@ -21,7 +31,7 @@ function Table({ headers, data }) {
             data.map((row, rowIndex) => (
               <tr key={rowIndex} className="border-t hover:bg-gray-50">
                 {headers.map((key, colIndex) => {
-                  const value = row[key.toLowerCase()];
+                  const value = row[key];
                   return (
                     <td key={colIndex} className="px-4 py-2">
                       {typeof value === "boolean" ? (

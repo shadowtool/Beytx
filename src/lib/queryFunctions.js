@@ -74,7 +74,6 @@ export const fetchFeaturedListings = async () => {
 };
 
 export const fetchUserInfo = async (userId) => {
-  if (!userId) return null;
   const { data } = await axiosInstance.get(`${ROUTES.GET_USER_INFO}/${userId}`);
   return data;
 };
@@ -102,5 +101,12 @@ export const fetchAllUsers = async (pageParam = 1, itemsPerPage) => {
   const { data } = await axiosInstance.get(`${ROUTES.GET_ALL_USERS_ADMIN}`, {
     params: { page: pageParam, limit: itemsPerPage },
   });
+  return data;
+};
+
+export const fetchAgentListings = async (agentId) => {
+  const { data } = await axiosInstance.get(
+    `${ROUTES.GET_USER_LISTINGS}/${agentId}`
+  );
   return data;
 };

@@ -6,6 +6,7 @@ export default function GeneralButton({
   onClick,
   disabled = false,
   className = "",
+  ...rest
 }) {
   const baseStyles = "px-6 py-2 rounded-md transition duration-200 font-medium";
 
@@ -21,6 +22,7 @@ export default function GeneralButton({
       onClick={onClick}
       disabled={disabled}
       className={`${baseStyles} ${buttonStyles[type]} ${className}`}
+      {...rest}
     >
       {children}
     </button>

@@ -1,107 +1,100 @@
 "use client";
 
-import { useState, useRef } from "react";
-import { useForm, useFormContext } from "react-hook-form";
-import Script from "next/script";
+import { LOCATIONS_DATA } from "@/lib/locationsData";
+import { useTranslations } from "next-intl";
+import { useParams } from "next/navigation";
+import { useState, useRef, useEffect } from "react";
+import { useFormContext, useWatch } from "react-hook-form";
+import enTranslations from "../../messages/en.json";
+import arTranslations from "../../messages/ar.json";
 
-const PlacesSearchDropdown = ({ name }) => {
-  const { setValue } = useFormContext();
+const PlacesSearchDropdown = ({ name, classes = {}, customOnChange }) => {
+  const translate = useTranslations("locations");
+  const { locale } = useParams();
+  const { setValue, control } = useFormContext();
   const [suggestions, setSuggestions] = useState([]);
-  const [selectedCity, setSelectedCity] = useState(null);
   const inputRef = useRef(null);
 
-  const initializeAutocomplete = () => {
-    if (typeof window !== "undefined" && window.google && inputRef.current) {
-      const service = new window.google.maps.places.AutocompleteService();
-      const placesService = new window.google.maps.places.PlacesService(
-        document.createElement("div")
-      );
+  const backendValue = useWatch({ name, control });
 
-      inputRef.current.addEventListener("input", () => {
-        const searchText = inputRef.current.value;
-        if (!searchText) {
-          setSuggestions([]);
-          return;
-        }
-
-        // Fetch place predictions
-        service.getPlacePredictions(
-          {
-            input: searchText,
-            types: ["(regions)"], // Establishments only
-            componentRestrictions: { country: "KW" }, // Kuwait only
-          },
-          (predictions, status) => {
-            if (
-              status === window.google.maps.places.PlacesServiceStatus.OK &&
-              predictions
-            ) {
-              setSuggestions(predictions);
-            } else {
-              setSuggestions([]);
-            }
-          }
-        );
-      });
+  useEffect(() => {
+    if (inputRef.current) {
+      if (backendValue) {
+        inputRef.current.value = translate(backendValue.city);
+      } else {
+        inputRef.current.value = ""; // Clear the input on reset
+      }
     }
+  }, [backendValue, translate]);
+
+  const handleInputChange = (e) => {
+    const searchText = e.target.value.toLowerCase();
+
+    if (!searchText) {
+      setSuggestions([]);
+      return;
+    }
+
+    const filtered = LOCATIONS_DATA.filter((loc) => {
+      const currentTranslation = translate(loc.city)?.toLowerCase() || "";
+      const englishTranslation =
+        enTranslations.locations[loc.city]?.toLowerCase() || "";
+      const arabicTranslation =
+        arTranslations.locations[loc.city]?.toLowerCase() || "";
+
+      return (
+        currentTranslation.includes(searchText) ||
+        englishTranslation.includes(searchText) ||
+        arabicTranslation.includes(searchText)
+      );
+    });
+
+    setSuggestions(filtered);
   };
 
-  const handleSelect = (suggestion) => {
-    const placesService = new window.google.maps.places.PlacesService(
-      document.createElement("div")
-    );
-
-    placesService.getDetails(
-      { placeId: suggestion.place_id },
-      (place, status) => {
-        if (status === window.google.maps.places.PlacesServiceStatus.OK) {
-          console.log({ place });
-          const cityData = {
-            address: place?.formatted_address,
-            lat: place.geometry.location.lat(),
-            lng: place.geometry.location.lng(),
-            city: place?.vicinity,
-            country: place.address_components[2].long_name ?? "Kuwait",
-          };
-
-          setSelectedCity(cityData);
-          setValue(name, cityData); // Set react-hook-form value
-          inputRef.current.value = place.name;
-          setSuggestions([]); // Clear suggestions
-        }
-      }
-    );
+  const handleSelect = (loc) => {
+    customOnChange && customOnChange(loc);
+    setValue(name, loc);
+    inputRef.current.value = translate(loc.city);
+    setSuggestions([]);
   };
 
   return (
-    <div className="flex flex-col items-center justify-center w-full">
-      {/* Load Google Maps API */}
-      <Script
-        src={`https://maps.googleapis.com/maps/api/js?key=${process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY}&libraries=places`}
-        strategy="lazyOnload"
-        onLoad={initializeAutocomplete}
-      />
-
-      {/* Input Field */}
-      <div className="relative w-full">
+    <div
+      className={`flex flex-col items-center justify-center w-full ${
+        classes.wrapper || ""
+      }`}
+    >
+      <div className={`relative w-full ${classes.inputWrapper || ""}`}>
         <input
           ref={inputRef}
           type="text"
-          placeholder="Search for a place..."
-          className="w-full py-2 px-4 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-emerald-600 outline-none"
-          autoComplete="off" // Prevent browser autocomplete
+          placeholder={
+            locale === "ar" ? "ابحث عن الموقع..." : "Search by location ..."
+          }
+          className={`w-full py-2 px-4 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-emerald-600 outline-none ${
+            classes.input || ""
+          }`}
+          onChange={handleInputChange}
+          autoComplete="off"
+          dir={locale === "ar" ? "rtl" : "ltr"}
         />
 
-        {/* Custom Suggestions Dropdown */}
         {suggestions.length > 0 && (
-          <ul className="absolute left-0 w-full bg-white border border-gray-200 shadow-lg rounded-md mt-1 max-h-48 overflow-auto z-50">
-            {suggestions.map((suggestion) => (
+          <ul
+            className={`absolute left-0 mt-2 w-full bg-white border border-gray-200 shadow-lg rounded-md max-h-48 overflow-auto z-50 ${
+              classes.dropdown || ""
+            }`}
+          >
+            {suggestions.map((loc) => (
               <li
-                key={suggestion.place_id}
-                className="p-2 hover:bg-gray-100 cursor-pointer"
-                onClick={() => handleSelect(suggestion)}
+                key={loc.city}
+                className={`p-2 hover:bg-gray-100 cursor-pointer ${
+                  classes.dropdownItem || ""
+                }`}
+                onClick={() => handleSelect(loc)}
               >
-                {suggestion.description}
+                {translate(loc.city)}
               </li>
             ))}
           </ul>

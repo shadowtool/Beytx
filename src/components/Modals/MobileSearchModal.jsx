@@ -34,7 +34,7 @@ const MobileSearchModal = ({
   });
 
   const handleLocationSelect = (location) => {
-    if (!selectedLocationsValue?.some((loc) => loc.id === location.id)) {
+    if (!selectedLocationsValue?.some((loc) => loc.city === location.city)) {
       setValue("selectedLocations", [
         ...(selectedLocationsValue || []),
         location,
@@ -45,8 +45,6 @@ const MobileSearchModal = ({
     }
     setValue("locationInput", "");
   };
-
-  console.log({ selectedLocationsValue });
 
   useEffect(() => {
     if (open) {
@@ -70,8 +68,6 @@ const MobileSearchModal = ({
       }
     }
   }, [selectedBedrooms, selectedLocationsValue]);
-
-  console.log({ locationsData });
 
   return (
     <ModalWrapper open={open} handleClose={handleClose}>
@@ -104,19 +100,19 @@ const MobileSearchModal = ({
                 <>
                   <div className={`mt-6 flex flex-wrap gap-2`}>
                     <AnimatePresence>
-                      {selectedLocationsValue?.map((el) => (
+                      {selectedLocationsValue?.map((el, idx) => (
                         <motion.div
-                          key={el.id}
+                          key={idx}
                           initial={{ opacity: 0, scale: 0.9 }}
                           animate={{ opacity: 1, scale: 1 }}
                           exit={{ opacity: 0, scale: 0.9 }}
                           transition={{ duration: 0.2 }}
-                          className="py-1 px-2   bg-green-100 shadow text-green-800 border border-green-800   flex items-center gap-2 cursor-pointer rounded-md"
+                          className="py-1 px-2 bg-green-100 shadow text-green-800 border border-green-800   flex items-center gap-2 cursor-pointer rounded-md"
                           onClick={() => {
                             setValue(
                               "selectedLocations",
                               selectedLocationsValue.filter(
-                                (loc) => loc.id !== el.id
+                                (loc) => loc.city !== el.city
                               )
                             );
                           }}
@@ -166,12 +162,12 @@ const MobileSearchModal = ({
                   className="w-full flex flex-col gap-2 pt-6 pb-28"
                 >
                   {locationsData
-                    ?.map((el, idx) => {
-                      return { ...el, id: idx + 1 };
+                    ?.filter((el) => {
+                      return el?.city?.includes(locationInputValue);
                     })
-                    .map((el) => (
+                    ?.map((el) => (
                       <div
-                        key={el.id}
+                        key={el.city}
                         className="py-2 flex items-center gap-2 cursor-pointer"
                         onClick={() => handleLocationSelect(el)}
                       >

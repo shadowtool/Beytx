@@ -13,22 +13,23 @@ import {
   uploadImage,
 } from "@/lib/queryFunctions";
 import { FormProvider, useForm, useWatch } from "react-hook-form";
-import { useUserInfoContext } from "@/context/UserInfoContext";
 import { updateUserMutation } from "@/lib/mutationFunctions";
 import { toast } from "react-toastify";
 import useMediaQuery from "@/hooks/useMediaQuery";
 import MobileDashboard from "@/components/Dashboard/MobileDashboard";
 import DesktopDashboard from "@/components/Dashboard/DesktopDashboard";
+import { useRouter } from "next/navigation";
+import ConfirmDeletePropertyModal from "@/components/Modals/ConfirmDeletePropertyModal";
 
 const TABS = [
-  { label: "Edit Profile", value: "editProfile", icon: <EditIcon size={18} /> },
+  { label: "editProfile", value: "editProfile", icon: <EditIcon size={18} /> },
   {
-    label: "My Listings",
+    label: "myListings",
     value: "my-listings",
     icon: <MyListingIcon size={18} />,
   },
   {
-    label: "Saved Listings",
+    label: "savedListings",
     value: "saved-listings",
     icon: <HeartIcon size={18} />,
   },
@@ -45,23 +46,32 @@ const index = () => {
 
   const formValues = useWatch({ control: methods.control });
 
-  const { userInfo } = useUserInfoContext();
+  const { data, status } = useSession();
+
+  const userInfo = data?.user ?? {};
 
   const queryClient = useQueryClient();
 
-  const { isLoading: fetchMyListingsLoading, data: properties } = useQuery({
-    queryKey: ["userProperties"],
-    queryFn: () => fetchPropertiesOfLoggedUser(userInfo?._id),
-    enabled: !!userInfo?._id,
+  const router = useRouter();
+
+  useEffect(() => {
+    if (status === "unauthenticated") {
+      router.push("/");
+    }
+  }, [userInfo]);
+
+  const { data: properties, refetch: refetchProperties } = useQuery({
+    queryKey: [ROUTES.GET_PROPERTIES, userInfo?.id],
+    queryFn: () => fetchPropertiesOfLoggedUser(userInfo?.id),
+    enabled: !!userInfo?.id,
   });
 
-  const { isLoading: fetchSavedListingsLoading, data: savedListings } =
-    useQuery({
-      queryKey: [ROUTES.GET_USER_SAVED_LISTINGS],
-      queryFn: () => fetchFavorites(userInfo?._id),
-      enabled: !!userInfo?._id,
-      refetchOnWindowFocus: false,
-    });
+  const { data: savedListings } = useQuery({
+    queryKey: [ROUTES.GET_USER_SAVED_LISTINGS],
+    queryFn: () => fetchFavorites(userInfo?.id),
+    enabled: !!userInfo?.id,
+    refetchOnWindowFocus: false,
+  });
 
   const { mutateAsync: updateUserData } = useMutation({
     mutationFn: (variables) => updateUserMutation(variables),
@@ -118,7 +128,7 @@ const index = () => {
     }
 
     await updateUserData({
-      userId: userInfo._id,
+      userId: userInfo.id,
       name: formValues?.name,
       email: formValues?.email,
       phoneNumber: formValues?.phoneNumber,
@@ -140,6 +150,7 @@ const index = () => {
     handleUpdate,
     properties,
     savedListings,
+    refetchProperties,
   };
 
   return (

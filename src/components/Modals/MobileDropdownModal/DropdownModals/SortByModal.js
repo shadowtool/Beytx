@@ -1,3 +1,4 @@
+import { SORT_OPTIONS } from "@/constants/constants";
 import { useTranslations } from "next-intl";
 import React from "react";
 import { useFormContext, useWatch } from "react-hook-form";
@@ -9,36 +10,9 @@ const SortByModal = () => {
 
   const translate = useTranslations("sortOptions");
 
-  const sortOptions = [
-    {
-      label: translate("price_asc"),
-      value: "price_asc",
-    },
-    {
-      label: translate("price_desc"),
-      value: "price_desc",
-    },
-    {
-      label: translate("listing_date"),
-      value: "listing_date",
-    },
-    {
-      label: translate("beds_asc"),
-      value: "beds_asc",
-    },
-    {
-      label: translate("beds_desc"),
-      value: "beds_desc",
-    },
-    {
-      label: translate("baths_asc"),
-      value: "baths_asc",
-    },
-    {
-      label: translate("baths_desc"),
-      value: "baths_desc",
-    },
-  ];
+  const sortOptions = SORT_OPTIONS?.map((el) => {
+    return { label: translate(el), value: el };
+  });
 
   return (
     <div className="flex flex-col gap-6 hide-scrollbar w-full h-fit p-8 ">

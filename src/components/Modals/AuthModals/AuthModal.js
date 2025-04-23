@@ -63,7 +63,6 @@ const AuthModal = ({ open, handleClose }) => {
         handleClose();
       }
     } catch (error) {
-      console.log({ error });
       toast.error(t("loginError"));
     }
   };
@@ -152,6 +151,7 @@ const AuthModal = ({ open, handleClose }) => {
                         <PasswordInput
                           name="loginPassword"
                           error={errors?.loginPassword}
+                          placeholder={t("enterYourPassword")}
                         />
 
                         <GeneralButton
@@ -187,7 +187,7 @@ const AuthModal = ({ open, handleClose }) => {
                             validation={{
                               required: t("passwordRequired"),
                               pattern: {
-                                value: /^(?=.*[A-Z])(?=.*[!@#$&*])(?=.{8,})/,
+                                value: /.{6,}/,
                                 message: t("passwordCriteria"),
                               },
                             }}

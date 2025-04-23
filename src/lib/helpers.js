@@ -1,3 +1,7 @@
+import Property from "@/models/Property";
+import User from "@/models/User";
+import dbConnect from "./mongodb";
+
 export const getAddressDetails = async (lat, lng) => {
   const apiKey = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY;
   const url = `https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${lng}&key=${apiKey}`;
@@ -51,4 +55,85 @@ export const getAddressDetails = async (lat, lng) => {
       country: "Unknown Country",
     };
   }
+};
+
+export const getJSONLDForPropertyDetails = (pageUrl, propertyData, locale) => {
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "RealEstateListing",
+    mainEntityOfPage: {
+      "@type": "WebPage",
+      "@id": pageUrl,
+    },
+    datePosted: `${new Date(propertyData?.createdAt)?.toLocaleDateString()}`,
+    breadcrumb: { "@id": `${pageUrl}#breadcrumb` },
+    primaryImageOfPage: {
+      "@type": "ImageObject",
+      url: `${propertyData?.images?.[0]}`,
+    },
+    itemOffered: {
+      "@type": `${propertyData?.type}`,
+      name: `${
+        locale === "en" ? propertyData?.title : propertyData?.titleArabic
+      }`,
+      description: "{{property.summary}}",
+      image: propertyData?.images?.join(","),
+      location: {
+        "@type": "location",
+        locationRegion: propertyData?.location?.city,
+        locationCountry: propertyData?.location?.country,
+      },
+      numberOfRooms: propertyData.bedrooms,
+      numberOfBathrooms: propertyData.bathrooms,
+      propertySize: {
+        "@type": "QuantitativeValue",
+        value: propertyData.size,
+      },
+      amenityFeature: propertyData?.amenities?.map((el) => {
+        return {
+          "@type": "LocationFeatureSpecification",
+          name: "el",
+          value: true,
+        };
+      }),
+    },
+  };
+
+  return jsonLd;
+};
+
+export const fetchPropertyFromDB = async (id) => {
+  await dbConnect();
+
+  let propertyData = await Property.findById(id)
+    .populate({
+      path: "userId",
+      select: "email phoneNumber name image",
+    })
+    .lean();
+
+  const similarProperties = await Property.find({
+    _id: { $ne: id },
+    "location.city": propertyData.location.city,
+    archived: { $ne: true },
+  }).limit(5);
+
+  propertyData.similarProperties = similarProperties?.map((el) => {
+    const { userId, _id, ...rest } = el.toObject?.() || el; // handle Mongoose docs or plain objects
+    return {
+      ...rest,
+      _id: _id?.toString(),
+    };
+  });
+
+  const finalPropertyData = {
+    ...propertyData,
+    _id: propertyData?._id?.toString(),
+    userId: {
+      ...propertyData?.userId,
+      _id: propertyData?.userId?._id?.toString(),
+    },
+  };
+
+  return finalPropertyData;
 };

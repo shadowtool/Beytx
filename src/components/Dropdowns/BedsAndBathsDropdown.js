@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useFormContext } from "react-hook-form";
 import { motion, AnimatePresence } from "framer-motion";
 import { DownIcon } from "@/imports/icons";
@@ -12,8 +12,8 @@ const BedsAndBathsDropdown = ({
 }) => {
   const { register, setValue, watch } = useFormContext();
   const [isOpen, setIsOpen] = useState(false);
-  const dropdownRef = useRef(null); // Reference to the dropdown
   const translate = useTranslations("filterKeys");
+  const dropdownRef = useRef(null); // Reference to the dropdown
 
   const beds = watch("beds");
   const baths = watch("baths");
@@ -21,13 +21,12 @@ const BedsAndBathsDropdown = ({
   const handleOptionClick = (field, value) => {
     setValue(field, value);
     if (field === "beds" && baths) {
-      setIsOpen(false); // Close if bathrooms are already selected
+      setIsOpen(false);
     } else if (field === "baths" && beds) {
-      setIsOpen(false); // Close if bedrooms are already selected
+      setIsOpen(false);
     }
   };
 
-  // Close dropdown when clicking outside
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
@@ -42,7 +41,10 @@ const BedsAndBathsDropdown = ({
   }, []);
 
   return (
-    <div ref={dropdownRef} className={`relative w-full ${classes.dropdown || ""}`}>
+    <div
+      ref={dropdownRef}
+      className={`relative w-full ${classes.dropdown || ""}`}
+    >
       <button
         type="button"
         onClick={() => setIsOpen(!isOpen)}

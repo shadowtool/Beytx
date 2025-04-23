@@ -24,6 +24,7 @@ module.exports = {
         background: "var(--background)",
         foreground: "var(--foreground)",
         deepCharcoal: "#333",
+        softGray: "#e4e4e4",
       },
       fontFamily: {
         montserrat: ["var(--font-montserrat)", "system-ui", "sans-serif"],

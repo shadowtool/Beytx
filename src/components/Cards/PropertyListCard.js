@@ -17,6 +17,10 @@ import { useParams, useRouter } from "next/navigation";
 import React from "react";
 import { AreaIcon, LocationIcon } from "@/imports/images";
 import Image from "next/image";
+import {
+  archivePropertyMutation,
+  deletePropertyMutation,
+} from "@/lib/mutationFunctions";
 
 const PropertyListCard = ({ property, cardType, selectedView }) => {
   const router = useRouter();
@@ -25,10 +29,14 @@ const PropertyListCard = ({ property, cardType, selectedView }) => {
 
   const queryClient = useQueryClient();
 
-  const cardsTranslations = useTranslations("cards");
+  const translateCards = useTranslations("cards");
+
+  const locationTranslations = useTranslations("locations");
+
+  const translatePropertyTypes = useTranslations("propertyTypes");
 
   const { mutate } = useMutation({
-    mutationFn: (propertyId) => deletePropertyMutation(propertyId),
+    mutationFn: (variables) => archivePropertyMutation(variables),
     onSuccess: () => {
       queryClient.invalidateQueries([ROUTES.GET_PROPERTIES]);
     },
@@ -38,12 +46,12 @@ const PropertyListCard = ({ property, cardType, selectedView }) => {
   });
 
   const deletePropertyCall = (id) => {
-    mutate(id);
+    mutate({ propertyId: id });
   };
   return (
     <div
       key={property?._id}
-      className="border rounded-lg max-h-48 bg-white flex items-center shadow-md hover:shadow-xl cursor-pointer transition-all duration-300 hover:scale-[1.02] relative overflow-hidden "
+      className="border rounded-lg max-h-36 bg-white flex items-center shadow-md hover:shadow-xl cursor-pointer transition-all duration-300 hover:scale-[1.005] relative overflow-hidden "
       onClick={() => {
         if (cardType !== "UserlistingCard") {
           return router.push(
@@ -52,56 +60,57 @@ const PropertyListCard = ({ property, cardType, selectedView }) => {
         }
       }}
     >
-      <div className="h-full w-full max-w-48 mr-8 relative">
+      <div className="h-full w-full max-w-36 mr-4 relative">
         <div
-          className={`absolute top-2 left-0 w-16 px-3 py-1 rounded-r-full text-white ${
-            property?.status === "sale"
-              ? "bg-emerald-800 border border-zinc-400 "
-              : "bg-red-800 border border-zinc-400 "
-          }`}
+          className={`absolute top-2 left-2 w-fit px-3 py-1 rounded-md text-white bg-emerald-600 text-xs`}
         >
-          {property?.status === "sale" ? "Buy" : "Rent"}
+          {property?.status === "sale"
+            ? translateCards("sale")
+            : translateCards("rent")}{" "}
         </div>
-        <img
+        <Image
           src={property?.images?.[0]}
-          alt={property?.title}
-          className="min-h-52 max-h-52 min-w-52 max-w-52 object-cover"
+          alt={locale === "en" ? property?.title : property?.titleArabic}
+          height={144}
+          width={144}
+          className="min-h-36 max-h-36 min-w-36 max-w-36 object-cover"
         />
       </div>
       <div className="p-4 flex w-full grow">
         <div className="flex-1">
-          <p className="text-pretty text-zinc-600">{property?.type}</p>
-          <p className="text-green-700    mt-1 mb-2  ">{property?.price} KWD</p>
-          <h3 className="  text-zinc-600    transition-colors duration-500">
-            {property?.title}
-          </h3>
+          <p className="text-pretty text-zinc-600">
+            {" "}
+            {translatePropertyTypes(property?.type?.toLowerCase())}
+          </p>
+          <p className="text-green-700 mt-1 mb-2">{property?.price} KWD</p>
+
           <div className="mt-2 flex flex-col items-start text-balance">
-            <p className="text-gray-500      flex items-center mb-2 mt-1 ">
+            <p className="text-gray-500 flex items-center mb-2 mt-1 ">
               <Image
                 src={LocationIcon}
                 alt="area-icon"
                 className="h-5 w-auto object-contain"
               />
-              {property?.location?.city}
+              {locationTranslations(property?.location?.city)}
             </p>
-            <div className="text-gray-500 mt-2 flex items-center space-x-2">
-              <p className="flex items-center  ">
+            <div className="text-gray-500 mt-2 flex items-center gap-2">
+              <p className="flex items-center ltr:flex-row rtl:flex-row-reverse">
                 <BedIcon size={14} className="mr-1" />
-                {property?.bedrooms} {cardsTranslations("beds")}
+                {property?.bedrooms} {translateCards("beds")}
               </p>
               <div className="border-l border-gray-300 h-6 mx-2"></div>
-              <p className="flex items-center  ">
+              <p className="flex items-center ltr:flex-row rtl:flex-row-reverse">
                 <BathroomIcon size={14} className="mr-1" />
-                {property?.bathrooms} {cardsTranslations("baths")}
+                {property?.bathrooms} {translateCards("baths")}
               </p>
               <div className="border-l border-gray-300 h-6 mx-2"></div>
-              <p className="flex items-center  ">
+              <p className="flex items-center ltr:flex-row rtl:flex-row-reverse">
                 <Image
                   src={AreaIcon}
                   alt="area-icon"
                   className="h-5 w-auto object-contain"
                 />
-                {property?.size} Sq. ft.
+                {property?.size} {translateCards("areaNotation")}
               </p>
             </div>
           </div>
@@ -113,16 +122,16 @@ const PropertyListCard = ({ property, cardType, selectedView }) => {
             <>
               <div className="flex gap-2 w-full">
                 <button
-                  className="text-white px-4 py-2 rounded-md flex max-h-10 items-center bg-green-600 backdrop-blur      w-full grow"
+                  className="text-white px-4 py-2 rounded-md flex max-h-10 items-center bg-green-600 backdrop-blur w-full grow gap-1 ltr:flex-row rtl:flex-row-reverse"
                   onClick={() => {
                     router.push(`/${locale}/properties/${property?._id}`);
                   }}
                 >
                   <ViewIcon size={21} color="#fff" className="mr-2" />
-                  {cardsTranslations("view")}
+                  {translateCards("view")}
                 </button>
                 <button
-                  className="text-white px-4 py-2 rounded-md flex max-h-10 items-center bg-green-600 backdrop-blur      w-full grow"
+                  className="text-white px-4 py-2 rounded-md flex max-h-10 items-center bg-amber-500 backdrop-blur w-full grow gap-1 ltr:flex-row rtl:flex-row-reverse"
                   onClick={() => {
                     router.push(
                       `/${locale}/properties/create/${property?._id}`
@@ -130,30 +139,30 @@ const PropertyListCard = ({ property, cardType, selectedView }) => {
                   }}
                 >
                   <EditIcon size={21} color="#fff" className="mr-2" />
-                  {cardsTranslations("edit")}
+                  {translateCards("edit")}
                 </button>
 
                 <button
-                  className="text-white px-4 py-2 rounded-md flex max-h-10 items-center bg-green-600 backdrop-blur      w-full grow"
+                  className="text-white px-4 py-2 rounded-md flex max-h-10 items-center bg-red-700 backdrop-blur w-full grow gap-1 ltr:flex-row rtl:flex-row-reverse"
                   onClick={() => {
                     deletePropertyCall(property?._id);
                   }}
                 >
                   <DeleteIcon size={21} color="#fff" className="mr-2" />
-                  {cardsTranslations("delete")}
+                  {translateCards("delete")}
                 </button>
               </div>
             </>
           ) : (
             <>
               <div className="flex gap-2 w-full">
-                <button className="text-white px-4 py-2 rounded-md flex max-h-10 items-center bg-green-600 backdrop-blur      w-full grow">
+                <button className="text-white px-4 py-2 rounded-md flex max-h-10 items-center bg-green-600 backdrop-blur w-full grow gap-1 ltr:flex-row rtl:flex-row-reverse">
                   <CallIcon size={21} color="#fff" className="mr-2" />
-                  {cardsTranslations("call")}{" "}
+                  {translateCards("call")}{" "}
                 </button>
-                <button className="text-white px-4 py-2 rounded-md flex max-h-10 items-center bg-green-600 backdrop-blur      w-full grow">
+                <button className="text-white px-4 py-2 rounded-md flex max-h-10 items-center bg-green-600 backdrop-blur w-full grow gap-1 ltr:flex-row rtl:flex-row-reverse">
                   <WhatsappIcon size={21} color="#fff" className="mr-2" />
-                  {cardsTranslations("whatsapp")}{" "}
+                  {translateCards("whatsapp")}{" "}
                 </button>
               </div>
             </>

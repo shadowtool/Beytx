@@ -1,4 +1,8 @@
+const { LOCATIONS_DATA } = require("../lib/locationsData");
+const enValues = require("../messages/en.json");
+const arValues = require("../messages/ar.json");
 const fs = require("fs");
+const { default: mongoose } = require("mongoose");
 
 // Constants
 const AMENITIES = [
@@ -19,9 +23,11 @@ const AMENITIES = [
   "BBQ Area",
 ];
 
-const USER_ID = { $oid: "67a8a8d5ec37a87285c9fb6b" };
-const ARCHIVED = true;
-const FEATURED = true;
+const USER_ID = {
+  $oid: "679d428b7bad2c2166dfe3ec",
+};
+const ARCHIVED = false;
+const FEATURED = false;
 
 const PROPERTY_TYPES = ["Villa", "Apartment", "Office", "Townhouse", "Land"];
 const STATUS_OPTIONS = ["sale", "rent"];
@@ -41,78 +47,7 @@ const IMAGE_POOL = [
   "https://images.unsplash.com/photo-1580587771525-78b9dba3b914",
 ];
 
-const LOCATIONS = [
-  {
-    lat: "29.3375",
-    lng: "48.0285",
-    city: "Salmiya",
-    country: "Kuwait",
-    address: "Block 10, Street 5",
-  },
-  {
-    lat: "29.3069",
-    lng: "47.9861",
-    city: "Hawally",
-    country: "Kuwait",
-    address: "Block 3, Avenue 6",
-  },
-  {
-    lat: "29.3551",
-    lng: "47.9902",
-    city: "Jabriya",
-    country: "Kuwait",
-    address: "Street 2, House 11",
-  },
-  {
-    lat: "29.2958",
-    lng: "48.0317",
-    city: "Bayan",
-    country: "Kuwait",
-    address: "Street 4, Block 6",
-  },
-  {
-    lat: "29.2734",
-    lng: "47.9786",
-    city: "Mishref",
-    country: "Kuwait",
-    address: "Villa 15, Block 7",
-  },
-  {
-    lat: "29.3626",
-    lng: "47.9697",
-    city: "Farwaniya",
-    country: "Kuwait",
-    address: "Near Roundabout, Block 9",
-  },
-  {
-    lat: "29.2547",
-    lng: "48.0488",
-    city: "Egaila",
-    country: "Kuwait",
-    address: "Seaside Road, Plot 21",
-  },
-  {
-    lat: "29.3115",
-    lng: "47.9812",
-    city: "Kuwait City",
-    country: "Kuwait",
-    address: "Sky Tower, Floor 8",
-  },
-  {
-    lat: "29.3367",
-    lng: "48.0045",
-    city: "Shaab",
-    country: "Kuwait",
-    address: "Villa 20, Block 3",
-  },
-  {
-    lat: "29.2943",
-    lng: "48.0569",
-    city: "Rumaithiya",
-    country: "Kuwait",
-    address: "Street 12, House 6",
-  },
-];
+const LOCATIONS = LOCATIONS_DATA;
 
 // Helper functions
 function getRandomItem(arr) {
@@ -133,8 +68,8 @@ function getRandomInt(min, max) {
   return Math.floor(Math.random() * (max - min + 1) + min);
 }
 
-function generateDescription(title, type, city) {
-  return `<p><strong>${title}</strong></p><p>This beautiful ${type.toLowerCase()} is located in ${city} offering comfort, style, and convenience for all types of buyers or renters.</p>`;
+function generateDescription(type, city) {
+  return `<p>This beautiful ${type.toLowerCase()} is located in ${city} offering comfort, style, and convenience for all types of buyers or renters. It is also equipped with modern amenities and facilities, making it an ideal choice for a luxurious lifestyle.</p>`;
 }
 
 // Generator
@@ -144,7 +79,6 @@ function generateProperties(count = 20) {
   for (let i = 0; i < count; i++) {
     const type = getRandomItem(PROPERTY_TYPES);
     const location = getRandomItem(LOCATIONS);
-    const title = `${type.toLowerCase()} in ${location.city.toLowerCase()}`;
     const bedrooms =
       type === "Office" || type === "Land" ? 0 : getRandomInt(1, 6);
     const bathrooms = type === "Land" ? 0 : getRandomInt(1, 6);
@@ -153,8 +87,29 @@ function generateProperties(count = 20) {
     const price =
       status === "sale" ? getRandomInt(100000, 999999) : getRandomInt(100, 999);
 
+    const bedroomText =
+      bedrooms > 0
+        ? `${bedrooms} ${enValues?.createPropertyPage?.bedrooms}`
+        : "";
+    const title = `${bedroomText} ${
+      enValues.propertyTypes[type.toLowerCase()]
+    } ${enValues?.createPropertyPage?.for} ${
+      enValues.createPropertyPage[status.toLowerCase()]
+    } ${enValues?.createPropertyPage?.in} ${enValues.locations[location.city]}`;
+
+    const bedroomTextArabic =
+      bedrooms > 0
+        ? `${bedrooms} ${arValues?.createPropertyPage?.bedrooms}`
+        : "";
+    const titleArabic = `${bedroomTextArabic} ${
+      arValues.propertyTypes[type.toLowerCase()]
+    } ${arValues?.createPropertyPage?.for} ${
+      arValues.createPropertyPage[status.toLowerCase()]
+    } ${arValues?.createPropertyPage?.in} ${arValues.locations[location.city]}`;
+
     const property = {
       title,
+      titleArabic,
       status,
       price,
       location,
@@ -162,12 +117,14 @@ function generateProperties(count = 20) {
       type,
       bedrooms,
       bathrooms,
-      description: generateDescription(title, type, location.city),
+      description: generateDescription(type, location.city),
       images: getRandomImages(),
       amenities: getRandomAmenities(),
       userId: USER_ID,
       archived: ARCHIVED,
       featured: FEATURED,
+      createdAt: new Date(),
+      updatedAt: new Date(),
     };
 
     properties.push(property);
@@ -176,7 +133,5 @@ function generateProperties(count = 20) {
   return properties;
 }
 
-// Main Execution
-const properties = generateProperties(30); // Change this number as needed
+const properties = generateProperties(10);
 fs.writeFileSync("properties.json", JSON.stringify(properties, null, 2));
-console.log("✅ properties.json generated with", properties.length, "entries!");

@@ -6,8 +6,6 @@ import {
   CallIcon,
   DeleteIcon,
   EditIcon,
-  MailIcon,
-  ShareIcon,
   WhatsappIcon,
 } from "@/imports/icons";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
@@ -16,33 +14,49 @@ import { useParams, useRouter } from "next/navigation";
 import React, { useState } from "react";
 import { motion } from "framer-motion";
 import LikeButton from "../Misc/LikeButton";
-import { toggleListingInSavedListings } from "@/lib/mutationFunctions";
+import {
+  archivePropertyMutation,
+  deletePropertyMutation,
+  toggleListingInSavedListings,
+} from "@/lib/mutationFunctions";
 import { useSession } from "next-auth/react";
 import { AreaIcon, LocationIcon } from "@/imports/images";
 import Image from "next/image";
+import { toast } from "react-toastify";
+import { useModal } from "@/context/ModalContext";
 
 const MobilePropertyCard = ({ property, cardType }) => {
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
-  const [isLiked, setIsLiked] = useState(false);
+  const [isLiked, setIsLiked] = useState(property?.isLiked || false);
   const { locale } = useParams();
   const router = useRouter();
   const queryClient = useQueryClient();
   const cardsTranslations = useTranslations("cards");
   const translatePropertyTypes = useTranslations("propertyTypes");
+  const locationTranslations = useTranslations("locations");
   const { data: session } = useSession();
+  const { openModal } = useModal();
 
-  const { mutate: deleteProperty } = useMutation({
-    mutationFn: (propertyId) => deletePropertyMutation(propertyId),
-    onSuccess: () => {
-      queryClient.invalidateQueries([ROUTES.GET_PROPERTIES]);
+  const { mutate } = useMutation({
+    mutationFn: (variables) => archivePropertyMutation(variables),
+    onSuccess: async () => {
+      queryClient.refetchQueries({
+        queryKey: [ROUTES.GET_PROPERTIES],
+        exact: false,
+      });
+      toast.dismiss();
+      toast.success(cardsTranslations("deletePropertySuccess"));
     },
     onError: (error) => {
-      console.error(cardsTranslations("errorArchivingProperty"), error);
+      toast.dismiss();
+      toast.error(cardsTranslations("errorDeletingProperty"));
+      console.error("Error archiving property:", error);
     },
   });
 
-  const deletePropertyCall = (id) => {
-    deleteProperty(id);
+  const archivePropertyCall = (id) => {
+    toast.loading(cardsTranslations("loadingDeleteProperty"));
+    mutate({ propertyId: id });
   };
 
   const [dragging, setDragging] = useState(false); // Track if user is dragging
@@ -50,18 +64,6 @@ const MobilePropertyCard = ({ property, cardType }) => {
   const images = property?.images ?? [
     "https://images.pexels.com/photos/28216688/pexels-photo-28216688/free-photo-of-autumn-camping.png",
   ];
-
-  const handleSwipe = (offsetX) => {
-    if (offsetX > 100) {
-      setSelectedImageIndex((prevIndex) =>
-        prevIndex === 0 ? images.length - 1 : prevIndex - 1
-      );
-    } else if (offsetX < -100) {
-      setSelectedImageIndex((prevIndex) =>
-        prevIndex === images.length - 1 ? 0 : prevIndex + 1
-      );
-    }
-  };
 
   const handleSwipeRelease = (offsetX, velocityX) => {
     if (offsetX > 200 || velocityX > 0.5) {
@@ -79,16 +81,21 @@ const MobilePropertyCard = ({ property, cardType }) => {
     mutationFn: () =>
       toggleListingInSavedListings(session?.user?.id, property?._id),
     onSuccess: () => {
-      queryClient.invalidateQueries([
-        ROUTES.GET_USER_SAVED_LISTINGS,
-        ROUTES.GET_PROPERTIES,
-      ]);
+      queryClient.refetchQueries({
+        queryKey: [ROUTES.GET_USER_SAVED_LISTINGS],
+        exact: false,
+      });
     },
   });
 
   return (
     <div
       key={property?._id}
+      onClick={() => {
+        return router.push(
+          `/${locale}/${property?.status}/${property?.location?.country}/${property?.location?.city}/${property?._id}`
+        );
+      }}
       className="w-full border bg-white shadow-md hover:shadow-xl cursor-pointer relative overflow-hidden"
     >
       <div className="relative h-52">
@@ -143,22 +150,17 @@ const MobilePropertyCard = ({ property, cardType }) => {
         {cardType !== "userListing" && cardType !== "savedListing" && (
           <div className="min-h-10 max-h-10 min-w-10 max-w-10 flex items-center justify-center rounded-full shadow absolute top-4 right-4 bg-white">
             <LikeButton
-              isLiked={property?.isLiked}
-              onClick={async () => {
+              isLiked={isLiked}
+              onClick={async (e) => {
+                setIsLiked(!isLiked);
+                e.stopPropagation();
                 await toggleSaveListing();
               }}
             />
           </div>
         )}
       </div>
-      <div
-        className="p-4 flex"
-        onClick={() => {
-          return router.push(
-            `/${locale}/${property?.status}/${property?.location?.country}/${property?.location?.city}/${property?._id}`
-          );
-        }}
-      >
+      <div className="p-4 flex">
         <div className="flex-1">
           <p className="text-zinc-600">
             {translatePropertyTypes(property?.type?.toLowerCase())}
@@ -171,9 +173,9 @@ const MobilePropertyCard = ({ property, cardType }) => {
                 alt={"location-icon"}
                 className="h-5 w-auto object-contain"
               />
-              {property?.location?.city}
+              {locationTranslations(property?.location?.city)}
             </p>
-            <div className="text-gray-500 mt-2 flex items-center space-x-2">
+            <div className="text-gray-500 mt-2 flex items-center gap-2">
               <p className="flex items-center  ">
                 <BedIcon size={14} className="mr-1" />
                 {property?.bedrooms} {cardsTranslations("beds")}
@@ -202,8 +204,9 @@ const MobilePropertyCard = ({ property, cardType }) => {
             <>
               <div className="flex gap-2 w-full">
                 <button
-                  className="text-white px-0 pl-2 md:px-4 py-2 rounded-md flex items-center bg-green-600 backdrop-blur   md:     w-full grow"
-                  onClick={() => {
+                  className="text-white px-0 pl-2 md:px-4 py-2 rounded-md flex items-center bg-amber-500 backdrop-blur w-full grow"
+                  onClick={(e) => {
+                    e.stopPropagation();
                     router.push(
                       `/${locale}/properties/create/${property?._id}`
                     );
@@ -214,9 +217,12 @@ const MobilePropertyCard = ({ property, cardType }) => {
                 </button>
 
                 <button
-                  className="text-white px-0 pl-2 md:px-4 py-2 rounded-md flex items-center bg-green-600 backdrop-blur   md:     w-full grow"
-                  onClick={() => {
-                    deletePropertyCall(property?._id);
+                  className="text-white px-0 pl-2 md:px-4 py-2 rounded-md flex items-center bg-red-700 backdrop-blur   md:     w-full grow"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    openModal("deleteConfirmation", {
+                      onConfirm: () => archivePropertyCall(property?._id),
+                    });
                   }}
                 >
                   <DeleteIcon size={18} color="#fff" className="mr-2" />
@@ -224,17 +230,50 @@ const MobilePropertyCard = ({ property, cardType }) => {
                 </button>
               </div>
             </>
+          ) : cardType === "savedListing" ? (
+            <>
+              <button
+                className="text-white px-0 pl-2 md:px-4 py-2 rounded-md flex items-center bg-red-700 backdrop-blur text-xs md:text-sm w-full grow"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  toggleSaveListing();
+                }}
+              >
+                <DeleteIcon size={18} color="#fff" className="mr-2" />
+                {cardsTranslations("removeSavedListing")}
+              </button>
+            </>
           ) : (
             <>
               <div className="flex gap-2 w-full">
-                <button className="text-white px-0 pl-2 md:px-4 py-2 rounded-md flex items-center justify-center bg-green-600 backdrop-blur w-full grow">
+                <a
+                  href={`tel:${property?.userId?.phoneNumber.replace(
+                    /\s/g,
+                    ""
+                  )}`}
+                  className="text-white px-0 pl-2 md:px-4 py-2 rounded-md flex items-center justify-center bg-green-600 backdrop-blur w-full grow"
+                  onClick={(e) => e.stopPropagation()}
+                >
                   <CallIcon size={18} color="#fff" className="mr-2" />
-                  <span className="flex items-center">{cardsTranslations("call")}</span>
-                </button>
-                <button className="text-white px-0 pl-2 md:px-4 py-2 rounded-md flex items-center justify-center bg-green-600 backdrop-blur w-full grow">
+                  <span className="flex items-center">
+                    {cardsTranslations("call")}
+                  </span>
+                </a>
+                <a
+                  href={`https://wa.me/${property?.userId?.phoneNumber.replace(
+                    /\s/g,
+                    ""
+                  )}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-white px-0 pl-2 md:px-4 py-2 rounded-md flex items-center justify-center bg-green-600 backdrop-blur w-full grow"
+                  onClick={(e) => e.stopPropagation()}
+                >
                   <WhatsappIcon size={18} color="#fff" className="mr-2" />
-                  <span className="flex items-center">{cardsTranslations("whatsapp")}</span>
-                </button>
+                  <span className="flex items-center">
+                    {cardsTranslations("whatsapp")}
+                  </span>
+                </a>
               </div>
             </>
           )}

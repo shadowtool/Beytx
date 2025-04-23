@@ -1,4 +1,3 @@
-import { axiosInstance } from "@/lib/axios";
 import { ROUTES } from "@/constants/routes";
 import {
   BathroomIcon,
@@ -6,22 +5,24 @@ import {
   CallIcon,
   DeleteIcon,
   EditIcon,
-  HeartFilledIcon,
-  HeartIcon,
-  MailIcon,
   WhatsappIcon,
 } from "@/imports/icons";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useTranslations } from "next-intl";
 import { useParams, useRouter } from "next/navigation";
 import React from "react";
-import { toggleListingInSavedListings } from "@/lib/mutationFunctions";
+import {
+  archivePropertyMutation,
+  toggleListingInSavedListings,
+} from "@/lib/mutationFunctions";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
 import { AreaIcon, LocationIcon } from "@/imports/images";
 import LikeButton from "../Misc/LikeButton";
+import { toast } from "react-toastify";
+import { useModal } from "@/context/ModalContext";
 
-const PropertyCard = ({ property, cardType, selectedView }) => {
+const PropertyCard = ({ property, cardType }) => {
   const { locale } = useParams();
 
   const router = useRouter();
@@ -29,22 +30,35 @@ const PropertyCard = ({ property, cardType, selectedView }) => {
   const queryClient = useQueryClient();
 
   const translateCards = useTranslations("cards");
+
+  const locationTranslations = useTranslations("locations");
+
   const translatePropertyTypes = useTranslations("propertyTypes");
 
   const { data: session } = useSession();
 
+  const { openModal } = useModal();
+
   const { mutate } = useMutation({
-    mutationFn: (propertyId) => deletePropertyMutation(propertyId),
-    onSuccess: () => {
-      queryClient.invalidateQueries([ROUTES.GET_PROPERTIES]);
+    mutationFn: (variables) => archivePropertyMutation(variables),
+    onSuccess: async () => {
+      queryClient.refetchQueries({
+        queryKey: [ROUTES.GET_PROPERTIES],
+        exact: false,
+      });
+      toast.dismiss();
+      toast.success(translateCards("deletePropertySuccess"));
     },
     onError: (error) => {
+      toast.dismiss();
+      toast.error(translateCards("errorDeletingProperty"));
       console.error("Error archiving property:", error);
     },
   });
 
-  const deletePropertyCall = (id) => {
-    mutate(id);
+  const archivePropertyCall = (id) => {
+    toast.loading(translateCards("loadingDeleteProperty"));
+    mutate({ propertyId: id });
   };
 
   const { mutateAsync: toggleSaveListing } = useMutation({
@@ -80,9 +94,11 @@ const PropertyCard = ({ property, cardType, selectedView }) => {
           />
         </div>
       )}
-      <img
+      <Image
+        height={200}
+        width={800}
         src={property?.images?.[0]}
-        alt={property?.title}
+        alt={locale === "en" ? property?.title : property?.titleArabic}
         className="w-full h-36 md:h-48 object-cover"
       />
       <div className="p-2 md:p-4 flex">
@@ -93,20 +109,16 @@ const PropertyCard = ({ property, cardType, selectedView }) => {
             </p>
             <span
               className={`px-3 py-1 rounded-md text-white text-xs ${
-                property?.status === "sale"
-                  ? "bg-emerald-600"
-                  : "bg-amber-600"
+                property?.status === "sale" ? "bg-emerald-600" : "bg-amber-600"
               }`}
             >
               {property?.status === "sale"
-                ? translateCards("forSale")
-                : translateCards("forRent")}
+                ? translateCards("sale")
+                : translateCards("rent")}
             </span>
           </div>
           <h4 className="text-green-700 mt-1 mb-2">{property?.price} KWD</h4>
-          <p className="text-zinc-600 transition-colors duration-500">
-            {property?.title}
-          </p>
+
           <div className="mt-2 flex flex-col items-start text-balance">
             <p className="text-gray-500 flex items-center mb-2 mt-1 ">
               <Image
@@ -114,34 +126,40 @@ const PropertyCard = ({ property, cardType, selectedView }) => {
                 alt="area-icon"
                 className="h-5 w-auto object-contain"
               />
-              {property?.location?.city}
+              {locationTranslations(property?.location?.city)}
             </p>
-            <div className="text-gray-500 mt-2 flex items-center space-x-2">
-              <p className="flex items-center">
-                <BedIcon size={14} className="mr-1" />
-                <span className="text-xs">{property?.bedrooms} </span>
-                <span className="text-xs hidden md:inline ml-1">
-                  {translateCards("beds")}
+            <div className="text-gray-500 mt-2 flex items-center gap-2">
+              <p className="flex items-center gap-1 ltr:flex-row rtl:flex-row-reverse">
+                <BedIcon size={14} />
+                <span className="text-xs flex gap-1">
+                  {property?.bedrooms}
+                  <span className="text-xs hidden md:inline">
+                    {translateCards("beds")}
+                  </span>
                 </span>
               </p>
               <div className="border-l border-gray-300 h-6 mx-2"></div>
-              <p className="flex items-center">
-                <BathroomIcon size={14} className="mr-1" />
-                <span className="text-xs">{property?.bathrooms} </span>
-                <span className="text-xs hidden md:inline ml-1">
-                  {translateCards("baths")}
+              <p className="flex items-center gap-1 ltr:flex-row rtl:flex-row-reverse">
+                <BathroomIcon size={14} />
+                <span className="text-xs flex gap-1">
+                  {property?.bathrooms}
+                  <span className="text-xs hidden md:inline">
+                    {translateCards("baths")}
+                  </span>
                 </span>
               </p>
               <div className="border-l border-gray-300 h-6 mx-2"></div>
-              <p className="flex items-center">
+              <p className="flex items-center gap-1 ltr:flex-row rtl:flex-row-reverse">
                 <Image
                   src={AreaIcon}
                   alt="area-icon"
                   className="h-5 w-auto object-contain"
                 />
-                {property?.size}{" "}
-                <span className="ml-1  text-xs">
-                  {translateCards("areaNotation")}
+                <span className="text-xs flex gap-1">
+                  {property?.size}
+                  <span className="text-xs hidden md:inline">
+                    {translateCards("areaNotation")}
+                  </span>
                 </span>
               </p>
             </div>
@@ -157,7 +175,7 @@ const PropertyCard = ({ property, cardType, selectedView }) => {
             <>
               <div className="flex gap-2 w-full">
                 <button
-                  className="text-white px-0 pl-2 md:px-4 py-2 rounded-md flex items-center bg-green-600 backdrop-blur text-xs md:text-sm w-full grow"
+                  className="text-white px-0 pl-2 md:px-4 py-2 rounded-md flex items-center bg-amber-500 backdrop-blur text-xs md:text-sm w-full grow gap-1 ltr:flex-row rtl:flex-row-reverse"
                   onClick={() => {
                     router.push(
                       `/${locale}/properties/create/${property?._id}`
@@ -169,9 +187,11 @@ const PropertyCard = ({ property, cardType, selectedView }) => {
                 </button>
 
                 <button
-                  className="text-white px-0 pl-2 md:px-4 py-2 rounded-md flex items-center bg-red-700 backdrop-blur text-xs md:text-sm w-full grow"
+                  className="text-white px-0 pl-2 md:px-4 py-2 rounded-md flex items-center bg-red-700 backdrop-blur text-xs md:text-sm w-full grow gap-1 ltr:flex-row rtl:flex-row-reverse"
                   onClick={() => {
-                    deletePropertyCall(property?._id);
+                    openModal("deleteConfirmation", {
+                      onConfirm: () => archivePropertyCall(property?._id),
+                    });
                   }}
                 >
                   <DeleteIcon size={18} color="#fff" className="mr-2" />
@@ -182,7 +202,7 @@ const PropertyCard = ({ property, cardType, selectedView }) => {
           ) : cardType === "savedListing" ? (
             <>
               <button
-                className="text-white px-0 pl-2 md:px-4 py-2 rounded-md flex items-center bg-red-700 backdrop-blur text-xs md:text-sm w-full grow"
+                className="text-white px-0 pl-2 md:px-4 py-2 rounded-md flex items-center bg-red-700 backdrop-blur text-xs md:text-sm w-full grow gap-1 ltr:flex-row rtl:flex-row-reverse"
                 onClick={() => toggleSaveListing()}
               >
                 <DeleteIcon size={18} color="#fff" className="mr-2" />
@@ -192,14 +212,35 @@ const PropertyCard = ({ property, cardType, selectedView }) => {
           ) : (
             <>
               <div className="flex gap-2 w-full">
-                <button className="text-white px-3 md:px-4 py-2 rounded-md flex items-center justify-center bg-green-600 backdrop-blur text-xs md:text-sm w-full grow max-w-fit md:max-w-full">
+                <a
+                  href={`tel:${property?.userId?.phoneNumber.replace(
+                    /\s/g,
+                    ""
+                  )}`}
+                  onClick={(e) => e.stopPropagation()}
+                  className="text-white px-3 md:px-4 py-2 rounded-md flex items-center justify-center bg-green-600 backdrop-blur text-xs md:text-sm w-full grow max-w-fit md:max-w-full gap-1 ltr:flex-row rtl:flex-row-reverse"
+                >
                   <CallIcon size={18} color="#fff" className="mr-2" />
-                  <span className="flex items-center">{translateCards("call")}</span>
-                </button>
-                <button className="text-white px-0 pl-2 md:px-4 py-2 rounded-md flex items-center justify-center bg-green-600 backdrop-blur text-xs md:text-sm w-full grow">
+                  <span className="flex items-center">
+                    {translateCards("call")}
+                  </span>
+                </a>
+
+                <a
+                  href={`https://wa.me/${property?.userId?.phoneNumber.replace(
+                    /\s/g,
+                    ""
+                  )}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-white px-0 pl-2 md:px-4 py-2 rounded-md flex items-center justify-center bg-green-600 backdrop-blur text-xs md:text-sm w-full grow gap-1 ltr:flex-row rtl:flex-row-reverse"
+                  onClick={(e) => e.stopPropagation()}
+                >
                   <WhatsappIcon size={18} color="#fff" className="mr-2" />
-                  <span className="flex items-center">{translateCards("whatsapp")}</span>
-                </button>
+                  <span className="flex items-center">
+                    {translateCards("whatsapp")}
+                  </span>
+                </a>
               </div>
             </>
           )}

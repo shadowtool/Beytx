@@ -10,7 +10,7 @@ import { useTranslations } from "next-intl";
 import AuthModal from "../Modals/AuthModals/AuthModal";
 import GeneralButton from "../Buttons/GeneralButton";
 
-export default function AuthButton({ buttonClasses }) {
+export default function AuthButton() {
   const translate = useTranslations("userOptions");
 
   const [showEditProfileModal, setShowEditProfileModal] = useState(false);
@@ -40,7 +40,9 @@ export default function AuthButton({ buttonClasses }) {
                 setShowProfileOptions(!showProfileOptions);
               }}
             >
-              <p className="hidden md:block">{session?.user?.name}</p>
+              <p className="hidden md:block whitespace-nowrap">
+                {session?.user?.name}
+              </p>
               <UserIcon size={21} color="#fff" />
             </GeneralButton>
             {showProfileOptions && (
@@ -69,6 +71,7 @@ export default function AuthButton({ buttonClasses }) {
         </ClickAwayListener>
       ) : (
         <GeneralButton
+          id="login-button"
           type="outlined"
           className="text-white border-white flex items-center gap-2 !py-3 !px-4 hover:bg-transparent max-w-fit"
           onClick={() => {

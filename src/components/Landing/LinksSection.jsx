@@ -18,9 +18,9 @@ const LinksSection = () => {
     queryKey: [ROUTES.GET_LOCATIONS],
     queryFn: fetchCities,
   });
-
   const LINKS = locationsData
-    ?.map((location) =>
+    ?.slice(0, 5) // Limit to top 5 locations
+    .map((location) =>
       PROPERTY_TYPES.map((type) => ({
         type,
         city: location.city,

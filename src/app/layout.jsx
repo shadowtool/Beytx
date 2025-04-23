@@ -1,11 +1,7 @@
-"use client";
-import { Montserrat, Playfair_Display, Raleway, Lato } from "next/font/google";
-import { SessionProvider } from "next-auth/react";
+import ContextWrapper from "@/context/ContextWrapper";
 import "./globals.css";
-import { ToastContainer } from "react-toastify";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { UserInfoProvider } from "@/context/UserInfoContext";
-import { useParams } from "next/navigation";
+import { Montserrat, Raleway } from "next/font/google";
+import { cookies } from "next/headers";
 
 const montserrat = Montserrat({
   subsets: ["latin"],
@@ -20,22 +16,16 @@ const raleway = Raleway({
 });
 
 export default function RootLayout({ children }) {
-  const queryClient = new QueryClient();
+  const cookieStore = cookies();
 
-  const { locale } = useParams();
+  const lang = cookieStore.get("lang")?.value || "en";
+
   return (
-    <html lang={locale ?? "en"}>
+    <html lang={lang} hrefLang={lang} dir={lang === "ar" ? "rtl" : "ltr"}>
       <body
         className={`${montserrat.variable} ${raleway.variable} antialiased`}
       >
-        <QueryClientProvider client={queryClient}>
-          <SessionProvider>
-            <UserInfoProvider>
-              <>{children}</>
-            </UserInfoProvider>
-            <ToastContainer />
-          </SessionProvider>
-        </QueryClientProvider>
+        <ContextWrapper>{children}</ContextWrapper>
       </body>
     </html>
   );

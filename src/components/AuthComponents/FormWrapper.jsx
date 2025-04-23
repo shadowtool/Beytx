@@ -21,7 +21,7 @@ const FormWrapper = ({ children }) => {
             alt="logo-image"
             className="h-24 w-auto object-contain relative z-[2]"
           />
-          <h5 className="     text-white relative z-[2] mt-8">
+          <h5 className="text-white relative z-[2] mt-8">
             List. Rent. Buy. <br /> Sign Up Today!
           </h5>
         </div>

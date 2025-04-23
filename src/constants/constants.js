@@ -30,34 +30,13 @@ export const CREATOR_ACTIONS = [
 export const LIBRARIES = ["places"];
 
 export const SORT_OPTIONS = [
-  {
-    label: "Price - Low to High",
-    value: "price_asc",
-  },
-  {
-    label: "Price - High to Low",
-    value: "price_desc",
-  },
-  {
-    label: "Latest",
-    value: "listing_date",
-  },
-  {
-    label: "Beds - Low to High",
-    value: "beds_asc",
-  },
-  {
-    label: "Beds - High to Low",
-    value: "beds_desc",
-  },
-  {
-    label: "Baths - Low to High",
-    value: "baths_asc",
-  },
-  {
-    label: "Baths - High to Low",
-    value: "baths_desc",
-  },
+  "price_asc",
+  "price_desc",
+  "listing_date",
+  "beds_asc",
+  "beds_desc",
+  "baths_asc",
+  "baths_desc",
 ];
 
 export const PRICE_OPTIONS_SALE = [

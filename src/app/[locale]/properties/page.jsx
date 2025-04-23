@@ -4,25 +4,29 @@ import PropertyListings from "@/components/SearchedProperties/PropertyListings";
 import { ROUTES } from "@/constants/routes";
 import { fetchCities, fetchPropertyListings } from "@/lib/queryFunctions";
 import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
-import { useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useMemo, useRef } from "react";
 import { FormProvider, useForm, useWatch } from "react-hook-form";
 
 const itemsPerPage = 10;
 
 export default function index() {
+  const router = useRouter();
+
   const searchParams = useSearchParams();
 
   const getFiltersFromURL = () => {
     const params = Object.fromEntries(searchParams.entries());
 
     return {
-      location: params?.loc ? [params.loc] : [],
-      type: params?.type ? [params.type] : [],
+      location: params?.loc ? params.loc : "",
+      type: params?.type ? params.type.split(",") : [],
       status: params.status || "",
       beds: params.bed ? Number(params.bed) : "",
       baths: params.bath ? Number(params.bath) : "",
-      sortBy: "",
+      price_from: params.price_from ? Number(params.price_from) : "",
+      price_to: params.price_to ? Number(params.price_to) : "",
+      sortBy: params?.sortBy || "",
     };
   };
 
@@ -73,14 +77,13 @@ export default function index() {
     queryFn: ({ pageParam = 1 }) =>
       fetchPropertyListings(pageParam, itemsPerPage, filters),
     getNextPageParam: (lastPage) => {
-      console.log({ lastPage });
       return lastPage?.currentPage < lastPage?.totalPages
         ? lastPage.currentPage + 1
         : undefined;
     },
   });
 
-  const { data: locationsData } = useQuery({
+  const { data: locationsData, isFetched: isLocationsFetched } = useQuery({
     queryKey: [ROUTES.GET_LOCATIONS],
     queryFn: fetchCities,
   });
@@ -106,16 +109,73 @@ export default function index() {
     return () => observer.disconnect();
   }, [hasNextPage, isFetchingNextPage, fetchNextPage]);
 
+  useEffect(() => {
+    if (isLocationsFetched && locationsData?.length > 0) {
+      const params = Object.fromEntries(searchParams.entries());
+      if (params?.loc) {
+        const selectedLocation = locationsData?.find(
+          (el) => el?.city === params?.loc
+        );
+        if (selectedLocation) {
+          methods.setValue("locationDropdown", selectedLocation);
+        }
+      }
+    }
+  }, [locationsData, isLocationsFetched]);
+
+  useEffect(() => {
+    let searchParams;
+    if (Object.keys(formValues)?.length > 0) {
+      searchParams = new URLSearchParams(window.location.search);
+    } else {
+      searchParams = new URLSearchParams();
+    }
+
+    if (formValues.locationDropdown) {
+      searchParams.set("loc", formValues.locationDropdown.city);
+    }
+
+    if (formValues.type?.length) {
+      searchParams.set("type", formValues.type.join(","));
+    }
+
+    if (formValues.status) {
+      searchParams.set("status", formValues.status);
+    }
+
+    if (formValues.beds) {
+      searchParams.set("bed", formValues.beds);
+    }
+
+    if (formValues.baths) {
+      searchParams.set("bath", formValues.baths);
+    }
+
+    if (formValues.price_from) {
+      searchParams.set("price_from", formValues.price_from);
+    }
+
+    if (formValues.price_to) {
+      searchParams.set("price_to", formValues.price_to);
+    }
+
+    if (formValues.sortBy) {
+      searchParams.set("sortBy", formValues.sortBy);
+    }
+
+    router.replace(`?${searchParams.toString()}`);
+  }, [formValues, router]);
+
+  console.log({ formValues });
+
   return (
     <main>
       <FormProvider {...methods}>
         <PropertyListings
           properties={properties}
           locationsData={locationsData}
-          refetchListings={refetch}
           isFetchingData={isPending}
           isFetchingNextPage={isFetchingNextPage}
-          loadMoreRef={loadMoreRef}
           hasNextPage={hasNextPage}
           fetchNextPage={fetchNextPage}
         />

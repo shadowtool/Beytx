@@ -35,6 +35,14 @@ export default function SearchableDropdown({
       name={name}
       control={control}
       render={({ field }) => {
+        const fieldValue = field.value;
+
+        // Reflect existing value in UI
+        useEffect(() => {
+          const matched = options.find((opt) => opt.value === fieldValue);
+          if (matched) setSearchQuery(matched.label);
+        }, [options, fieldValue]);
+
         const filteredOptions = options.filter((option) =>
           option.label.toLowerCase().includes(searchQuery.toLowerCase())
         );

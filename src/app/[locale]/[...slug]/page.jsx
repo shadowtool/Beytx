@@ -1,23 +1,42 @@
-export const dynamicParams = true; // Enable fallback for non-prebuilt pages
-export const revalidate = 60; // ISR: revalidate page every 60 seconds
+export const dynamicParams = true;
+export const revalidate = 3600;
 
-import { fetchPropertyDetails } from "@/lib/queryFunctions";
 import PropertyDetailsDesktop from "@/components/PropertyDetails/PropertyDetailsDesktop";
 import PropertyDetailsMobile from "@/components/PropertyDetails/PropertyDetailsMobile";
 import { notFound } from "next/navigation";
+import dbConnect from "@/lib/mongodb";
+import Property from "@/models/Property";
+import {
+  fetchPropertyFromDB,
+  getJSONLDForPropertyDetails,
+} from "@/lib/helpers";
+import Script from "next/script";
 
 export async function generateMetadata({ params }) {
-  const slugArray = params.slug || [];
+  const { locale, slug } = params;
+
+  const slugArray = slug || [];
+
   const id = slugArray[slugArray.length - 1];
 
-  const property = await fetchPropertyDetails(id);
+  const property = await fetchPropertyFromDB(id);
+
   if (!property) return {};
 
+  const title =
+    params?.locale === "en" ? property?.title : property?.titleArabic;
+
   return {
-    title: `${property.title} | Beyt`,
+    title: `${title} | Beyt`,
     description:
       property.description?.slice(0, 160) ||
       "View full details of this property.",
+    keywords: [
+      property?.status,
+      property?.type,
+      property?.location?.city,
+      property?.location?.country,
+    ],
     openGraph: {
       title: property.title,
       description: property.description?.slice(0, 160),
@@ -40,22 +59,63 @@ export async function generateMetadata({ params }) {
 }
 
 export default async function Page({ params }) {
-  const slugArray = params.slug || [];
+  const { locale, slug } = params;
 
-  // Get the last element in the slug array as the property ID
+  const slugArray = slug || [];
+
   const id = slugArray[slugArray.length - 1];
+
+  const path = [locale, ...slug].join("/");
+
+  const pageUrl = `${process.env.NEXT_PUBLIC_DOMAIN}/${path}`;
 
   if (!id) return notFound();
 
-  // Fetch data on the server (runs at build or request time)
-  const propertyData = await fetchPropertyDetails(id);
+  const finalPropertyData = await fetchPropertyFromDB(id);
 
-  if (!propertyData) return notFound();
+  const jsonLdData = getJSONLDForPropertyDetails(
+    pageUrl,
+    finalPropertyData,
+    locale
+  );
+
+  if (!finalPropertyData) return notFound();
 
   return (
     <>
-      <PropertyDetailsDesktop loading={false} propertyData={propertyData} />
-      <PropertyDetailsMobile loading={false} propertyData={propertyData} />
+      <Script
+        id="json-ld-property-details"
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLdData) }}
+      />
+
+      <PropertyDetailsDesktop
+        loading={false}
+        propertyData={finalPropertyData}
+      />
+      <PropertyDetailsMobile loading={false} propertyData={finalPropertyData} />
     </>
+  );
+}
+
+export async function generateStaticParams() {
+  await dbConnect();
+
+  const properties = await Property.find({}).limit(100).lean();
+
+  const locales = ["en", "ar"];
+
+  return locales.flatMap((locale) =>
+    properties?.map((property) => {
+      return {
+        locale,
+        slug: [
+          property?.status ?? "",
+          property?.location?.country ?? "",
+          property?.location?.city ?? "",
+          property?._id?.toString(),
+        ],
+      };
+    })
   );
 }

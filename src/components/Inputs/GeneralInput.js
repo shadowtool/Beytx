@@ -46,6 +46,12 @@ const GeneralInput = ({
               } ${classes}`}
               {...field}
               {...rest}
+              onInput={(e) => {
+                if (type === "number") {
+                  const sanitizedValue = e.target.value.replace(/[^\d]/g, "");
+                  field.onChange(sanitizedValue);
+                }
+              }}
             />
           );
         }}

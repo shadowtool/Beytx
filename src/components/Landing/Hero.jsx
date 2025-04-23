@@ -11,6 +11,7 @@ import { fetchCities } from "@/lib/queryFunctions";
 import GeneralDropdown from "../Dropdowns/GeneralDropdown";
 import { PROPERTY_TYPES } from "@/constants/propertyTypes";
 import { useTranslations } from "next-intl";
+import PlacesSearchDropdown from "../Dropdowns/PlacesSearchDropdown";
 
 const Hero = () => {
   const [filterStatus, setFilterStatus] = useState("sale");
@@ -39,7 +40,7 @@ const Hero = () => {
     const queryParams = new URLSearchParams();
 
     queryParams.append("status", filterStatus ?? "sale");
-    if (data?.location !== "") queryParams.append("loc", data.location);
+    if (data?.location !== "") queryParams.append("loc", data.location.city);
     if (data?.bathrooms !== "") queryParams.append("bath", data.bathrooms);
     if (data?.bedrooms !== "") queryParams.append("bed", data.bedrooms);
     if (data?.propertyType !== "")
@@ -51,11 +52,6 @@ const Hero = () => {
   const locationMobileInputValue = useWatch({
     name: "locationMobileInput",
     control,
-  });
-
-  const { data: locationsData } = useQuery({
-    queryKey: [ROUTES.GET_LOCATIONS],
-    queryFn: fetchCities,
   });
 
   return (
@@ -74,7 +70,7 @@ const Hero = () => {
           </h2>
 
           <div className="w-full max-w-sm flex items-center justify-center flex-col">
-            <div className="flex justify-center space-x-4 relative z-[3] mb-4 w-full">
+            <div className="flex justify-center gap-4 relative z-[3] mb-4 w-full">
               <button
                 onClick={() => setFilterStatus("sale")}
                 className={`px-6 py-2 w-full border-none rounded-lg transition-all duration-300 shadow-lg ${
@@ -97,28 +93,22 @@ const Hero = () => {
                 {translate("rent")}
               </button>
             </div>
-            <div className="relative w-full bg-white flex gap-4 items-center justify-between rounded-md pl-3">
-              <SearchableDropdown
+            <div className="relative w-full bg-white flex gap-4 items-center justify-between rounded-md ltr:pl-3 rtl:pr-3">
+              <PlacesSearchDropdown
                 name={"locationMobileInput"}
-                control={control}
-                options={locationsData?.map((el) => {
-                  return { label: el?.city, value: el?.city };
-                })}
                 classes={{
-                  dropdown: "!h-full !px-0",
-                  button:
-                    "!text-gray-700 !px-0 !h-full !border-none !rounded-l-xl focus-within:ring-0 focus-within:ring-transparent",
+                  input: "focus:!ring-0 !border-none",
+                  dropdownItem: "!text-left",
                 }}
-                placeholder={translate("searchByLocation")}
               />
 
               <button
-                className="self-stretch min-h-full w-fit py-1 px-3 bg-emerald-600 text-white   rounded-r-md min-w-fit"
-                onClick={() =>
+                className="self-stretch min-h-full w-fit py-1 px-3 bg-emerald-600 text-white   rounded-md min-w-fit"
+                onClick={() => {
                   router.push(
-                    `/${locale}/properties?loc=${locationMobileInputValue}`
-                  )
-                }
+                    `/${locale}/properties?loc=${locationMobileInputValue?.city}`
+                  );
+                }}
               >
                 {translate("search")}
               </button>
@@ -127,7 +117,7 @@ const Hero = () => {
         </div>
 
         <div className="hidden md:block h-fit w-fit px-8 py-4 bg-black/25 rounded-xl backdrop-blur min-w-[65%] z-[3]">
-          <div className="flex justify-center space-x-4 relative z-[3]">
+          <div className="flex justify-center gap-4 relative z-[3]">
             <button
               onClick={() => setFilterStatus("sale")}
               className={`px-6 py-2 w-40 sm:w-32 rounded-full transition ${
@@ -158,57 +148,37 @@ const Hero = () => {
             {/* Filter Bar Container */}
             <div className="flex h-fit items-center bg-white rounded-xl shadow-md w-full max-w-3xl mb-2">
               <GeneralDropdown
-                name={"type"}
+                name={"propertyType"}
                 placeholder={translate("type")}
                 options={PROPERTY_TYPES?.map((el) => {
                   return { label: el, value: el };
                 })}
                 classes={{
                   button:
-                    "!text-gray-700 !  !px-6 focus:!ring-0 !rounded-l-xl !rounded-r-none",
+                    "!text-gray-700 !px-6 focus:!ring-0 ltr:!rounded-l-xl ltr:!rounded-r-none rtl:!rounded-r-xl rtl:!rounded-l-none",
                 }}
               />
 
               <GeneralDropdown
-                name={"beds"}
+                name={"bedrooms"}
                 placeholder={translate("bedrooms")}
-                options={[
-                  "studio",
-                  "1",
-                  "2",
-                  "3",
-                  "4",
-                  "5",
-                  "6",
-                  "7",
-                  "7+",
-                ]?.map((el) => {
+                options={["1", "2", "3", "4", "5", "6", "7"]?.map((el) => {
                   return { label: el, value: el?.toLowerCase() };
                 })}
                 classes={{
-                  button: "!text-gray-700 !  !px-6 focus:!ring-0 !rounded-none",
+                  button: "!text-gray-700 !px-6 focus:!ring-0 !rounded-none",
                 }}
               />
 
               <GeneralDropdown
-                name={"baths"}
+                name={"bathrooms"}
                 placeholder={translate("bathrooms")}
-                options={[
-                  "studio",
-                  "1",
-                  "2",
-                  "3",
-                  "4",
-                  "5",
-                  "6",
-                  "7",
-                  "7+",
-                ]?.map((el) => {
+                options={["1", "2", "3", "4", "5", "6", "7"]?.map((el) => {
                   return { label: el, value: el?.toLowerCase() };
                 })}
                 classes={{
                   button:
-                    "!text-gray-700 !  !px-6 focus:!ring-0 !rounded-r-xl !rounded-l-none",
+                    "!text-gray-700 !px-6 focus:!ring-0 ltr:!rounded-r-xl ltr:!rounded-l-none rtl:!rounded-l-xl rtl:!rounded-r-none",
                 }}
               />
             </div>
@@ -217,23 +187,18 @@ const Hero = () => {
             <div className="flex items-center bg-white rounded-xl shadow-md w-full max-w-3xl">
               {/* Search Bar Input */}
 
-              <SearchableDropdown
+              <PlacesSearchDropdown
                 name={"location"}
-                placeholder={translate("selectCity")}
-                options={locationsData?.map((el) => {
-                  return { label: el?.city, value: el?.city };
-                })}
                 classes={{
-                  dropdown: "!min-w-48 !h-full",
-                  button:
-                    "!text-gray-700 !  !h-full !border-none !px-6 !rounded-l-xl",
+                  input: "focus:!ring-0 !border-none",
+                  dropdownItem: "!text-left",
                 }}
               />
 
               {/* Search Button */}
               <button
                 type="submit"
-                className="bg-emerald-500 text-white px-10 py-3    hover:bg-emerald-600 transition !rounded-r-xl"
+                className="bg-emerald-500 text-white px-10 py-3 hover:bg-emerald-600 transition ltr:rounded-r-xl rtl:rounded-l-xl"
               >
                 {translate("search")}
               </button>

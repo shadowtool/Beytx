@@ -14,6 +14,7 @@ import MobileDropdownModal from "../Modals/MobileDropdownModal/MobileDropdownMod
 import SortByModal from "../Modals/MobileDropdownModal/DropdownModals/SortByModal";
 import MobileSearchModal from "../Modals/MobileSearchModal";
 import { useTranslations } from "next-intl";
+import { useParams, useRouter } from "next/navigation";
 
 const itemsPerPage = 9;
 
@@ -42,6 +43,10 @@ const MobilePropertyListings = ({
 
   const { control, reset } = useFormContext();
 
+  const router = useRouter();
+
+  const { locale } = useParams();
+
   const formValues = useWatch({ control });
 
   const filterModalOptions = [
@@ -67,16 +72,20 @@ const MobilePropertyListings = ({
         title: option?.title,
         id: option.id,
         active:
+          Object.keys(formValues)?.length > 0 &&
           JSON.stringify(formValues[option.id]) !==
-          JSON.stringify(defaultValues[option.id]),
+            JSON.stringify(defaultValues[option.id]),
       };
     });
   }, [filterModalOptions, formValues, defaultValues]);
 
   const isDifferentFromDefault = useMemo(() => {
-    return Object.keys(defaultValues).some(
-      (key) =>
-        JSON.stringify(formValues[key]) !== JSON.stringify(defaultValues[key])
+    return (
+      Object.keys(formValues)?.length > 0 &&
+      Object.keys(defaultValues).some(
+        (key) =>
+          JSON.stringify(formValues[key]) !== JSON.stringify(defaultValues[key])
+      )
     );
   }, [formValues, defaultValues]);
 
@@ -104,10 +113,10 @@ const MobilePropertyListings = ({
               <div
                 className="h-10 w-10 min-w-10 flex items-center justify-center shadow cursor-pointer border border-solid border-gray-200 rounded-md"
                 onClick={() => {
-                  reset();
-                  setTimeout(() => {
-                    refetchListings();
-                  }, 100);
+                  reset({});
+                  router.push(`/${locale}/properties`, undefined, {
+                    shallow: false,
+                  });
                 }}
               >
                 <CloseIcon size={21} color="#4b5563" />
@@ -142,7 +151,11 @@ const MobilePropertyListings = ({
           ) : (
             <div className="flex flex-col gap-4">
               {properties.map((property, index) => (
-                <MobilePropertyCard key={index} property={property} />
+                <MobilePropertyCard
+                  key={index}
+                  property={property}
+                  refetchListings={refetchListings}
+                />
               ))}
             </div>
           )}

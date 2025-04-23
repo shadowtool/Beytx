@@ -1,9 +1,12 @@
 "use client";
 import React from "react";
 import { useTranslations } from "next-intl";
-import { usePathname } from "next/navigation";
+import { useParams, usePathname } from "next/navigation";
+import Image from "next/image";
 
 const Footer = () => {
+  const { locale } = useParams();
+
   const propertyTypesTranslations = useTranslations("propertyTypes");
   const footerTranslations = useTranslations("footer");
 
@@ -14,57 +17,59 @@ const Footer = () => {
       {pathname?.includes("auth") ? (
         <></>
       ) : (
-        <footer className="bg-gradient-to-r from-emerald-600 via-emerald-500 to-emerald-500 z-[1] text-white py-6 md:p-6 md:px-16">
-          <div className="container mx-auto">
-            <div className="flex flex-col md:flex-row justify-between items-center">
-              <div className="mt-4 mb-16">
-                <img
-                  src="/images/beyt.png"
-                  alt="Logo"
-                  className="min-h-10 max-h-10 w-auto object-contain"
-                />
+        <footer className="bg-gradient-to-r from-emerald-600 via-emerald-500 to-emerald-500 z-[1]  text-white py-6 md:p-6 md:px-16">
+          <div className="flex flex-col md:flex-row justify-between items-center">
+            <div className="mt-4 mb-16">
+              <Image
+                src="/images/beyt.png"
+                alt="Logo"
+                height={40}
+                width={40}
+                className="min-h-10 max-h-10 w-auto object-contain"
+              />
+            </div>
+
+            <div className="w-fit flex gap-16">
+              <div className="flex flex-col gap-6 items-start">
+                <a
+                  href={`/${locale}/properties?type=Villa`}
+                  className="hover:text-green-400 transition duration-300"
+                >
+                  {propertyTypesTranslations("villa")}
+                </a>
+                <a
+                  href={`/${locale}/properties?type=Apartments`}
+                  className="hover:text-green-400 transition duration-300"
+                >
+                  {propertyTypesTranslations("apartment")}
+                </a>
+                <a
+                  href={`/${locale}/properties?type=Land`}
+                  className="hover:text-green-400 transition duration-300"
+                >
+                  {propertyTypesTranslations("land")}
+                </a>
               </div>
-              <div className="w-fit flex gap-16">
-                <div className="flex flex-col gap-6 items-start">
-                  <a
-                    href="/properties/villas"
-                    className="hover:text-green-400 transition duration-300"
-                  >
-                    {propertyTypesTranslations("villa")}
-                  </a>
-                  <a
-                    href="/properties/apartments"
-                    className="hover:text-green-400 transition duration-300"
-                  >
-                    {propertyTypesTranslations("apartment")}
-                  </a>
-                  <a
-                    href="/properties/land"
-                    className="hover:text-green-400 transition duration-300"
-                  >
-                    {propertyTypesTranslations("land")}
-                  </a>
-                </div>
-                <div className="flex flex-col gap-6 items-start">
-                  <a
-                    href="/about"
-                    className="hover:text-green-400 transition duration-300"
-                  >
-                    {footerTranslations("aboutUs")}
-                  </a>
-                  <a
-                    href="/contact"
-                    className="hover:text-green-400 transition duration-300"
-                  >
-                    {footerTranslations("contact")}
-                  </a>
-                  <a
-                    href="/add-property"
-                    className="hover:text-green-400 transition duration-300"
-                  >
-                    {footerTranslations("addProperty")}
-                  </a>
-                </div>
+
+              <div className="flex flex-col gap-6 items-start">
+                <a
+                  href={`/${locale}/about`}
+                  className="hover:text-green-400 transition duration-300"
+                >
+                  {footerTranslations("aboutUs")}
+                </a>
+                <a
+                  href={`/${locale}/contact`}
+                  className="hover:text-green-400 transition duration-300"
+                >
+                  {footerTranslations("contact")}
+                </a>
+                <a
+                  href={`/${locale}/properties/create`}
+                  className="hover:text-green-400 transition duration-300"
+                >
+                  {footerTranslations("addProperty")}
+                </a>
               </div>
             </div>
           </div>

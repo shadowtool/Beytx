@@ -1,7 +1,7 @@
 import axios from "axios";
 
 export const baseUrl =
-  process.env.NEXT_PUBLIC_API_DOMAIN ?? "http://localhost:3001/api";
+  process.env.NEXT_PUBLIC_API_DOMAIN ?? "https://beyt-personal.vercel.app/api";
 
 export const axiosInstance = axios.create({
   baseURL: baseUrl,

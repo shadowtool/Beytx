@@ -1,22 +1,26 @@
 "use client";
 import React, { useEffect, useRef, useState } from "react";
 import Loader from "../Reusables/Loader";
-import { CREATOR_ACTIONS, USER_ACTIONS } from "@/constants/constants";
+import { CREATOR_ACTIONS } from "@/constants/constants";
 import Image from "next/image";
 import { motion } from "framer-motion";
-import { AgentIcon, BathroomIcon, BedIcon, DownIcon } from "@/imports/icons";
+import { BathroomIcon, BedIcon, DownIcon } from "@/imports/icons";
 import PropertyImagesModal from "../Modals/PropertyImagesModal";
 import MapPicker from "../Misc/MapPicker";
 import { AreaIcon, LocationIcon } from "@/imports/images";
 import { useTranslations } from "next-intl";
 import SimilarProperties from "./SimilarProperties";
+import { useParams, useRouter } from "next/navigation";
 
 const PropertyDetailsDesktop = ({ loading, propertyData }) => {
+  const { locale } = useParams();
   const t = useTranslations("propertyDetails");
+  const locationsTranslations = useTranslations("locations");
   const [openImagesModal, setOpenImagesModal] = useState(false);
   const [isDescriptionExpanded, setIsDescriptionExpanded] = useState(false);
   const [height, setHeight] = useState(0);
   const contentRef = useRef(null);
+  const router = useRouter();
 
   useEffect(() => {
     if (contentRef.current) {
@@ -32,52 +36,39 @@ const PropertyDetailsDesktop = ({ loading, propertyData }) => {
         </div>
       ) : (
         <>
-          <div className="container mx-auto p-0 md:px-12 w-full md:py-8">
-            <div className="hidden md:flex justify-end gap-6 w-full px-4">
-              {USER_ACTIONS.map((el, idx) => (
-                <div key={idx} className="flex gap-2 items-center">
-                  {el.icon}
-                  <p className="text-green-600">
-                    {t(`${el.label.toLowerCase()}`)}
-                  </p>
-                </div>
-              ))}
+          <div className="container mx-auto hidden md:flex flex-col md:flex-row gap-6 mt-8 px-12">
+            <div className="grow w-full relative">
+              <Image
+                src={
+                  propertyData?.images?.[0] ||
+                  "https://images.pexels.com/photos/28216688/pexels-photo-28216688/free-photo-of-autumn-camping.png"
+                }
+                alt={"property-image-0"}
+                className="h-full w-full object-cover rounded-lg max-h-[500px]"
+                onClick={() => setOpenImagesModal(true)}
+                height={500}
+                width={1400}
+              />
             </div>
-
-            <div className="hidden md:flex flex-col md:flex-row gap-6 mt-8">
-              <div className="grow w-full relative">
+            <div className="md:min-w-96 md:max-w-96 grow flex flex-col gap-6">
+              {propertyData?.images?.slice(1, 3).map((img, idx) => (
                 <Image
+                  key={idx}
                   src={
-                    propertyData?.images?.[0] ||
+                    img ||
                     "https://images.pexels.com/photos/28216688/pexels-photo-28216688/free-photo-of-autumn-camping.png"
                   }
-                  alt={"property-image-0"}
-                  className="h-full w-full object-cover rounded-lg max-h-[500px]"
+                  alt={"property-image-2"}
+                  className="h-full w-full grow object-cover rounded-lg max-h-[238px]"
                   onClick={() => setOpenImagesModal(true)}
                   height={500}
                   width={1400}
                 />
-              </div>
-              <div className="md:min-w-96 md:max-w-96 grow flex flex-col gap-6">
-                {propertyData?.images?.slice(1, 3).map((img, idx) => (
-                  <Image
-                    key={idx}
-                    src={
-                      img ||
-                      "https://images.pexels.com/photos/28216688/pexels-photo-28216688/free-photo-of-autumn-camping.png"
-                    }
-                    alt={"property-image-2"}
-                    className="h-full w-full grow object-cover rounded-lg max-h-[238px]"
-                    onClick={() => setOpenImagesModal(true)}
-                    height={500}
-                    width={1400}
-                  />
-                ))}
-              </div>
+              ))}
             </div>
           </div>
 
-          <div className="container mx-auto flex flex-col lg-xl:flex-row gap-6 mt-8 px-4 md:px-12 mb-24">
+          <div className="container mx-auto px-12 mb-24 flex flex-col lg-xl:flex-row gap-6 mt-8">
             <div className="w-full grow">
               <div
                 className={`p-6 bg-white border border-solid border-gray-200 rounded-lg shadow-lg ${
@@ -97,7 +88,7 @@ const PropertyDetailsDesktop = ({ loading, propertyData }) => {
                         alt={t("locationIconAlt")}
                         className="h-5 w-auto object-contain"
                       />
-                      {propertyData?.location?.city}
+                      {locationsTranslations(propertyData?.location?.city)}
                     </p>
                   </div>
                   <div className="flex gap-6 items-end mt-4 text-gray-600">
@@ -190,40 +181,59 @@ const PropertyDetailsDesktop = ({ loading, propertyData }) => {
             <div className="lg-xl:min-w-96 lg-xl:max-w-96 h-fit">
               <div className="bg-green-100 px-4 py-12 rounded-md flex flex-col items-center justify-center">
                 <div className="flex flex-col items-center justify-center gap-3 mt-4">
-                  <img
+                  <Image
                     src={
-                      propertyData?.user?.image ?? "/images/portrait-image.jpg"
+                      propertyData?.userId?.image ??
+                      "/images/portrait-image.jpg"
                     }
                     onError={(e) => {
                       e.target.src = "/images/portrait-image.jpg";
                     }}
                     alt="#"
+                    height={112}
+                    width={112}
                     className="min-h-28 max-h-28 min-w-28 max-w-28 object-cover rounded-full border-2 border-solid border-green-600"
                   />
-                  <div className="h-fit w-fit py-1 px-4 bg-green-600 flex items-center justify-center gap-2 text-white rounded-md">
-                    <AgentIcon size={24} color="#fff" />
-                    <p className="font-semibold text-xs">{t("newAgent")}</p>
-                  </div>
                   <div className="flex gap-1 flex-col">
-                    <h5 className="text-black">{propertyData?.user?.name}</h5>
+                    <h5 className="text-black">{propertyData?.userId?.name}</h5>
                   </div>
                 </div>
 
                 <div className="flex items-center flex-col justify-between gap-3 mt-6 min-w-80 max-w-80">
                   <div className="flex gap-3 w-full">
                     {CREATOR_ACTIONS?.slice(0, 2).map((el, idx) => (
-                      <button
+                      <a
                         key={idx}
                         className="h-fit w-full px-4 rounded-md py-3 flex items-center justify-center gap-3 text-[13px] font-semibold text-white bg-green-600"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        href={
+                          el?.value === "call"
+                            ? `tel:${propertyData?.userId?.phoneNumber.replace(
+                                /\s/g,
+                                ""
+                              )}`
+                            : `https://wa.me/${propertyData?.userId?.phoneNumber.replace(
+                                /\s/g,
+                                ""
+                              )}`
+                        }
                       >
                         {el.icon}
-                        {t(`${el.value}`)}
-                      </button>
+                        {t(el.value)}
+                      </a>
                     ))}
                   </div>
                   <div className="w-full mt-3">
                     {CREATOR_ACTIONS?.[2] && (
-                      <button className="w-full px-4 rounded-md py-3 flex items-center justify-center gap-3 text-[13px] font-semibold text-white bg-green-600">
+                      <button
+                        className="w-full px-4 rounded-md py-3 flex items-center justify-center gap-3 text-[13px] font-semibold text-white bg-green-600"
+                        onClick={() => {
+                          router.push(
+                            `/${locale}/agent/${propertyData?.userId?._id}`
+                          );
+                        }}
+                      >
                         {CREATOR_ACTIONS[2].icon}
                         {t(`${CREATOR_ACTIONS[2].value}`)}
                       </button>

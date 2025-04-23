@@ -3,8 +3,8 @@ import dbConnect from "@/lib/mongodb";
 import User from "@/models/User";
 import { authOptions } from "@/lib/authOptions";
 import { getServerSession } from "next-auth";
+import Property from "@/models/Property";
 
-// GET: Fetch user details by ID
 export async function GET(req, { params }) {
   try {
     await dbConnect();
@@ -18,15 +18,28 @@ export async function GET(req, { params }) {
       );
     }
 
-    const user = await User.findById(id);
+    const user = await User.findById(id).lean();
+
     if (!user) {
       return NextResponse.json({ error: "User not found" }, { status: 404 });
     }
+    const properties = await Property.find({ userId: id })
+      .sort({ createdAt: -1 })
+      .populate("userId")
+      .lean();
 
-    return NextResponse.json(user, { status: 200 });
+    const userWithProperties = {
+      ...user,
+      properties,
+    };
+
+    return NextResponse.json(userWithProperties, { status: 200 });
   } catch (error) {
-    console.error("Error fetching user:", error);
-    return NextResponse.json({ error: "Server error" }, { status: 500 });
+    console.error("Error fetching user and properties:", error);
+    return NextResponse.json(
+      { error: "Failed to fetch data" },
+      { status: 500 }
+    );
   }
 }
 
@@ -49,7 +62,7 @@ export async function PUT(req, { params }) {
       );
     }
 
-    if (session?.user?.role !== "admin" && id !== session?.user?._id) {
+    if (session?.user?.role !== "admin" && id !== session?.user?.id) {
       return NextResponse.json({ error: "Unauthorised" }, { status: 400 });
     }
 

@@ -7,7 +7,9 @@ const SimilarProperties = ({ propertyData }) => {
 
   return (
     <div className="p-4">
-      <h3>{translate("similarProperties")}</h3>
+      {propertyData?.similarProperties?.length > 0 && (
+        <h3>{translate("similarProperties")}</h3>
+      )}
       <div
         className={`flex overflow-x-auto hide-scrollbar md:grid gap-4 mt-6 grid-cols-3`}
       >

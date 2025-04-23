@@ -1,25 +1,10 @@
+import { LOCATIONS_DATA } from "@/lib/locationsData";
 import Property from "@/models/Property";
 import { NextResponse } from "next/server";
 
 export async function GET() {
   try {
-    const locations = await Property.aggregate([
-      {
-        $group: {
-          _id: {
-            city: "$location.city",
-            country: "$location.country",
-          },
-        },
-      },
-      {
-        $project: {
-          _id: 0,
-          city: "$_id.city",
-          country: "$_id.country",
-        },
-      },
-    ]);
+    const locations = LOCATIONS_DATA;
 
     return NextResponse.json(locations);
   } catch (error) {

@@ -13,8 +13,15 @@ export async function GET(req) {
 
     const userId = session?.user?.id || null;
 
+    if (!(session?.user?.role === "admin")) {
+      return NextResponse.json(
+        { error: "Unauthorized: User is not an admin." },
+        { status: 403 }
+      );
+    }
+
     const { searchParams } = new URL(req.url);
-    const featured = searchParams.get("featured");
+
     const name = searchParams.get("name");
     const type = JSON.parse(searchParams.get("type"));
     const status = searchParams.get("status");
@@ -27,16 +34,38 @@ export async function GET(req) {
     const userIdParam = searchParams.get("userId");
     const page = parseInt(searchParams.get("page")) || 1;
     const limit = parseInt(searchParams.get("limit")) || 9;
+    const propertyId = searchParams.get("propertyId");
+    const agentQuery = searchParams.get("agentInfo");
 
     const skip = (page - 1) * limit;
 
     const query = {};
 
-    if (!(session?.user?.role === "admin")) {
-      return NextResponse.json(
-        { error: "Unauthorized: User is not an admin." },
-        { status: 403 }
-      );
+    if (agentQuery) {
+      const agent = await User.findOne({
+        $or: [
+          { email: new RegExp(agentQuery, "i") },
+          { phoneNumber: new RegExp(agentQuery, "i") },
+        ],
+      });
+
+      if (agent) {
+        query.userId = agent._id;
+      } else {
+        return NextResponse.json(
+          {
+            properties: [],
+            totalPages: 0,
+            currentPage: page,
+            totalCount: 0,
+          },
+          { status: 200 }
+        );
+      }
+    }
+
+    if (propertyId) {
+      query._id = propertyId;
     }
 
     if (name) {
@@ -116,6 +145,10 @@ export async function GET(req) {
     }
 
     const properties = await Property.find(query)
+      .populate({
+        path: "userId",
+        select: "email phoneNumber name _id",
+      })
       .sort(sortOptions)
       .skip(skip)
       .limit(limit);

@@ -14,9 +14,10 @@ import GeneralDropdown from "../Dropdowns/GeneralDropdown";
 import BedsAndBathsDropdown from "../Dropdowns/BedsAndBathsDropdown";
 import PriceRangeDropdown from "../Dropdowns/PriceRangeDropdown";
 import { useMemo } from "react";
+import PlacesSearchDropdown from "../Dropdowns/PlacesSearchDropdown";
 
 const PropertyFilter = ({ onReset, locationsData }) => {
-  const { control, watch } = useFormContext();
+  const { setValue, watch } = useFormContext();
 
   const translateFilters = useTranslations("filterKeys");
   const translatePropertyTypes = useTranslations("propertyTypes");
@@ -49,18 +50,11 @@ const PropertyFilter = ({ onReset, locationsData }) => {
     <div className="sticky top-0 z-[8] w-screen bg-white border-b border-gray-200 py-6 px-12 shadow-md">
       <div className="w-full h-fit items-center flex flex-col xl:flex-row gap-6">
         <div className="w-full flex gap-6">
-          <SearchableDropdown
-            name="location"
-            control={control}
-            options={locationsData?.map((el) => ({
-              label: el?.city,
-              value: el?.city,
-            }))}
-            classes={{
-              dropdown: "w-full grow !h-full",
-              button: "!text-gray-700 !h-full",
+          <PlacesSearchDropdown
+            name={"locationDropdown"}
+            customOnChange={(e) => {
+              setValue("location", e?.city);
             }}
-            placeholder={translateFilters("locationPlaceholder")}
           />
           <div className="flex max-w-fit gap-4 xl:hidden">
             {hasActiveFilters && (
@@ -110,7 +104,7 @@ const PropertyFilter = ({ onReset, locationsData }) => {
               toOptions={priceToOptions}
               placeholder={translateFilters("priceRange")}
               classes={{ dropdown: "xl:!min-w-44" }}
-              customOnChange={(value) => console.log("Changed:", value)}
+              customOnChange={(value) => {}}
             />
           )}
           <GeneralDropdown
@@ -121,8 +115,8 @@ const PropertyFilter = ({ onReset, locationsData }) => {
               button: "!text-gray-700 !h-full",
             }}
             options={SORT_OPTIONS.map((option) => ({
-              ...option,
-              label: translateSortOptions(option.value),
+              value: option,
+              label: translateSortOptions(option),
             }))}
             showSelectedEffect={true}
           />

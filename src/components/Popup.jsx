@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import { createPortal } from "react-dom";
 
-const Popup = ({ options }) => {
+const Popup = ({ options, direction = "left" }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [position, setPosition] = useState({ top: 0, left: 0 });
   const buttonRef = useRef(null);
@@ -10,9 +10,16 @@ const Popup = ({ options }) => {
   const handleToggle = () => {
     if (!isOpen && buttonRef.current) {
       const rect = buttonRef.current.getBoundingClientRect();
+
+      const popupWidth = 192; // Approx width: 48 * 4 (w-48 in Tailwind = 12rem = 192px)
+      const leftPos =
+        direction === "right"
+          ? rect.right + window.scrollX - popupWidth
+          : rect.left + window.scrollX;
+
       setPosition({
         top: rect.bottom + window.scrollY + 8,
-        left: rect.left + window.scrollX,
+        left: leftPos,
       });
     }
     setIsOpen(!isOpen);

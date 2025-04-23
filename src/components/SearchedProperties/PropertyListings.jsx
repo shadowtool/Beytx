@@ -1,23 +1,36 @@
 "use client";
-import { useRef, useState } from "react";
 import PropertyFilter from "./PropertyFilter";
 import PropertyCard from "../Cards/PropertyCard";
-import { Controller, useFormContext } from "react-hook-form";
+import { useFormContext } from "react-hook-form";
 import Loader from "../Reusables/Loader";
 import { useTranslations } from "next-intl";
+import { useParams, useRouter, useSearchParams } from "next/navigation";
+import { useInView } from "react-intersection-observer";
+import { useEffect } from "react";
 
 const PropertyListings = ({
   properties,
   locationsData,
-  refetchListings,
   isFetchingData,
   isFetchingNextPage,
-  loadMoreRef,
   hasNextPage,
   fetchNextPage,
 }) => {
   const methods = useFormContext();
+  const { locale } = useParams();
+  const router = useRouter();
   const translate = useTranslations("propertyListings");
+
+  const { ref, inView } = useInView({
+    threshold: 0.1,
+    triggerOnce: false,
+  });
+
+  useEffect(() => {
+    if (inView && hasNextPage && !isFetchingNextPage) {
+      fetchNextPage();
+    }
+  }, [inView, hasNextPage, isFetchingNextPage]);
 
   return (
     <div className="hidden md:block">
@@ -25,14 +38,12 @@ const PropertyListings = ({
         <PropertyFilter
           locationsData={locationsData}
           onReset={() => {
-            methods.reset();
-            setTimeout(() => {
-              refetchListings();
-            }, 100);
+            methods.reset({});
+            router.push(`/${locale}/properties`, undefined, { shallow: false });
           }}
         />
 
-        <div className="container mx-auto px-4 md:px-12 py-10 w-full grow">
+        <div className="px-4 md:px-12 py-10 w-full grow">
           {isFetchingData ? (
             <Loader customMessage={translate("fetchingData")} />
           ) : (
@@ -49,18 +60,7 @@ const PropertyListings = ({
             </div>
           )}
 
-          {hasNextPage && (
-            <div className="flex justify-center my-4">
-              <button
-                onClick={() => fetchNextPage()}
-                disabled={isFetchingNextPage}
-                className="px-4 py-2 bg-emerald-600 text-white rounded hover:bg-emerald-700 mt-8 disabled:opacity-50 transition-all duration-300"
-              >
-                {isFetchingNextPage ? "Loading..." : "Load More"}
-              </button>
-            </div>
-          )}
-          <div ref={loadMoreRef} className="flex flex-col items-center mt-8">
+          <div ref={ref} className="flex flex-col items-center mt-8">
             {isFetchingNextPage && (
               <>
                 <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-green-600 mb-4"></div>

@@ -115,6 +115,7 @@ export async function GET(req) {
     }
 
     const properties = await Property.find(query)
+      .populate({ path: "userId", select: "email phoneNumber name _id" })
       .sort(sortOptions)
       .skip(skip)
       .limit(limit);

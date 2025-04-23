@@ -1,18 +1,21 @@
 "use client";
 import React, { useEffect, useRef, useState } from "react";
 import Loader from "../Reusables/Loader";
-import { CREATOR_ACTIONS, USER_ACTIONS } from "@/constants/constants";
+import { CREATOR_ACTIONS } from "@/constants/constants";
 import Image from "next/image";
 import { motion } from "framer-motion";
-import { AgentIcon, BathroomIcon, BedIcon, DownIcon } from "@/imports/icons";
+import { BathroomIcon, BedIcon, DownIcon } from "@/imports/icons";
 import PropertyImagesModal from "../Modals/PropertyImagesModal";
 import MapPicker from "../Misc/MapPicker";
-import { AreaIcon } from "@/imports/images";
+import { AreaIcon, LocationIcon } from "@/imports/images";
 import { useTranslations } from "next-intl";
 import SimilarProperties from "./SimilarProperties";
+import { useParams, useRouter } from "next/navigation";
 
 const PropertyDetailsMobile = ({ loading, propertyData }) => {
+  const { locale } = useParams();
   const t = useTranslations("propertyDetails");
+  const locationsTranslations = useTranslations("locations");
 
   const [openImagesModal, setOpenImagesModal] = useState(false);
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
@@ -20,12 +23,29 @@ const PropertyDetailsMobile = ({ loading, propertyData }) => {
 
   const [height, setHeight] = useState(0);
   const contentRef = useRef(null);
+  const router = useRouter();
 
   useEffect(() => {
     if (contentRef.current) {
       setHeight(contentRef.current.scrollHeight);
     }
   }, [propertyData?.description, isDescriptionExpanded]);
+
+  const images = propertyData?.images ?? [
+    "https://images.pexels.com/photos/28216688/pexels-photo-28216688/free-photo-of-autumn-camping.png",
+  ];
+
+  const handleSwipeRelease = (offsetX, velocityX) => {
+    if (offsetX > 200 || velocityX > 0.5) {
+      setSelectedImageIndex((prevIndex) =>
+        prevIndex === 0 ? images.length - 1 : prevIndex - 1
+      );
+    } else if (offsetX < -200 || velocityX < -0.5) {
+      setSelectedImageIndex((prevIndex) =>
+        prevIndex === images.length - 1 ? 0 : prevIndex + 1
+      );
+    }
+  };
 
   return (
     <div className="md:hidden">
@@ -35,47 +55,63 @@ const PropertyDetailsMobile = ({ loading, propertyData }) => {
         </div>
       ) : (
         <>
-          <div className="p-0 md:px-12 w-full md:py-8">
-            <div className="hidden md:flex justify-end gap-6 w-full px-4">
+          <div className="p-0 md:px-12 w-full md:py-8 overflow-hidden">
+            {/* <div className="hidden md:flex justify-end gap-6 w-full px-4">
               {USER_ACTIONS.map((el, idx) => (
                 <div key={idx} className="flex gap-2 items-center">
                   {el.icon}
                   <p className="text-green-600">{t(el.label.toLowerCase())}</p>
                 </div>
               ))}
-            </div>
+            </div> */}
 
-            <div className="relative">
-              <motion.img
-                key={selectedImageIndex}
-                src={
-                  propertyData?.images?.[selectedImageIndex] ??
-                  "https://images.pexels.com/photos/28216688/pexels-photo-28216688/free-photo-of-autumn-camping.png"
-                }
-                alt={propertyData?.title}
-                className="w-full h-56 object-cover"
-                initial={{ opacity: 0.5 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                transition={{ duration: 0.2 }}
-              />
+            <div className="relative h-52">
+              <motion.div
+                className="flex w-full h-full"
+                drag="x"
+                dragConstraints={{ left: 0, right: 0 }}
+                dragElastic={0.5}
+                onDragEnd={(event, info) => {
+                  handleSwipeRelease(info.offset.x, info.velocity.x);
+                }}
+                style={{
+                  display: "flex",
+                }}
+              >
+                {images.map((image, index) => (
+                  <motion.img
+                    key={index}
+                    src={image}
+                    alt={`property-image-${index}`}
+                    className="w-full h-52 object-cover flex-shrink-0"
+                    style={{
+                      flex: "0 0 100%",
+                    }}
+                    animate={{
+                      x: `-${selectedImageIndex * 100}%`,
+                    }}
+                    transition={{
+                      type: "spring",
+                      stiffness: 100,
+                      damping: 20,
+                    }}
+                    onClick={() => setOpenImagesModal(true)}
+                  />
+                ))}
+              </motion.div>
               <div className="absolute bottom-2 left-1/2 transform -translate-x-1/2 flex gap-2">
-                {[...Array(propertyData?.images?.length ?? 1)].map(
-                  (_, index) => (
-                    <div
-                      key={index}
-                      className={`min-h-3 min-w-3 max-h-3 max-w-3 rounded-full transition-all duration-300 ${
-                        index === selectedImageIndex
-                          ? "bg-green-600"
-                          : "bg-white"
-                      }`}
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        setSelectedImageIndex(index);
-                      }}
-                    />
-                  )
-                )}
+                {images.map((_, index) => (
+                  <div
+                    key={index}
+                    className={`h-2 w-2 rounded-full bg-white transition-all duration-300 ${
+                      index === selectedImageIndex ? "scale-150" : "scale-100"
+                    }`}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setSelectedImageIndex(index);
+                    }}
+                  />
+                ))}
               </div>
             </div>
           </div>
@@ -89,19 +125,31 @@ const PropertyDetailsMobile = ({ loading, propertyData }) => {
                       price: propertyData?.price,
                     })}
                   </h4>
+                  <p className="text-gray-500 flex items-center my-4">
+                    <Image
+                      src={LocationIcon}
+                      alt={t("locationIconAlt")}
+                      className="h-5 w-auto object-contain"
+                    />
+                    {locationsTranslations(propertyData?.location?.city)}
+                  </p>
                   <div className="flex gap-6 w-full items-center text-gray-600 my-8">
                     <div className="flex flex-col w-full grow xs:max-w-fit gap-2 items-center">
                       <BedIcon color="#aaa" size={28} />
-                      {t("bedrooms", {
-                        count: propertyData?.bedrooms,
-                      })}
+                      <span className="text-xs font-medium">
+                        {t("bedrooms", {
+                          count: propertyData?.bedrooms,
+                        })}
+                      </span>
                     </div>
                     <div className="h-16 w-[1.5px] bg-[#aaa]"></div>
                     <div className="flex flex-col gap-2 w-full grow xs:max-w-fit items-center">
                       <BathroomIcon color="#aaa" size={28} />
-                      {t("bathrooms", {
-                        count: propertyData?.bathrooms,
-                      })}
+                      <span className="text-xs font-medium">
+                        {t("bathrooms", {
+                          count: propertyData?.bathrooms,
+                        })}
+                      </span>
                     </div>
                     <div className="h-16 w-[1.5px] bg-[#aaa]"></div>
                     <div className="flex flex-col gap-2 w-full grow xs:max-w-fit items-center">
@@ -110,7 +158,9 @@ const PropertyDetailsMobile = ({ loading, propertyData }) => {
                         alt="area-icon"
                         className="h-5 w-auto object-contain"
                       />
-                      {t("area", { size: propertyData?.size })}
+                      <span className="text-xs font-medium">
+                        {t("area", { size: propertyData?.size })}
+                      </span>
                     </div>
                   </div>
                 </div>
@@ -172,7 +222,7 @@ const PropertyDetailsMobile = ({ loading, propertyData }) => {
 
             <div className="bg-green-100 px-4 py-12 rounded-md flex flex-col items-center justify-center">
               <div className="flex flex-col items-center justify-center gap-3 mt-4">
-                <img
+                <Image
                   src={
                     propertyData?.user?.image ?? "/images/portrait-image.jpg"
                   }
@@ -180,32 +230,51 @@ const PropertyDetailsMobile = ({ loading, propertyData }) => {
                     e.target.src = "/images/portrait-image.jpg";
                   }}
                   alt="#"
+                  height={112}
+                  width={112}
                   className="min-h-28 max-h-28 min-w-28 max-w-28 object-cover rounded-full border-2 border-solid border-green-600"
                 />
-                <div className="h-fit w-fit py-1 px-4 bg-green-600 flex items-center justify-center gap-2 text-white rounded-md">
-                  <AgentIcon size={24} color="#fff" />
-                  <p className="font-semibold text-xs">{t("newAgent")}</p>
-                </div>
+
                 <div className="flex gap-1 flex-col">
-                  <h5 className="text-black">{propertyData?.user?.name}</h5>
+                  <h5 className="text-black">{propertyData?.userId?.name}</h5>
                 </div>
               </div>
 
               <div className="flex items-center flex-col justify-between gap-3 mt-6 min-w-80 max-w-80">
                 <div className="flex gap-3 w-full">
                   {CREATOR_ACTIONS?.slice(0, 2).map((el, idx) => (
-                    <button
+                    <a
                       key={idx}
                       className="h-fit w-full px-4 rounded-md py-3 flex items-center justify-center gap-3 text-[13px] font-semibold text-white bg-green-600"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      href={
+                        el?.value === "call"
+                          ? `tel:${propertyData?.userId?.phoneNumber.replace(
+                              /\s/g,
+                              ""
+                            )}`
+                          : `https://wa.me/${propertyData?.userId?.phoneNumber.replace(
+                              /\s/g,
+                              ""
+                            )}`
+                      }
                     >
                       {el.icon}
                       {t(el.value)}
-                    </button>
+                    </a>
                   ))}
                 </div>
                 <div className="w-full mt-3">
                   {CREATOR_ACTIONS?.[2] && (
-                    <button className="w-full px-4 rounded-md py-3 flex items-center justify-center gap-3 text-[13px] font-semibold text-white bg-green-600">
+                    <button
+                      className="w-full px-4 rounded-md py-3 flex items-center justify-center gap-3 text-[13px] font-semibold text-white bg-green-600"
+                      onClick={() => {
+                        router.push(
+                          `/${locale}/agent/${propertyData?.userId?._id}`
+                        );
+                      }}
+                    >
                       {CREATOR_ACTIONS[2].icon}
                       {t(CREATOR_ACTIONS[2].value)}
                     </button>

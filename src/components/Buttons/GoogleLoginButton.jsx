@@ -11,7 +11,7 @@ const GoogleLoginButton = ({ classes }) => {
   return (
     <button
       onClick={handleLogin}
-      className={`bg-green-600 text-white py-2 px-4   rounded-lg transition duration-300 flex items-center justify-center   w-full h-12 ${classes}`}
+      className={`bg-white py-2 px-4 rounded-lg transition duration-300 flex items-center justify-center shadow border border-solid border-softGray text-black w-full h-12 ${classes}`}
     >
       <Image
         src={GoogleLogoImage}
