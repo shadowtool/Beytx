@@ -79,7 +79,10 @@ const PropertyDetailsDesktop = ({ loading, propertyData }) => {
                   <div className="flex flex-col gap-1 items-start">
                     <h3 className="text-gray-800 text-left font-semibold">
                       {t("pricePerYear", {
-                        price: propertyData?.price,
+                        price: new Intl.NumberFormat("en-US", {
+                          style: "decimal",
+                          maximumFractionDigits: 0,
+                        }).format(propertyData?.price),
                       })}{" "}
                     </h3>
                     <p className="text-gray-500 flex items-center mb-2 mt-1 ">

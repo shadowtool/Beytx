@@ -6,6 +6,7 @@ import { useTranslations } from "next-intl";
 import { useParams, useRouter } from "next/navigation";
 import { useState } from "react";
 import Image from "next/image";
+import { LogoImage } from "@/imports/images";
 
 const MobileNav = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -18,7 +19,7 @@ const MobileNav = () => {
 
   return (
     <section>
-      <header className="md:hidden bg-gradient-to-r from-emerald-600 via-emerald-500 to-emerald-500 shadow-md p-4">
+      <header className="md:hidden  rtl:bg-gradient-to-r ltr:bg-gradient-to-l from-emerald-600 via-emerald-500 to-emerald-500 shadow-md p-4">
         <div className="w-full flex justify-between items-center">
           <button
             className="text-white p-2"
@@ -28,14 +29,17 @@ const MobileNav = () => {
             {isOpen ? <CloseIcon size={28} /> : <HamMenuIcon size={28} />}
           </button>
 
-          <Image
-            src="/images/beyt.png"
-            alt="Logo"
-            height={40}
-            width={120}
-            className="max-h-10 w-auto"
-            onClick={() => router.push("/")}
-          />
+          <div className="flex items-center gap-1">
+            <Image
+              src={LogoImage}
+              alt="Logo"
+              height={40}
+              width={120}
+              className="max-h-10 w-auto"
+              onClick={() => router.push("/")}
+            />
+            <h4 className="!font-orbitron !text-white">Beyt</h4>
+          </div>
 
           <AuthButton />
         </div>

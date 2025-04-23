@@ -65,10 +65,8 @@ export const metadata = {
 
   icons: {
     icon: `${baseUrl}/favicon.ico`,
-    apple: `${baseUrl}/favicon.ico`,
+    apple: `${baseUrl}/apple-icon.png`,
   },
-
-  themeColor: "#10B981",
 };
 
 export default async function LocaleLayout({ children, params }) {

@@ -3,6 +3,7 @@ import React from "react";
 import { useTranslations } from "next-intl";
 import { useParams, usePathname } from "next/navigation";
 import Image from "next/image";
+import { LogoImage } from "@/imports/images";
 
 const Footer = () => {
   const { locale } = useParams();
@@ -21,7 +22,7 @@ const Footer = () => {
           <div className="flex flex-col md:flex-row justify-between items-center">
             <div className="mt-4 mb-16">
               <Image
-                src="/images/beyt.png"
+                src={LogoImage}
                 alt="Logo"
                 height={40}
                 width={40}

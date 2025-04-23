@@ -1,6 +1,6 @@
 import ContextWrapper from "@/context/ContextWrapper";
 import "./globals.css";
-import { Montserrat, Raleway } from "next/font/google";
+import { Montserrat, Raleway, Orbitron } from "next/font/google";
 import { cookies } from "next/headers";
 
 const montserrat = Montserrat({
@@ -15,6 +15,12 @@ const raleway = Raleway({
   weight: ["100", "200", "300", "400", "500", "600", "700", "800", "900"],
 });
 
+const orbitron = Orbitron({
+  subsets: ["latin"],
+  variable: "--font-orbitron",
+  weight: ["400", "500", "600", "700", "800", "900"],
+});
+
 export default function RootLayout({ children }) {
   const cookieStore = cookies();
 
@@ -23,7 +29,7 @@ export default function RootLayout({ children }) {
   return (
     <html lang={lang} hrefLang={lang} dir={lang === "ar" ? "rtl" : "ltr"}>
       <body
-        className={`${montserrat.variable} ${raleway.variable} antialiased`}
+        className={`${montserrat.variable} ${raleway.variable} ${orbitron.variable} antialiased`}
       >
         <ContextWrapper>{children}</ContextWrapper>
       </body>

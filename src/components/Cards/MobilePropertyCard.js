@@ -1,4 +1,3 @@
-import { axiosInstance } from "@/lib/axios";
 import { ROUTES } from "@/constants/routes";
 import {
   BathroomIcon,
@@ -24,6 +23,8 @@ import { AreaIcon, LocationIcon } from "@/imports/images";
 import Image from "next/image";
 import { toast } from "react-toastify";
 import { useModal } from "@/context/ModalContext";
+
+const MotionImage = motion(Image);
 
 const MobilePropertyCard = ({ property, cardType }) => {
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
@@ -114,11 +115,13 @@ const MobilePropertyCard = ({ property, cardType }) => {
           }}
         >
           {images.map((image, index) => (
-            <motion.img
+            <MotionImage
               key={index}
               src={image}
               alt={`property-image-${index}`}
-              className="w-full h-52 object-cover flex-shrink-0"
+              width={600} // required
+              height={400} // required
+              className="w-full h-52 object-cover"
               style={{
                 flex: "0 0 100%",
               }}
@@ -165,7 +168,13 @@ const MobilePropertyCard = ({ property, cardType }) => {
           <p className="text-zinc-600">
             {translatePropertyTypes(property?.type?.toLowerCase())}
           </p>
-          <h4 className="text-green-700 mt-1 mb-2 ">{property?.price} KWD</h4>
+          <h4 className="text-green-700 mt-1 mb-2 ">
+            {new Intl.NumberFormat("en-US", {
+              style: "decimal",
+              maximumFractionDigits: 0,
+            }).format(property?.price)}{" "}
+            KWD
+          </h4>
           <div className="mt-2 flex flex-col items-start text-balance">
             <p className="text-gray-500 flex items-center mb-2 mt-1 ">
               <Image

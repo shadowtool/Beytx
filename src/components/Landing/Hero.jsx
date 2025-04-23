@@ -20,6 +20,8 @@ const Hero = () => {
   const { locale } = useParams();
   const translate = useTranslations("hero");
 
+  const typesTranslations = useTranslations("propertyTypes");
+
   const methods = useForm({
     defaultValues: {
       propertyType: "",
@@ -151,7 +153,10 @@ const Hero = () => {
                 name={"propertyType"}
                 placeholder={translate("type")}
                 options={PROPERTY_TYPES?.map((el) => {
-                  return { label: el, value: el };
+                  return {
+                    label: typesTranslations(el?.toLowerCase()),
+                    value: el,
+                  };
                 })}
                 classes={{
                   button:

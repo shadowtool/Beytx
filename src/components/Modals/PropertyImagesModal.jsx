@@ -5,6 +5,8 @@ import { motion } from "framer-motion";
 import { CloseIcon, NextIcon, PreviousIcon } from "@/imports/icons";
 import Image from "next/image";
 
+const MotionImage = motion(Image);
+
 const PropertyImagesModal = ({ open, handleClose, images }) => {
   const [selectedImage, setSelectedImage] = useState(0);
 
@@ -57,9 +59,11 @@ const PropertyImagesModal = ({ open, handleClose, images }) => {
                 }}
               >
                 {images.map((image, index) => (
-                  <motion.img
+                  <MotionImage
                     key={index}
                     src={image}
+                    height={1280}
+                    width={720}
                     alt={`property-image-${index}`}
                     className="w-full h-full object-cover flex-shrink-0"
                     style={{

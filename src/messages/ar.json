@@ -8,7 +8,8 @@
     "adminPanel": "لوحة التحكم",
     "incompleteProfileError": "يرجى إكمال ملفك الشخصي لإضافة إعلان جديد",
     "loginBeforeAddProperty": "يرجى تسجيل الدخول لإضافة إعلان عقاري",
-    "removeImage": "إزالة الصورة"
+    "removeImage": "إزالة الصورة",
+    "beyt": "بيت"
   },
   "footer": {
     "aboutUs": "من نحن",

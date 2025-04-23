@@ -6,8 +6,7 @@ export { default as PropertyImageFive } from "../../public/images/property-(5).j
 export { default as PropertyImageSix } from "../../public/images/property-(6).jpg";
 export { default as PortraitImage } from "../../public/images/portrait.jpg";
 export { default as FilterBgImage } from "../../public/images/property-filter-hero-bg.jpg";
-export { default as LogoImage } from "../../public/images/beyt.png";
-export { default as LogoImageBlueBg } from "../../public/images/beyt-logo.png";
+export { default as LogoImage } from "../../public/images/logo-sd.png";
 export { default as GoogleLogoImage } from "../../public/images/googlelogo.png";
 export { default as SignupBgImage } from "../../public/images/bg-signup-page.jpg";
 export { default as AreaIcon } from "../../public/images/areaIcon.svg";

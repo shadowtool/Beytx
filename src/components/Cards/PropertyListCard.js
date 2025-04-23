@@ -82,7 +82,13 @@ const PropertyListCard = ({ property, cardType, selectedView }) => {
             {" "}
             {translatePropertyTypes(property?.type?.toLowerCase())}
           </p>
-          <p className="text-green-700 mt-1 mb-2">{property?.price} KWD</p>
+          <p className="text-green-700 mt-1 mb-2">
+            {new Intl.NumberFormat("en-US", {
+              style: "decimal",
+              maximumFractionDigits: 0,
+            }).format(property?.price)}{" "}
+            KWD
+          </p>
 
           <div className="mt-2 flex flex-col items-start text-balance">
             <p className="text-gray-500 flex items-center mb-2 mt-1 ">

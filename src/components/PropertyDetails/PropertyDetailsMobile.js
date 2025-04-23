@@ -47,6 +47,8 @@ const PropertyDetailsMobile = ({ loading, propertyData }) => {
     }
   };
 
+  const MotionImage = motion(Image);
+
   return (
     <div className="md:hidden">
       {loading ? (
@@ -79,7 +81,9 @@ const PropertyDetailsMobile = ({ loading, propertyData }) => {
                 }}
               >
                 {images.map((image, index) => (
-                  <motion.img
+                  <MotionImage
+                    height={600}
+                    width={400}
                     key={index}
                     src={image}
                     alt={`property-image-${index}`}
@@ -122,7 +126,10 @@ const PropertyDetailsMobile = ({ loading, propertyData }) => {
                 <div className="flex flex-col md:flex-row items-start md:items-end justify-between mb-4">
                   <h4 className="text-gray-800 text-left">
                     {t("pricePerYear", {
-                      price: propertyData?.price,
+                      price: new Intl.NumberFormat("en-US", {
+                        style: "decimal",
+                        maximumFractionDigits: 0,
+                      }).format(propertyData?.price),
                     })}
                   </h4>
                   <p className="text-gray-500 flex items-center my-4">

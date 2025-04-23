@@ -28,6 +28,7 @@ module.exports = {
       },
       fontFamily: {
         montserrat: ["var(--font-montserrat)", "system-ui", "sans-serif"],
+        orbitron: ["var(--font-orbitron)", "system-ui", "sans-serif"],
       },
       fontWeight: {
         thin: "100",

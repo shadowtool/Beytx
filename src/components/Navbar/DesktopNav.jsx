@@ -8,6 +8,7 @@ import GeneralButton from "../Buttons/GeneralButton";
 import { useSession } from "next-auth/react";
 import { toast } from "react-toastify";
 import Image from "next/image";
+import { LogoImage } from "@/imports/images";
 
 const DesktopNav = () => {
   const { locale } = useParams();
@@ -20,16 +21,19 @@ const DesktopNav = () => {
 
   return (
     <section>
-      <header className="hidden md:block text-white p-0 shadow-md bg-gradient-to-r from-emerald-600 from-20% via-emerald-500 via-30% to-emerald-500 to-90% px-12 min-h-24 max-h-24">
+      <header className="hidden md:block text-white p-0 shadow-md rtl:bg-gradient-to-r ltr:bg-gradient-to-l from-emerald-600 from-20% via-emerald-500 via-30% to-emerald-500 to-90% px-12 min-h-24 max-h-24">
         <div className="mx-auto flex justify-between items-center py-5">
-          <div className="flex items-center gap-4">
-            <Image
-              src="/images/beyt.png"
-              alt="Logo"
-              height={48}
-              width={144}
-              className="max-w-36 max-h-12 object-contain"
-            />
+          <div className="flex items-center gap-8">
+            <div className="flex gap-2 items-center mr-8">
+              <Image
+                src={LogoImage}
+                alt="Logo"
+                height={48}
+                width={144}
+                className="min-h-12 min-w-12 max-h-12 max-w-12 object-contain"
+              />
+              <h4 className="!font-orbitron">Beyt</h4>
+            </div>
             <div className="flex items-center gap-8">
               <Link href={`/${locale}`} className="text-white">
                 {translate("home")}

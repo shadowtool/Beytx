@@ -7,7 +7,8 @@
     "addProperty": "Add Property",
     "adminPanel": "Admin Panel",
     "incompleteProfileError": "Please complete your profile to add a new listing",
-    "loginBeforeAddProperty": "Please log in to add a property listing"
+    "loginBeforeAddProperty": "Please log in to add a property listing",
+    "beyt": "Beyt"
   },
   "footer": {
     "aboutUs": "About Us",
