@@ -8,6 +8,11 @@
   box-sizing: border-box;
 }
 
+html {
+  scroll-behavior: smooth;
+  overflow-anchor: none;
+}
+
 body {
   overflow-x: hidden;
 }
