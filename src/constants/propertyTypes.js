@@ -1,7 +1,9 @@
 export const PROPERTY_TYPES = [
-  "Villa",
-  "Apartment",
-  "Office",
-  "Townhouse",
-  "Land",
+  "Chalet",
+  "Building",
+  "Farm",
+  "Commercial",
+  "Floor",
+  "Duplex",
+  "Stable",
 ];
