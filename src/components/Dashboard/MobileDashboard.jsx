@@ -5,6 +5,7 @@ import MobilePropertyCard from "../Cards/MobilePropertyCard";
 import { LeftArrowIcon } from "@/imports/icons";
 import { useFormContext } from "react-hook-form";
 import { useTranslations } from "next-intl";
+import PhoneNumberInput from "../Inputs/PhoneNumberInput";
 
 const MobileDashboard = ({
   userInfo,
@@ -121,13 +122,12 @@ const MobileDashboard = ({
                   />
                 </div>
                 <div className="flex flex-col gap-2 w-full items-start mb-4">
-                  <h6 className="text-gray-700 text-sm">
-                    {translate("phoneNumber")}
-                  </h6>
-                  <input
-                    {...methods.register("phoneNumber")}
-                    className="py-3 px-6 bg-gray-50 w-full rounded-lg border border-gray-300"
-                  />
+                  <div className="flex flex-col gap-2 w-full items-start mb-4">
+                    <h6 className="text-gray-700">
+                      {translate("phoneNumber")}
+                    </h6>
+                    <PhoneNumberInput name="phoneNumber" />
+                  </div>
                 </div>
                 <button
                   className="w-full py-3 px-6 rounded-md bg-green-600 text-white shadow-md hover:bg-green-700 transition"

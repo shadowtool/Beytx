@@ -7,6 +7,7 @@ import { useParams, useRouter } from "next/navigation";
 import { useState } from "react";
 import Image from "next/image";
 import { LogoImage } from "@/imports/images";
+import { useSession } from "next-auth/react";
 
 const MobileNav = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -16,6 +17,8 @@ const MobileNav = () => {
   const translate = useTranslations("header");
 
   const router = useRouter();
+
+  const { data: session } = useSession();
 
   return (
     <section>
@@ -58,11 +61,16 @@ const MobileNav = () => {
                 {translate("home")}
               </Link>
             </li>
-            <li>
-              <Link href={`/${locale}/admin`} onClick={() => setIsOpen(false)}>
-                {translate("adminPanel")}
-              </Link>
-            </li>
+            {session?.user?.role === "admin" && (
+              <li>
+                <Link
+                  href={`/${locale}/admin`}
+                  onClick={() => setIsOpen(false)}
+                >
+                  {translate("adminPanel")}
+                </Link>
+              </li>
+            )}
             <li>
               <Link
                 href={`/${locale}/properties`}
