@@ -8,7 +8,7 @@ export default function Home() {
       <main>
         <Hero />
         <FeaturedListings />
-        <LinksSection />
+        {/* <LinksSection /> */}
       </main>
     </>
   );
