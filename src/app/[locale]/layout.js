@@ -5,6 +5,7 @@ import { routing } from "@/i18n/routing";
 import Footer from "@/components/Footer/Footer";
 import Header from "@/components/Navbar/Header";
 import Script from "next/script";
+import ContextWrapper from "@/context/ContextWrapper";
 
 const baseUrl = process.env.NEXT_PUBLIC_DOMAIN || "https://beyt.co";
 
@@ -104,14 +105,16 @@ export default async function LocaleLayout({ children, params }) {
 
   return (
     <NextIntlClientProvider messages={messages}>
-      <Script
-        id="json-ld-home"
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLdData) }}
-      />
-      <Header />
-      {children}
-      <Footer />
+      <ContextWrapper>
+        <Script
+          id="json-ld-home"
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLdData) }}
+        />
+        <Header />
+        {children}
+        <Footer />
+      </ContextWrapper>
     </NextIntlClientProvider>
   );
 }

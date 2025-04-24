@@ -32,7 +32,7 @@ const DesktopDashboard = ({
       <div className="min-w-64 max-w-64 border border-solid bg-white border-gray-200 shadow-lg p-6 flex flex-col items-center gap-6">
         <div className="w-28 h-28 rounded-full overflow-hidden border-4 border-green-600">
           <Image
-            src={userInfo?.image || "/images/portrait-image.jpg"}
+            src={userInfo?.image || "/images/user-default.png"}
             alt={translate("profileImageAlt")}
             width={144}
             height={144}
@@ -73,7 +73,7 @@ const DesktopDashboard = ({
               />
               {selectedImage ? (
                 <Image
-                  src={selectedImage || "/images/portrait-image.jpg"}
+                  src={selectedImage || "/images/user-default.png"}
                   alt={translate("profileImageAlt")}
                   className="min-h-24 max-h-24 min-w-24 max-w-24 object-cover rounded-full cursor-pointer border-2 border-white"
                   height={128}

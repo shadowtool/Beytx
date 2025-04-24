@@ -186,11 +186,10 @@ const PropertyDetailsDesktop = ({ loading, propertyData }) => {
                 <div className="flex flex-col items-center justify-center gap-3 mt-4">
                   <Image
                     src={
-                      propertyData?.userId?.image ??
-                      "/images/portrait-image.jpg"
+                      propertyData?.userId?.image ?? "/images/user-default.png"
                     }
                     onError={(e) => {
-                      e.target.src = "/images/portrait-image.jpg";
+                      e.target.src = "/images/user-default.png";
                     }}
                     alt="#"
                     height={112}

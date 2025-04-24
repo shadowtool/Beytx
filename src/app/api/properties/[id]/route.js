@@ -84,7 +84,7 @@ export async function PUT(req, { params }) {
       );
     }
 
-    const isOwner = property.userId?.toString() === session.user._id;
+    const isOwner = property.userId?.toString() === session.user.id;
     const isAdmin = session.user.role === "admin";
 
     if (!isAdmin && !isOwner) {

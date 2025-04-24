@@ -46,7 +46,7 @@ export default function AuthButton() {
               <UserIcon size={21} color="#fff" />
             </GeneralButton>
             {showProfileOptions && (
-              <div className="h-fit w-fit min-w-36 absolute top-[110%] rtl:left-0 ltr:right-0 bg-white rounded-md shadow-md z-[10] overflow-hidden">
+              <div className="h-fit w-fit min-w-36 absolute top-[110%] right-0 bg-white rounded-md shadow-md z-[10] overflow-hidden">
                 <div
                   className="py-3 px-6 flex items-center text-black   cursor-pointer hover:bg-gray-200 transition-all duration-300  "
                   onClick={() => {

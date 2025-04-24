@@ -31,7 +31,7 @@ export default function RootLayout({ children }) {
       <body
         className={`${montserrat.variable} ${raleway.variable} ${orbitron.variable} antialiased`}
       >
-        <ContextWrapper>{children}</ContextWrapper>
+        <>{children}</>
       </body>
     </html>
   );

@@ -14,6 +14,7 @@ import { signIn } from "next-auth/react";
 import { useParams } from "next/navigation";
 import axios from "axios";
 import { useTranslations } from "next-intl";
+import PhoneNumberInput from "@/components/Inputs/PhoneNumberInput";
 
 const AuthModal = ({ open, handleClose }) => {
   const [userExist, setUserExist] = useState(false);
@@ -109,10 +110,10 @@ const AuthModal = ({ open, handleClose }) => {
             >
               <div className="h-full w-full flex flex-col">
                 <div className="h-fit p-4 w-full flex items-center gap-4 bg-green-100">
-                  <div className="min-h-12 min-w-12 max-h-12 max-w-12 bg-green-600 rounded-full flex items-center justify-center">
+                  <div className="min-h-16 min-w-16 max-h-16 max-w-16 bg-emerald-500 rounded-full flex items-center justify-center">
                     <Image
                       src={LogoImage}
-                      className="h-8 w-8 object-contain"
+                      className="h-14 w-14 object-cover rounded-full"
                       height={192}
                       width={288}
                     />
@@ -203,10 +204,8 @@ const AuthModal = ({ open, handleClose }) => {
                                 t("passwordsDoNotMatch"),
                             }}
                           />
-                          <GeneralInput
+                          <PhoneNumberInput
                             name="phoneNumber"
-                            placeholder={t("enterYourPhoneNumber")}
-                            type="text"
                             validation={{
                               required: t("phoneNumberRequired"),
                             }}

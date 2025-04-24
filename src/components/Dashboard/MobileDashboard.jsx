@@ -38,7 +38,7 @@ const MobileDashboard = ({
         <div className="p-6 flex flex-col items-center gap-6">
           <div className="w-28 h-28 rounded-full overflow-hidden border-4 border-green-600">
             <Image
-              src={userInfo?.image || "/images/portrait-image.jpg"}
+              src={userInfo?.image || "/images/user-default.png"}
               alt={translate("profileImageAlt")}
               width={144}
               height={144}

@@ -405,5 +405,10 @@
     "Al-Farwaniyah": "Al-Farwaniyah",
     "The Airport": "The Airport",
     "South Khaitan Exhibition": "South Khaitan Exhibition"
+  },
+  "ConfirmDeletePropertyModal": {
+    "areYouSure": "Are you sure ?",
+    "cancel": "Cancel",
+    "confirm": "Confirm"
   }
 }

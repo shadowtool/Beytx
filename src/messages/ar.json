@@ -404,5 +404,10 @@
     "Al-Farwaniyah": "الفروانية",
     "The Airport": "المطار",
     "South Khaitan Exhibition": "معرض جنوب خيطان"
+  },
+  "ConfirmDeletePropertyModal": {
+    "areYouSure": "هل أنت متأكد؟",
+    "cancel": "إلغاء",
+    "confirm": "تأكيد"
   }
 }

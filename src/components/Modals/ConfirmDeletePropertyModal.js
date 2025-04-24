@@ -2,9 +2,11 @@ import React, { useEffect, useRef, useState } from "react";
 import ModalWrapper from "./ModalWrapper";
 import GeneralButton from "../Buttons/GeneralButton";
 import { useModal } from "@/context/ModalContext";
+import { useTranslations } from "next-intl";
 
 const ConfirmDeletePropertyModal = ({ open, handleClose }) => {
   const { modalProps, closeModal } = useModal();
+  const translations = useTranslations("ConfirmDeletePropertyModal");
 
   return (
     <ModalWrapper open={open} handleClose={handleClose}>
@@ -16,10 +18,10 @@ const ConfirmDeletePropertyModal = ({ open, handleClose }) => {
           className="h-fit w-full max-w-sm p-8 bg-white rounded-xl shadow-lg relative border border-gray-200"
           onClick={(e) => e.stopPropagation()}
         >
-          <h3 className="mb-6">Are you sure ?</h3>
+          <h3 className="mb-6">{translations("areYouSure")}</h3>
           <div className="flex items-center justify-center gap-6 flex-wrap">
             <GeneralButton type="outlined" onClick={() => handleClose()}>
-              Cancel
+              {translations("cancel")}
             </GeneralButton>
             <GeneralButton
               type="default"
@@ -28,7 +30,7 @@ const ConfirmDeletePropertyModal = ({ open, handleClose }) => {
                 modalProps.onConfirm();
               }}
             >
-              Confirm
+              {translations("confirm")}
             </GeneralButton>
           </div>
         </div>

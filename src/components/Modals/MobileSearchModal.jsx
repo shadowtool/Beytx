@@ -34,7 +34,11 @@ const MobileSearchModal = ({
   });
 
   const handleLocationSelect = (location) => {
-    if (!selectedLocationsValue?.some((loc) => loc.city === location.city)) {
+    if (
+      !selectedLocationsValue?.some(
+        (loc) => loc.city.toLowerCase() === location.city.toLowerCase()
+      )
+    ) {
       setValue("selectedLocations", [
         ...(selectedLocationsValue || []),
         location,

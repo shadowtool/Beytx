@@ -122,7 +122,7 @@ const EditProfile = ({ open, handleClose, userData }) => {
                 />
                 {selectedImage ? (
                   <Image
-                    src={selectedImage || "/images/portrait-image.jpg"}
+                    src={selectedImage || "/images/user-default.png"}
                     alt="Profile"
                     className="min-h-24 max-h-24 min-w-24 max-w-24 object-cover rounded-full cursor-pointer border-2 border-white"
                     height={128}
