@@ -41,7 +41,7 @@ const GeneralInput = ({
               type={type}
               placeholder={placeholder}
               disabled={disabled}
-              className={`w-full px-4 py-2 border rounded-md outline-none focus:outline-none focus:ring-2 focus:ring-emerald-600 transition-all duration-300 text-black disabled:bg-gray-300 ${
+              className={`w-full px-4 py-2 border rounded-md outline-none focus:outline-none focus:ring-2 focus:ring-emerald-600 transition-all duration-300 text-black disabled:bg-gray-300 text-base ${
                 error ? "border-red-500" : "border-gray-300"
               } ${classes}`}
               {...field}
@@ -56,7 +56,7 @@ const GeneralInput = ({
           );
         }}
       />
-      {error && <p className="text-red-500   mt-1">{error.message}</p>}
+      {error && <p className="text-red-500 mt-1">{error.message}</p>}
     </div>
   );
 };

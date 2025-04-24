@@ -167,7 +167,9 @@ const MobileSearchModal = ({
                 >
                   {locationsData
                     ?.filter((el) => {
-                      return el?.city?.includes(locationInputValue);
+                      return el?.city
+                        ?.toLowerCase()
+                        ?.includes(locationInputValue?.toLowerCase());
                     })
                     ?.map((el) => (
                       <div
