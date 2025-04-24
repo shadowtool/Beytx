@@ -55,6 +55,11 @@
     "removeImage": "Remove image"
   },
   "propertyTypes": {
+    "villa": "Villa",
+    "apartment": "Apartment",
+    "land": "Land",
+    "office": "Office",
+    "townhouse": "Townhouse",
     "chalet": "Chalet",
     "building": "Building",
     "farm": "Farm",

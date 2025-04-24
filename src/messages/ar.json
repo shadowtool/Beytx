@@ -55,6 +55,11 @@
     "enterDescription": "أدخل النص هنا ..."
   },
   "propertyTypes": {
+    "villa": "فيلا",
+    "apartment": "شقة",
+    "land": "أرض",
+    "office": "مكتب",
+    "townhouse": "تاون هاوس",
     "chalet": "شاليه",
     "building": "عمارة",
     "farm": "مزرعة",
