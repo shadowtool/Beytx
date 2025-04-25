@@ -40,7 +40,6 @@ export const authOptions = {
             throw new Error("Invalid credentials");
           }
 
-          // Return user object with needed fields
           return {
             id: user._id.toString(),
             name: user.name,
@@ -84,7 +83,6 @@ export const authOptions = {
             });
           }
 
-          // Attach DB user info to user object
           user.id = existingUser._id.toString();
           user.role = existingUser.role || "user";
           user.phoneNumber = existingUser.phoneNumber || null;
@@ -103,26 +101,24 @@ export const authOptions = {
     async jwt({ token, user }) {
       if (user) {
         token.id = user.id;
-        token.name = user.name;
-        token.email = user.email;
-        token.phoneNumber = user.phoneNumber || null;
-        token.role = user.role || "user";
-        token.image = user.image || null;
       }
       return token;
     },
 
     async session({ session, token }) {
-      if (token) {
-        session.user = {
-          id: token.id,
-          name: token.name,
-          email: token.email,
-          phoneNumber: token.phoneNumber,
-          role: token.role,
-          image: token.image,
-        };
+      if (token?.id) {
+        await dbConnect();
+        const dbUser = await User.findById(token.id).lean();
+
+        if (dbUser) {
+          const { password, _id, ...rest } = dbUser;
+          session.user = {
+            id: _id.toString(),
+            ...rest,
+          };
+        }
       }
+
       return session;
     },
 

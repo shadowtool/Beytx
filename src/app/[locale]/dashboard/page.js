@@ -46,7 +46,7 @@ const index = () => {
 
   const formValues = useWatch({ control: methods.control });
 
-  const { data, status } = useSession();
+  const { data, status, update } = useSession();
 
   const userInfo = data?.user ?? {};
 
@@ -75,7 +75,8 @@ const index = () => {
 
   const { mutateAsync: updateUserData } = useMutation({
     mutationFn: (variables) => updateUserMutation(variables),
-    onSuccess: () => {
+    onSuccess: async () => {
+      await update();
       queryClient.invalidateQueries([ROUTES.GET_USER_INFO]);
       toast.success("Profile Updated successfully");
     },
