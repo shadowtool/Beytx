@@ -230,7 +230,9 @@ const PropertyDetailsMobile = ({ loading, propertyData }) => {
             <div className="bg-green-100 px-4 py-12 rounded-md flex flex-col items-center justify-center">
               <div className="flex flex-col items-center justify-center gap-3 mt-4">
                 <Image
-                  src={propertyData?.user?.image ?? "/images/user-default.png"}
+                  src={
+                    propertyData?.userId?.image ?? "/images/user-default.png"
+                  }
                   onError={(e) => {
                     e.target.src = "/images/user-default.png";
                   }}
