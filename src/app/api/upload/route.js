@@ -40,3 +40,10 @@ export async function POST(req) {
     );
   }
 }
+
+export const config = {
+  api: {
+    bodyParser: false, // Important: turn off built-in body parsing!
+    sizeLimit: "25mb", // <-- you can adjust this as needed
+  },
+};
