@@ -1,17 +1,48 @@
 import { axiosInstance } from "./axios";
 import { ROUTES } from "../constants/routes";
+import imageCompression from "browser-image-compression";
 
 export const uploadImage = async (file) => {
-  const formData = new FormData();
-  formData.append("file", file);
+  const folder = "uploads";
 
-  const res = await axiosInstance.post(`${ROUTES.UPLOAD_CONTENT}`, formData, {
+  if (!file) throw new Error("No file provided for upload.");
+
+  const options = {
+    maxSizeMB: 7,
+    maxWidthOrHeight: 1920,
+    useWebWorker: true,
+  };
+
+  const compressedFile = await imageCompression(file, options);
+
+  const fileNameWithoutExt = file.name.split(".")[0];
+
+  const publicId = `${folder}/${fileNameWithoutExt}`;
+
+  const signatureRes = await axiosInstance.post("/upload/generate-signature", {
+    folder,
+    public_id: publicId,
+  });
+
+  const { signature, timestamp, apiKey, cloudName } = signatureRes.data;
+
+  const formData = new FormData();
+  formData.append("file", compressedFile);
+  formData.append("api_key", apiKey);
+  formData.append("timestamp", timestamp.toString());
+  formData.append("folder", folder);
+  formData.append("public_id", publicId);
+  formData.append("signature", signature);
+
+  const cloudinaryUploadUrl = `https://api.cloudinary.com/v1_1/${cloudName}/auto/upload`;
+
+  const uploadRes = await axiosInstance.post(cloudinaryUploadUrl, formData, {
     headers: {
       "Content-Type": "multipart/form-data",
     },
   });
 
-  return res.data;
+  return uploadRes.data.secure_url;
 };
 
 export const fetchPropertyListings = async (

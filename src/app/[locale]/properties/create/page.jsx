@@ -46,6 +46,7 @@ export default function AddProperty() {
       amenities: [],
     },
   });
+
   const status = useWatch({ name: "status", control: methods.control });
 
   const { handleSubmit, reset, setValue } = methods;
@@ -121,13 +122,10 @@ export default function AddProperty() {
       if (data?.images?.length > 0) {
         toast.loading(translate("uploadingImages"));
         const response = await uploadImagesCall(data?.images);
-        const imageUrls = response?.map((el) => {
-          return el?.url;
-        });
-        dataToSend["images"] = imageUrls;
+
+        dataToSend["images"] = response;
         toast.dismiss();
       }
-
       toast.loading(translate("creatingProperty"));
       createProperty({ ...dataToSend });
     } catch (error) {

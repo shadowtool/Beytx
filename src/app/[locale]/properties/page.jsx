@@ -166,8 +166,6 @@ export default function index() {
     router.replace(`?${searchParams.toString()}`);
   }, [formValues, router]);
 
-  console.log({ formValues });
-
   return (
     <main>
       <FormProvider {...methods}>
