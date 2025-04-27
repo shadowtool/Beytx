@@ -8,6 +8,20 @@ const ReactQuill = dynamic(() => import("react-quill"), { ssr: false });
 const TextEditor = ({ name, placeholder }) => {
   const { control } = useFormContext();
 
+  const modules = {
+    toolbar: [
+      [{ header: [1, 2, false] }],
+      ["bold", "italic", "underline", "strike", "blockquote"],
+      [
+        { list: "ordered" },
+        { list: "bullet" },
+        { indent: "-1" },
+        { indent: "+1" },
+      ],
+      [{ direction: "rtl" }], // this is rtl support
+    ],
+  };
+
   return (
     <div className="mb-4">
       <Controller
@@ -19,6 +33,7 @@ const TextEditor = ({ name, placeholder }) => {
             {...field}
             placeholder={placeholder}
             theme="snow"
+            modules={modules}
             className="h-full min-h-52 text-black border-2 border-solid border-gray-200 rounded-2xl p-1 ! "
           />
         )}
