@@ -114,7 +114,7 @@ export default function index() {
       if (newImageFiles.length > 0) {
         toast.loading("Uploading images...");
         const response = await uploadImagesCall(newImageFiles);
-        uploadedUrls = response.map((el) => el?.url);
+        uploadedUrls = response;
         toast.dismiss();
       }
 
