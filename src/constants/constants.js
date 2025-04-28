@@ -66,3 +66,6 @@ export const PRICE_OPTIONS_RENT = [
 ];
 
 export const USER_ROLES = ["user", "admin"];
+
+export const FALLBACK_IMAGE_URL =
+  "https://images.pexels.com/photos/28216688/pexels-photo-28216688/free-photo-of-autumn-camping.png";

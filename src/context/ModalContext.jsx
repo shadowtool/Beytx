@@ -1,6 +1,7 @@
 "use client";
 import { createContext, useContext, useState, useCallback } from "react";
 import ConfirmDeletePropertyModal from "@/components/Modals/ConfirmDeletePropertyModal";
+import AgentInfoModal from "@/components/Modals/AgentInfoModal";
 
 const ModalContext = createContext();
 
@@ -25,6 +26,7 @@ export const ModalProvider = ({ children }) => {
         open={modal === "deleteConfirmation"}
         handleClose={closeModal}
       />
+      <AgentInfoModal open={modal === "agentInfo"} handleClose={closeModal} />
     </ModalContext.Provider>
   );
 };

@@ -1,7 +1,7 @@
 "use client";
 import React, { useEffect, useRef, useState } from "react";
 import Loader from "../Reusables/Loader";
-import { CREATOR_ACTIONS } from "@/constants/constants";
+import { CREATOR_ACTIONS, FALLBACK_IMAGE_URL } from "@/constants/constants";
 import Image from "next/image";
 import { motion } from "framer-motion";
 import { BathroomIcon, BedIcon, DownIcon } from "@/imports/icons";
@@ -29,6 +29,10 @@ const PropertyDetailsDesktop = ({ loading, propertyData }) => {
     }
   }, [propertyData?.description]);
 
+  const images = [0, 1, 2]?.map((el) => {
+    return propertyData?.images?.[el] || FALLBACK_IMAGE_URL;
+  });
+
   return (
     <div className="hidden md:block">
       {loading ? (
@@ -40,10 +44,7 @@ const PropertyDetailsDesktop = ({ loading, propertyData }) => {
           <div className="container mx-auto hidden md:flex flex-col md:flex-row gap-6 mt-8 px-12">
             <div className="grow w-full relative">
               <CldImage
-                src={
-                  propertyData?.images?.[0] ||
-                  "https://images.pexels.com/photos/28216688/pexels-photo-28216688/free-photo-of-autumn-camping.png"
-                }
+                src={propertyData?.images?.[0] || FALLBACK_IMAGE_URL}
                 alt={"property-image-0"}
                 className="h-full w-full object-cover rounded-lg max-h-[500px]"
                 onClick={() => setOpenImagesModal(true)}
@@ -52,13 +53,10 @@ const PropertyDetailsDesktop = ({ loading, propertyData }) => {
               />
             </div>
             <div className="md:min-w-96 md:max-w-96 grow flex flex-col gap-6">
-              {propertyData?.images?.slice(1, 3).map((img, idx) => (
+              {images?.slice(1, 3).map((img, idx) => (
                 <Image
                   key={idx}
-                  src={
-                    img ||
-                    "https://images.pexels.com/photos/28216688/pexels-photo-28216688/free-photo-of-autumn-camping.png"
-                  }
+                  src={img || "FALLBACK_IMAGE_URL"}
                   alt={"property-image-2"}
                   className="h-full w-full grow object-cover rounded-lg max-h-[238px]"
                   onClick={() => setOpenImagesModal(true)}

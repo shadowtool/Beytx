@@ -228,6 +228,9 @@ const PropertyCard = ({ property, cardType }) => {
                   )}`}
                   onClick={(e) => {
                     e.stopPropagation();
+                    openModal("agentInfo", {
+                      userInfo: property?.userId,
+                    });
                     setShowUserPhoneNumber(true);
                   }}
                   className="text-white px-3 md:px-4 py-2 rounded-md flex items-center justify-center bg-green-600 backdrop-blur text-xs md:text-sm w-full grow max-w-fit md:max-w-full gap-1 ltr:flex-row rtl:flex-row-reverse"

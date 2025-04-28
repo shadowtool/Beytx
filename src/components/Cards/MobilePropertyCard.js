@@ -24,6 +24,7 @@ import Image from "next/image";
 import { toast } from "react-toastify";
 import { useModal } from "@/context/ModalContext";
 import { CldImage } from "next-cloudinary";
+import { FALLBACK_IMAGE_URL } from "@/constants/constants";
 
 const MotionImage = motion(CldImage);
 
@@ -64,9 +65,7 @@ const MobilePropertyCard = ({ property, cardType }) => {
 
   const [dragging, setDragging] = useState(false); // Track if user is dragging
 
-  const images = property?.images ?? [
-    "https://images.pexels.com/photos/28216688/pexels-photo-28216688/free-photo-of-autumn-camping.png",
-  ];
+  const images = property?.images ?? [FALLBACK_IMAGE_URL];
 
   const handleSwipeRelease = (offsetX, velocityX) => {
     if (offsetX > 200 || velocityX > 0.5) {
@@ -265,6 +264,9 @@ const MobilePropertyCard = ({ property, cardType }) => {
                   className="text-white px-0 pl-2 md:px-4 py-2 rounded-md flex items-center justify-center bg-green-600 backdrop-blur w-full grow"
                   onClick={(e) => {
                     e.stopPropagation();
+                    openModal("agentInfo", {
+                      userInfo: property?.userId,
+                    });
                     setShowUserPhoneNumber(true);
                   }}
                 >

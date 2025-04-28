@@ -3,9 +3,9 @@ import React, { useState } from "react";
 import ModalWrapper from "./ModalWrapper";
 import { motion } from "framer-motion";
 import { CloseIcon, NextIcon, PreviousIcon } from "@/imports/icons";
-import Image from "next/image";
+import { CldImage } from "next-cloudinary";
 
-const MotionImage = motion(Image);
+const MotionImage = motion(CldImage);
 
 const PropertyImagesModal = ({ open, handleClose, images }) => {
   const [selectedImage, setSelectedImage] = useState(0);
@@ -65,7 +65,7 @@ const PropertyImagesModal = ({ open, handleClose, images }) => {
                     height={1280}
                     width={720}
                     alt={`property-image-${index}`}
-                    className="w-full h-full object-cover flex-shrink-0"
+                    className="w-full h-full object-contain"
                     style={{
                       flex: "0 0 100%",
                     }}
@@ -96,7 +96,7 @@ const PropertyImagesModal = ({ open, handleClose, images }) => {
                 id="scroll-container"
               >
                 {images?.map((image, index) => (
-                  <Image
+                  <CldImage
                     key={index}
                     src={image}
                     alt={`Property ${index + 1}`}

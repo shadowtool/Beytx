@@ -1,7 +1,7 @@
 "use client";
 import React, { useEffect, useRef, useState } from "react";
 import Loader from "../Reusables/Loader";
-import { CREATOR_ACTIONS } from "@/constants/constants";
+import { CREATOR_ACTIONS, FALLBACK_IMAGE_URL } from "@/constants/constants";
 import Image from "next/image";
 import { motion } from "framer-motion";
 import { BathroomIcon, BedIcon, DownIcon } from "@/imports/icons";
@@ -32,9 +32,7 @@ const PropertyDetailsMobile = ({ loading, propertyData }) => {
     }
   }, [propertyData?.description, isDescriptionExpanded]);
 
-  const images = propertyData?.images ?? [
-    "https://images.pexels.com/photos/28216688/pexels-photo-28216688/free-photo-of-autumn-camping.png",
-  ];
+  const images = propertyData?.images ?? [FALLBACK_IMAGE_URL];
 
   const handleSwipeRelease = (offsetX, velocityX) => {
     if (offsetX > 200 || velocityX > 0.5) {

@@ -40,7 +40,7 @@ const FeaturedListings = () => {
       <div className="w-full flex flex-col items-center">
         <div className="w-full overflow-x-auto hide-scrollbar whitespace-nowrap scrollbar-hide">
           <div className="flex gap-6 justify-start border-b border-gray-300 relative">
-            {PROPERTY_TYPES.map((tab) => (
+            {PROPERTY_TYPES?.slice(0, 5).map((tab) => (
               <button
                 key={tab}
                 className={`pb-2 transition-all min-w-[100px] max-w-[100px] ${

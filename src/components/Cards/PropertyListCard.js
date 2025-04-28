@@ -17,16 +17,16 @@ import { useParams, useRouter } from "next/navigation";
 import React, { useState } from "react";
 import { AreaIcon, LocationIcon } from "@/imports/images";
 import Image from "next/image";
-import {
-  archivePropertyMutation,
-  deletePropertyMutation,
-} from "@/lib/mutationFunctions";
+import { archivePropertyMutation } from "@/lib/mutationFunctions";
 import { CldImage } from "next-cloudinary";
+import { useModal } from "@/context/ModalContext";
 
 const PropertyListCard = ({ property, cardType }) => {
   const [showUserPhoneNumber, setShowUserPhoneNumber] = useState(false);
 
   const router = useRouter();
+
+  const { openModal } = useModal();
 
   const { locale } = useParams();
 
@@ -48,7 +48,7 @@ const PropertyListCard = ({ property, cardType }) => {
     },
   });
 
-  const deletePropertyCall = (id) => {
+  const archivePropertyCall = (id) => {
     mutate({ propertyId: id });
   };
   return (
@@ -154,7 +154,9 @@ const PropertyListCard = ({ property, cardType }) => {
                 <button
                   className="text-white px-4 py-2 rounded-md flex max-h-10 items-center bg-red-700 backdrop-blur w-full grow gap-1 ltr:flex-row rtl:flex-row-reverse"
                   onClick={() => {
-                    deletePropertyCall(property?._id);
+                    openModal("deleteConfirmation", {
+                      onConfirm: () => archivePropertyCall(property?._id),
+                    });
                   }}
                 >
                   <DeleteIcon size={21} color="#fff" className="mr-2" />
@@ -173,6 +175,9 @@ const PropertyListCard = ({ property, cardType }) => {
                   className="text-white px-4 py-2 rounded-md flex max-h-10 items-center bg-green-600 backdrop-blur w-full grow gap-1 ltr:flex-row rtl:flex-row-reverse whitespace-nowrap"
                   onClick={(e) => {
                     e.stopPropagation();
+                    openModal("agentInfo", {
+                      userInfo: property?.userId,
+                    });
                     setShowUserPhoneNumber(true);
                   }}
                 >
