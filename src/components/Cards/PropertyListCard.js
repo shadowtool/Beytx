@@ -14,15 +14,18 @@ import {
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useTranslations } from "next-intl";
 import { useParams, useRouter } from "next/navigation";
-import React from "react";
+import React, { useState } from "react";
 import { AreaIcon, LocationIcon } from "@/imports/images";
 import Image from "next/image";
 import {
   archivePropertyMutation,
   deletePropertyMutation,
 } from "@/lib/mutationFunctions";
+import { CldImage } from "next-cloudinary";
 
-const PropertyListCard = ({ property, cardType, selectedView }) => {
+const PropertyListCard = ({ property, cardType }) => {
+  const [showUserPhoneNumber, setShowUserPhoneNumber] = useState(false);
+
   const router = useRouter();
 
   const { locale } = useParams();
@@ -68,11 +71,11 @@ const PropertyListCard = ({ property, cardType, selectedView }) => {
             ? translateCards("sale")
             : translateCards("rent")}{" "}
         </div>
-        <Image
+        <CldImage
           src={property?.images?.[0]}
           alt={locale === "en" ? property?.title : property?.titleArabic}
-          height={144}
-          width={144}
+          width="144"
+          height="144"
           className="min-h-36 max-h-36 min-w-36 max-w-36 object-cover"
         />
       </div>
@@ -162,14 +165,45 @@ const PropertyListCard = ({ property, cardType, selectedView }) => {
           ) : (
             <>
               <div className="flex gap-2 w-full">
-                <button className="text-white px-4 py-2 rounded-md flex max-h-10 items-center bg-green-600 backdrop-blur w-full grow gap-1 ltr:flex-row rtl:flex-row-reverse">
-                  <CallIcon size={21} color="#fff" className="mr-2" />
-                  {translateCards("call")}{" "}
-                </button>
-                <button className="text-white px-4 py-2 rounded-md flex max-h-10 items-center bg-green-600 backdrop-blur w-full grow gap-1 ltr:flex-row rtl:flex-row-reverse">
-                  <WhatsappIcon size={21} color="#fff" className="mr-2" />
-                  {translateCards("whatsapp")}{" "}
-                </button>
+                <a
+                  href={`tel:${property?.userId?.phoneNumber.replace(
+                    /\s/g,
+                    ""
+                  )}`}
+                  className="text-white px-4 py-2 rounded-md flex max-h-10 items-center bg-green-600 backdrop-blur w-full grow gap-1 ltr:flex-row rtl:flex-row-reverse whitespace-nowrap"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setShowUserPhoneNumber(true);
+                  }}
+                >
+                  {showUserPhoneNumber ? (
+                    <span className="flex items-center">
+                      {property?.userId?.phoneNumber}
+                    </span>
+                  ) : (
+                    <>
+                      <CallIcon size={18} color="#fff" className="mr-2" />
+                      <span className="flex items-center">
+                        {translateCards("call")}
+                      </span>
+                    </>
+                  )}
+                </a>
+                <a
+                  href={`https://wa.me/${property?.userId?.phoneNumber.replace(
+                    /\s/g,
+                    ""
+                  )}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-white px-4 py-2 rounded-md flex max-h-10 items-center bg-green-600 backdrop-blur w-full grow gap-1 ltr:flex-row rtl:flex-row-reverse"
+                  onClick={(e) => e.stopPropagation()}
+                >
+                  <WhatsappIcon size={18} color="#fff" className="mr-2" />
+                  <span className="flex items-center">
+                    {translateCards("whatsapp")}
+                  </span>
+                </a>
               </div>
             </>
           )}

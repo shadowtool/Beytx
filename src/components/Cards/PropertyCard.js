@@ -10,7 +10,7 @@ import {
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useTranslations } from "next-intl";
 import { useParams, useRouter } from "next/navigation";
-import React from "react";
+import React, { useState } from "react";
 import {
   archivePropertyMutation,
   toggleListingInSavedListings,
@@ -21,8 +21,11 @@ import { AreaIcon, LocationIcon } from "@/imports/images";
 import LikeButton from "../Misc/LikeButton";
 import { toast } from "react-toastify";
 import { useModal } from "@/context/ModalContext";
+import { CldImage } from "next-cloudinary";
 
 const PropertyCard = ({ property, cardType }) => {
+  const [showUserPhoneNumber, setShowUserPhoneNumber] = useState(false);
+
   const { locale } = useParams();
 
   const router = useRouter();
@@ -94,11 +97,11 @@ const PropertyCard = ({ property, cardType }) => {
           />
         </div>
       )}
-      <Image
-        height={200}
-        width={800}
+      <CldImage
         src={property?.images?.[0]}
         alt={locale === "en" ? property?.title : property?.titleArabic}
+        width="200"
+        height="600"
         className="w-full h-36 md:h-48 object-cover"
       />
       <div className="p-2 md:p-4 flex">
@@ -223,13 +226,24 @@ const PropertyCard = ({ property, cardType }) => {
                     /\s/g,
                     ""
                   )}`}
-                  onClick={(e) => e.stopPropagation()}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setShowUserPhoneNumber(true);
+                  }}
                   className="text-white px-3 md:px-4 py-2 rounded-md flex items-center justify-center bg-green-600 backdrop-blur text-xs md:text-sm w-full grow max-w-fit md:max-w-full gap-1 ltr:flex-row rtl:flex-row-reverse"
                 >
-                  <CallIcon size={18} color="#fff" className="mr-2" />
-                  <span className="flex items-center">
-                    {translateCards("call")}
-                  </span>
+                  {showUserPhoneNumber ? (
+                    <span className="flex items-center">
+                      {property?.userId?.phoneNumber}
+                    </span>
+                  ) : (
+                    <>
+                      <CallIcon size={18} color="#fff" className="mr-2" />
+                      <span className="flex items-center">
+                        {translateCards("call")}
+                      </span>
+                    </>
+                  )}
                 </a>
 
                 <a

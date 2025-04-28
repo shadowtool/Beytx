@@ -23,10 +23,12 @@ import { AreaIcon, LocationIcon } from "@/imports/images";
 import Image from "next/image";
 import { toast } from "react-toastify";
 import { useModal } from "@/context/ModalContext";
+import { CldImage } from "next-cloudinary";
 
-const MotionImage = motion(Image);
+const MotionImage = motion(CldImage);
 
 const MobilePropertyCard = ({ property, cardType }) => {
+  const [showUserPhoneNumber, setShowUserPhoneNumber] = useState(false);
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
   const [isLiked, setIsLiked] = useState(property?.isLiked || false);
   const { locale } = useParams();
@@ -119,8 +121,8 @@ const MobilePropertyCard = ({ property, cardType }) => {
               key={index}
               src={image}
               alt={`property-image-${index}`}
-              width={600} // required
-              height={400} // required
+              width="600"
+              height="400"
               className="w-full h-52 object-cover"
               style={{
                 flex: "0 0 100%",
@@ -261,12 +263,23 @@ const MobilePropertyCard = ({ property, cardType }) => {
                     ""
                   )}`}
                   className="text-white px-0 pl-2 md:px-4 py-2 rounded-md flex items-center justify-center bg-green-600 backdrop-blur w-full grow"
-                  onClick={(e) => e.stopPropagation()}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setShowUserPhoneNumber(true);
+                  }}
                 >
-                  <CallIcon size={18} color="#fff" className="mr-2" />
-                  <span className="flex items-center">
-                    {cardsTranslations("call")}
-                  </span>
+                  {showUserPhoneNumber ? (
+                    <span className="flex items-center">
+                      {property?.userId?.phoneNumber}
+                    </span>
+                  ) : (
+                    <>
+                      <CallIcon size={18} color="#fff" className="mr-2" />
+                      <span className="flex items-center">
+                        {cardsTranslations("call")}
+                      </span>
+                    </>
+                  )}
                 </a>
                 <a
                   href={`https://wa.me/${property?.userId?.phoneNumber.replace(

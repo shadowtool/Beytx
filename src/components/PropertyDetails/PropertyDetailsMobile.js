@@ -11,6 +11,7 @@ import { AreaIcon, LocationIcon } from "@/imports/images";
 import { useTranslations } from "next-intl";
 import SimilarProperties from "./SimilarProperties";
 import { useParams, useRouter } from "next/navigation";
+import { CldImage } from "next-cloudinary";
 
 const PropertyDetailsMobile = ({ loading, propertyData }) => {
   const { locale } = useParams();
@@ -47,7 +48,7 @@ const PropertyDetailsMobile = ({ loading, propertyData }) => {
     }
   };
 
-  const MotionImage = motion(Image);
+  const MotionImage = motion(CldImage);
 
   return (
     <div className="md:hidden">

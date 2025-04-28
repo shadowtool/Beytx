@@ -11,6 +11,7 @@ import { AreaIcon, LocationIcon } from "@/imports/images";
 import { useTranslations } from "next-intl";
 import SimilarProperties from "./SimilarProperties";
 import { useParams, useRouter } from "next/navigation";
+import { CldImage } from "next-cloudinary";
 
 const PropertyDetailsDesktop = ({ loading, propertyData }) => {
   const { locale } = useParams();
@@ -38,7 +39,7 @@ const PropertyDetailsDesktop = ({ loading, propertyData }) => {
         <>
           <div className="container mx-auto hidden md:flex flex-col md:flex-row gap-6 mt-8 px-12">
             <div className="grow w-full relative">
-              <Image
+              <CldImage
                 src={
                   propertyData?.images?.[0] ||
                   "https://images.pexels.com/photos/28216688/pexels-photo-28216688/free-photo-of-autumn-camping.png"
