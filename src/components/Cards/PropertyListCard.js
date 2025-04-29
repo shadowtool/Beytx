@@ -51,15 +51,44 @@ const PropertyListCard = ({ property, cardType }) => {
   const archivePropertyCall = (id) => {
     mutate({ propertyId: id });
   };
+
+  const handlePropertyRedirect = () => {
+    const dashedTitle =
+      locale === "en"
+        ? property?.title?.trim().replace(/\s+/g, "-")
+        : property?.titleArabic?.trim().replace(/\s+/g, "-");
+
+    const encodedTitle = encodeURIComponent(dashedTitle);
+    const encodedId = encodeURIComponent(property?._id);
+
+    const city = encodeURIComponent(
+      locationTranslations(property?.location?.city)
+    );
+    const country = encodeURIComponent(
+      locationTranslations(property?.location?.country)
+    );
+    const status = encodeURIComponent(translateCards(property?.status));
+    const type = encodeURIComponent(
+      translatePropertyTypes(property?.type?.toLowerCase())
+    );
+
+    const segments = [country, status, type, city, encodedTitle];
+
+    const finalSegments =
+      locale === "en" ? [...segments, encodedId] : [encodedId, ...segments];
+
+    const path = `/${locale}/${finalSegments.join("/")}`;
+
+    return router.push(path);
+  };
+
   return (
     <div
       key={property?._id}
       className="border rounded-lg max-h-36 bg-white flex items-center shadow-md hover:shadow-xl cursor-pointer transition-all duration-300 hover:scale-[1.005] relative overflow-hidden "
       onClick={() => {
         if (cardType !== "UserlistingCard") {
-          return router.push(
-            `/${locale}/${property?.status}/${property?.location?.country}/${property?.location?.city}/${property?._id}`
-          );
+          handlePropertyRedirect();
         }
       }}
     >

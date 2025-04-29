@@ -35,7 +35,7 @@ const MobilePropertyCard = ({ property, cardType }) => {
   const { locale } = useParams();
   const router = useRouter();
   const queryClient = useQueryClient();
-  const cardsTranslations = useTranslations("cards");
+  const translateCards = useTranslations("cards");
   const translatePropertyTypes = useTranslations("propertyTypes");
   const locationTranslations = useTranslations("locations");
   const { data: session } = useSession();
@@ -49,17 +49,17 @@ const MobilePropertyCard = ({ property, cardType }) => {
         exact: false,
       });
       toast.dismiss();
-      toast.success(cardsTranslations("deletePropertySuccess"));
+      toast.success(translateCards("deletePropertySuccess"));
     },
     onError: (error) => {
       toast.dismiss();
-      toast.error(cardsTranslations("errorDeletingProperty"));
+      toast.error(translateCards("errorDeletingProperty"));
       console.error("Error archiving property:", error);
     },
   });
 
   const archivePropertyCall = (id) => {
-    toast.loading(cardsTranslations("loadingDeleteProperty"));
+    toast.loading(translateCards("loadingDeleteProperty"));
     mutate({ propertyId: id });
   };
 
@@ -90,14 +90,40 @@ const MobilePropertyCard = ({ property, cardType }) => {
     },
   });
 
+  const handlePropertyRedirect = () => {
+    const dashedTitle =
+      locale === "en"
+        ? property?.title?.trim().replace(/\s+/g, "-")
+        : property?.titleArabic?.trim().replace(/\s+/g, "-");
+
+    const encodedTitle = encodeURIComponent(dashedTitle);
+    const encodedId = encodeURIComponent(property?._id);
+
+    const city = encodeURIComponent(
+      locationTranslations(property?.location?.city)
+    );
+    const country = encodeURIComponent(
+      locationTranslations(property?.location?.country)
+    );
+    const status = encodeURIComponent(translateCards(property?.status));
+    const type = encodeURIComponent(
+      translatePropertyTypes(property?.type?.toLowerCase())
+    );
+
+    const segments = [country, status, type, city, encodedTitle];
+
+    const finalSegments =
+      locale === "en" ? [...segments, encodedId] : [encodedId, ...segments];
+
+    const path = `/${locale}/${finalSegments.join("/")}`;
+
+    return router.push(path);
+  };
+
   return (
     <div
       key={property?._id}
-      onClick={() => {
-        return router.push(
-          `/${locale}/${property?.status}/${property?.location?.country}/${property?.location?.city}/${property?._id}`
-        );
-      }}
+      onClick={handlePropertyRedirect}
       className="w-full border bg-white shadow-md hover:shadow-xl cursor-pointer relative overflow-hidden"
     >
       <div className="relative h-52">
@@ -188,12 +214,12 @@ const MobilePropertyCard = ({ property, cardType }) => {
             <div className="text-gray-500 mt-2 flex items-center gap-2">
               <p className="flex items-center  ">
                 <BedIcon size={14} className="mr-1" />
-                {property?.bedrooms} {cardsTranslations("beds")}
+                {property?.bedrooms} {translateCards("beds")}
               </p>
               <div className="border-l border-gray-300 h-6 mx-2"></div>
               <p className="flex items-center  ">
                 <BathroomIcon size={14} className="mr-1" />
-                {property?.bathrooms} {cardsTranslations("baths")}
+                {property?.bathrooms} {translateCards("baths")}
               </p>
               <div className="border-l border-gray-300 h-6 mx-2"></div>
               <p className="flex items-center  ">
@@ -202,7 +228,7 @@ const MobilePropertyCard = ({ property, cardType }) => {
                   alt={"area-icon"}
                   className="h-5 w-auto object-contain"
                 />
-                {property?.size} {cardsTranslations("areaNotation")}
+                {property?.size} {translateCards("areaNotation")}
               </p>
             </div>
           </div>
@@ -223,7 +249,7 @@ const MobilePropertyCard = ({ property, cardType }) => {
                   }}
                 >
                   <EditIcon size={18} color="#fff" className="mr-2" />
-                  {cardsTranslations("edit")}
+                  {translateCards("edit")}
                 </button>
 
                 <button
@@ -236,7 +262,7 @@ const MobilePropertyCard = ({ property, cardType }) => {
                   }}
                 >
                   <DeleteIcon size={18} color="#fff" className="mr-2" />
-                  {cardsTranslations("delete")}
+                  {translateCards("delete")}
                 </button>
               </div>
             </>
@@ -250,7 +276,7 @@ const MobilePropertyCard = ({ property, cardType }) => {
                 }}
               >
                 <DeleteIcon size={18} color="#fff" className="mr-2" />
-                {cardsTranslations("removeSavedListing")}
+                {translateCards("removeSavedListing")}
               </button>
             </>
           ) : (
@@ -278,7 +304,7 @@ const MobilePropertyCard = ({ property, cardType }) => {
                     <>
                       <CallIcon size={18} color="#fff" className="mr-2" />
                       <span className="flex items-center">
-                        {cardsTranslations("call")}
+                        {translateCards("call")}
                       </span>
                     </>
                   )}
@@ -295,7 +321,7 @@ const MobilePropertyCard = ({ property, cardType }) => {
                 >
                   <WhatsappIcon size={18} color="#fff" className="mr-2" />
                   <span className="flex items-center">
-                    {cardsTranslations("whatsapp")}
+                    {translateCards("whatsapp")}
                   </span>
                 </a>
               </div>

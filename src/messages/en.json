@@ -234,8 +234,8 @@
     "inquiry": "Your Message",
     "sendMessage": "Send Message"
   },
-
   "locations": {
+    "Kuwait": "Kuwait",
     "Abu Halifa": "Abu Halifa",
     "Umm Hajul": "Umm Hajul",
     "Bar Al-Ahmadi Governorate": "Bar Al-Ahmadi Governorate",

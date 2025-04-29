@@ -18,7 +18,8 @@ export async function generateMetadata({ params }) {
 
   const slugArray = slug || [];
 
-  const id = slugArray[slugArray.length - 1];
+  const id =
+    locale === "ar" ? slugArray?.[0] : slugArray?.[slugArray.length - 1];
 
   const property = await fetchPropertyFromDB(id);
 
@@ -64,7 +65,8 @@ export default async function Page({ params }) {
 
   const slugArray = slug || [];
 
-  const id = slugArray[slugArray.length - 1];
+  const id =
+    locale === "ar" ? slugArray?.[0] : slugArray?.[slugArray.length - 1];
 
   const path = [locale, ...slug].join("/");
 
@@ -108,14 +110,32 @@ export async function generateStaticParams() {
 
   return locales.flatMap((locale) =>
     properties?.map((property) => {
+      const id = property?._id?.toString();
+
+      const dashedTitle =
+        locale === "en"
+          ? property?.title?.trim().replace(/ +/g, "-")
+          : property?.titleArabic?.trim().replace(/ +/g, "-");
+
+      const baseParts = [
+        property?.location?.country ?? "",
+        property?.status ?? "",
+        property?.type ?? "",
+        property?.location?.city ?? "",
+        dashedTitle,
+      ];
+
+      let slug;
+
+      if (locale === "ar") {
+        slug = [id, ...baseParts];
+      } else {
+        slug = [...baseParts, id];
+      }
+
       return {
         locale,
-        slug: [
-          property?.status ?? "",
-          property?.location?.country ?? "",
-          property?.location?.city ?? "",
-          property?._id?.toString(),
-        ],
+        slug,
       };
     })
   );

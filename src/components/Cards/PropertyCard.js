@@ -76,15 +76,41 @@ const PropertyCard = ({ property, cardType }) => {
     },
   });
 
+  const handlePropertyRedirect = () => {
+    const dashedTitle =
+      locale === "en"
+        ? property?.title?.trim().replace(/\s+/g, "-")
+        : property?.titleArabic?.trim().replace(/\s+/g, "-");
+
+    const encodedTitle = encodeURIComponent(dashedTitle);
+    const encodedId = encodeURIComponent(property?._id);
+
+    const city = encodeURIComponent(
+      locationTranslations(property?.location?.city)
+    );
+    const country = encodeURIComponent(
+      locationTranslations(property?.location?.country)
+    );
+    const status = encodeURIComponent(translateCards(property?.status));
+    const type = encodeURIComponent(
+      translatePropertyTypes(property?.type?.toLowerCase())
+    );
+
+    const segments = [country, status, type, city, encodedTitle];
+
+    const finalSegments =
+      locale === "en" ? [...segments, encodedId] : [encodedId, ...segments];
+
+    const path = `/${locale}/${finalSegments.join("/")}`;
+
+    return router.push(path);
+  };
+
   return (
     <div
       key={property?._id}
       className="min-w-[220px] max-w-[220px] md:w-full md:grow md:max-w-full border rounded-lg bg-white shadow-md hover:shadow-xl cursor-pointer transition-all duration-300 hover:scale-[1.02] relative overflow-hidden"
-      onClick={() => {
-        return router.push(
-          `/${locale}/${property?.status}/${property?.location?.country}/${property?.location?.city}/${property?._id}`
-        );
-      }}
+      onClick={handlePropertyRedirect}
     >
       {cardType !== "userListing" && cardType !== "savedListing" && (
         <div className="min-h-10 max-h-10 min-w-10 max-w-10 flex items-center justify-center rounded-full shadow absolute top-4 right-4 bg-white">

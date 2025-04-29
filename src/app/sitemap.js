@@ -1,5 +1,4 @@
 import dbConnect from "@/lib/mongodb";
-import { fetchPropertyListings } from "@/lib/queryFunctions";
 import Property from "@/models/Property";
 
 export default async function sitemap() {
@@ -35,12 +34,34 @@ export default async function sitemap() {
     const properties = await Property.find({}).limit(100).lean();
 
     dynamicEntries = locales.flatMap((locale) =>
-      properties?.map((property) => ({
-        url: `${baseUrl}/${locale}/${property?.status}/${property?.location?.country}/${property?.location?.city}/${property._id}`,
-        lastModified: new Date(),
-        changeFrequency: "weekly",
-        priority: 0.7,
-      }))
+      properties.map((property) => {
+        const id = property._id.toString();
+
+        const dashedTitle =
+          locale === "en"
+            ? property?.title?.trim().replace(/ +/g, "-")
+            : property?.titleArabic?.trim().replace(/ +/g, "-");
+
+        const baseParts = [
+          property?.location?.country ?? "",
+          property?.status ?? "",
+          property?.type ?? "",
+          property?.location?.city ?? "",
+          dashedTitle,
+        ];
+
+        const slugParts =
+          locale === "ar" ? [id, ...baseParts] : [...baseParts, id];
+
+        const fullUrl = `${baseUrl}/${locale}/${slugParts.join("/")}`;
+
+        return {
+          url: fullUrl,
+          lastModified: new Date(),
+          changeFrequency: "weekly",
+          priority: 0.7,
+        };
+      })
     );
   } catch (error) {
     console.warn("Could not fetch dynamic routes for sitemap:", error.message);
