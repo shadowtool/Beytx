@@ -18,7 +18,7 @@ const Footer = () => {
       {pathname?.includes("auth") ? (
         <></>
       ) : (
-        <footer className="bg-gradient-to-r from-emerald-600 via-emerald-500 to-emerald-500 z-[1]  text-white py-6 md:p-6 md:px-16">
+        <footer className="ltr:bg-gradient-to-l rtl:bg-gradient-to-r from-emerald-600 via-emerald-500 to-emerald-500 z-[1]  text-white py-6 md:p-6 md:px-16">
           <div className="flex flex-col md:flex-row justify-between items-center">
             <div className="mt-4 mb-16">
               <Image

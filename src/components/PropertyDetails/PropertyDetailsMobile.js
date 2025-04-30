@@ -1,7 +1,11 @@
 "use client";
 import React, { useEffect, useRef, useState } from "react";
 import Loader from "../Reusables/Loader";
-import { CREATOR_ACTIONS, FALLBACK_IMAGE_URL } from "@/constants/constants";
+import {
+  CREATOR_ACTIONS,
+  DEFAULT_IMAGES_FOR_TYPES,
+  FALLBACK_IMAGE_URL,
+} from "@/constants/constants";
 import Image from "next/image";
 import { motion } from "framer-motion";
 import { BathroomIcon, BedIcon, DownIcon } from "@/imports/icons";
@@ -57,51 +61,57 @@ const PropertyDetailsMobile = ({ loading, propertyData }) => {
       ) : (
         <>
           <div className="p-0 md:px-12 w-full md:py-8 overflow-hidden">
-            {/* <div className="hidden md:flex justify-end gap-6 w-full px-4">
-              {USER_ACTIONS.map((el, idx) => (
-                <div key={idx} className="flex gap-2 items-center">
-                  {el.icon}
-                  <p className="text-green-600">{t(el.label.toLowerCase())}</p>
-                </div>
-              ))}
-            </div> */}
-
             <div className="relative h-52">
-              <motion.div
-                className="flex w-full h-full"
-                drag="x"
-                dragConstraints={{ left: 0, right: 0 }}
-                dragElastic={0.5}
-                onDragEnd={(event, info) => {
-                  handleSwipeRelease(info.offset.x, info.velocity.x);
-                }}
-                style={{
-                  display: "flex",
-                }}
-              >
-                {images.map((image, index) => (
-                  <MotionImage
+              {images?.length <= 0 ? (
+                <div className="h-full w-full object-contain bg-[#2f3b56] max-h-[450px]">
+                  <Image
                     height={600}
                     width={400}
-                    key={index}
-                    src={image}
-                    alt={`property-image-${index}`}
-                    className="w-full h-52 object-cover flex-shrink-0"
-                    style={{
-                      flex: "0 0 100%",
-                    }}
-                    animate={{
-                      x: `-${selectedImageIndex * 100}%`,
-                    }}
-                    transition={{
-                      type: "spring",
-                      stiffness: 100,
-                      damping: 20,
-                    }}
-                    onClick={() => setOpenImagesModal(true)}
+                    src={
+                      DEFAULT_IMAGES_FOR_TYPES[propertyData?.type] ||
+                      FALLBACK_IMAGE_URL
+                    }
+                    alt={`property-image-default}`}
+                    className="w-full h-52 object-contain flex-shrink-0"
                   />
-                ))}
-              </motion.div>
+                </div>
+              ) : (
+                <motion.div
+                  className="flex w-full h-full"
+                  drag="x"
+                  dragConstraints={{ left: 0, right: 0 }}
+                  dragElastic={0.5}
+                  onDragEnd={(event, info) => {
+                    handleSwipeRelease(info.offset.x, info.velocity.x);
+                  }}
+                  style={{
+                    display: "flex",
+                  }}
+                >
+                  {images.map((image, index) => (
+                    <MotionImage
+                      height={600}
+                      width={400}
+                      key={index}
+                      src={image}
+                      alt={`property-image-${index}`}
+                      className="w-full h-52 object-cover flex-shrink-0"
+                      style={{
+                        flex: "0 0 100%",
+                      }}
+                      animate={{
+                        x: `-${selectedImageIndex * 100}%`,
+                      }}
+                      transition={{
+                        type: "spring",
+                        stiffness: 100,
+                        damping: 20,
+                      }}
+                      onClick={() => setOpenImagesModal(true)}
+                    />
+                  ))}
+                </motion.div>
+              )}
               <div className="absolute bottom-2 left-1/2 transform -translate-x-1/2 flex gap-2">
                 {images.map((_, index) => (
                   <div

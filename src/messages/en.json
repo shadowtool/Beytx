@@ -52,14 +52,16 @@
     "emptyTagsPlaceholder": "Enter the amenities below, and then press ENTER to add it",
     "typingTagsPlaceholder": "press ENTER to add this amenity",
     "enterDescription": "Enter your text here ...",
-    "removeImage": "Remove image"
+    "removeImage": "Remove image",
+    "locationError": "Please provide the location of your property",
+    "typeError": "Please provide the type of your property",
+    "descriptionError": "Please provide a description for your property"
   },
   "propertyTypes": {
     "villa": "Villa",
     "apartment": "Apartment",
     "land": "Land",
     "office": "Office",
-    "townhouse": "Townhouse",
     "chalet": "Chalet",
     "building": "Building",
     "farm": "Farm",
@@ -416,7 +418,18 @@
     "Al-Firdous": "Al-Firdous",
     "Al-Farwaniyah": "Al-Farwaniyah",
     "The Airport": "The Airport",
-    "South Khaitan Exhibition": "South Khaitan Exhibition"
+    "South Khaitan Exhibition": "South Khaitan Exhibition",
+    "Sabah Al-Salem": "Sabah Al-Salem",
+    "Subhan Industrial Area": "Subhan Industrial Area",
+    "Abu Futaira": "Abu Futaira",
+    "Al-Adan": "Al-Adan",
+    "West Abu Futaira Industrial Area": "West Abu Futaira Industrial Area",
+    "Al-Funaitees": "Al-Funaitees",
+    "Al-Qurain": "Al-Qurain",
+    "Al-Qusour": "Al-Qusour",
+    "Mubarak Al-Kabeer": "Mubarak Al-Kabeer",
+    "Al-Masayel": "Al-Masayel",
+    "Al-Mintaqa Al-Wusta": "Al-Mintaqa Al-Wusta"
   },
   "ConfirmDeletePropertyModal": {
     "areYouSure": "Are you sure ?",

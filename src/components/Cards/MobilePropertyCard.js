@@ -196,11 +196,12 @@ const MobilePropertyCard = ({ property, cardType }) => {
             {translatePropertyTypes(property?.type?.toLowerCase())}
           </p>
           <h4 className="text-green-700 mt-1 mb-2 ">
-            {new Intl.NumberFormat("en-US", {
-              style: "decimal",
-              maximumFractionDigits: 0,
-            }).format(property?.price)}{" "}
-            KWD
+            {Number(property?.price) === 0
+              ? "N/A"
+              : `${new Intl.NumberFormat("en-US", {
+                  style: "decimal",
+                  maximumFractionDigits: 0,
+                }).format(property?.price)}  KWD`}
           </h4>
           <div className="mt-2 flex flex-col items-start text-balance">
             <p className="text-gray-500 flex items-center mb-2 mt-1 ">
@@ -214,12 +215,12 @@ const MobilePropertyCard = ({ property, cardType }) => {
             <div className="text-gray-500 mt-2 flex items-center gap-2">
               <p className="flex items-center  ">
                 <BedIcon size={14} className="mr-1" />
-                {property?.bedrooms} {translateCards("beds")}
+                {property?.bedrooms || "--"} {translateCards("beds")}
               </p>
               <div className="border-l border-gray-300 h-6 mx-2"></div>
               <p className="flex items-center  ">
                 <BathroomIcon size={14} className="mr-1" />
-                {property?.bathrooms} {translateCards("baths")}
+                {property?.bathrooms || "--"} {translateCards("baths")}
               </p>
               <div className="border-l border-gray-300 h-6 mx-2"></div>
               <p className="flex items-center  ">
@@ -228,7 +229,7 @@ const MobilePropertyCard = ({ property, cardType }) => {
                   alt={"area-icon"}
                   className="h-5 w-auto object-contain"
                 />
-                {property?.size} {translateCards("areaNotation")}
+                {property?.size || "--"} {translateCards("areaNotation")}
               </p>
             </div>
           </div>

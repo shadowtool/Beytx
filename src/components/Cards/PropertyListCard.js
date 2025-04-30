@@ -115,11 +115,12 @@ const PropertyListCard = ({ property, cardType }) => {
             {translatePropertyTypes(property?.type?.toLowerCase())}
           </p>
           <p className="text-green-700 mt-1 mb-2">
-            {new Intl.NumberFormat("en-US", {
-              style: "decimal",
-              maximumFractionDigits: 0,
-            }).format(property?.price)}{" "}
-            KWD
+            {Number(property?.price) === 0
+              ? "N/A"
+              : `${new Intl.NumberFormat("en-US", {
+                  style: "decimal",
+                  maximumFractionDigits: 0,
+                }).format(property?.price)}  KWD`}
           </p>
 
           <div className="mt-2 flex flex-col items-start text-balance">
@@ -134,12 +135,12 @@ const PropertyListCard = ({ property, cardType }) => {
             <div className="text-gray-500 mt-2 flex items-center gap-2">
               <p className="flex items-center ltr:flex-row rtl:flex-row-reverse">
                 <BedIcon size={14} className="mr-1" />
-                {property?.bedrooms} {translateCards("beds")}
+                {property?.bedrooms || "--"} {translateCards("beds")}
               </p>
               <div className="border-l border-gray-300 h-6 mx-2"></div>
               <p className="flex items-center ltr:flex-row rtl:flex-row-reverse">
                 <BathroomIcon size={14} className="mr-1" />
-                {property?.bathrooms} {translateCards("baths")}
+                {property?.bathrooms || "--"} {translateCards("baths")}
               </p>
               <div className="border-l border-gray-300 h-6 mx-2"></div>
               <p className="flex items-center ltr:flex-row rtl:flex-row-reverse">
@@ -148,7 +149,7 @@ const PropertyListCard = ({ property, cardType }) => {
                   alt="area-icon"
                   className="h-5 w-auto object-contain"
                 />
-                {property?.size} {translateCards("areaNotation")}
+                {property?.size || "--"} {translateCards("areaNotation")}
               </p>
             </div>
           </div>

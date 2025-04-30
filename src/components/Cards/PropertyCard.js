@@ -147,11 +147,12 @@ const PropertyCard = ({ property, cardType }) => {
             </span>
           </div>
           <h4 className="text-green-700 mt-1 mb-2">
-            {new Intl.NumberFormat("en-US", {
-              style: "decimal",
-              maximumFractionDigits: 0,
-            }).format(property?.price)}{" "}
-            KWD
+            {Number(property?.price) === 0
+              ? "N/A"
+              : `${new Intl.NumberFormat("en-US", {
+                  style: "decimal",
+                  maximumFractionDigits: 0,
+                }).format(property?.price)}  KWD`}
           </h4>
 
           <div className="mt-2 flex flex-col items-start text-balance">
@@ -167,7 +168,7 @@ const PropertyCard = ({ property, cardType }) => {
               <p className="flex items-center gap-1 ltr:flex-row rtl:flex-row-reverse">
                 <BedIcon size={14} />
                 <span className="text-xs flex gap-1">
-                  {property?.bedrooms}
+                  {property?.bedrooms || "--"}
                   <span className="text-xs hidden md:inline">
                     {translateCards("beds")}
                   </span>
@@ -177,7 +178,7 @@ const PropertyCard = ({ property, cardType }) => {
               <p className="flex items-center gap-1 ltr:flex-row rtl:flex-row-reverse">
                 <BathroomIcon size={14} />
                 <span className="text-xs flex gap-1">
-                  {property?.bathrooms}
+                  {property?.bathrooms || "--"}
                   <span className="text-xs hidden md:inline">
                     {translateCards("baths")}
                   </span>
@@ -191,7 +192,7 @@ const PropertyCard = ({ property, cardType }) => {
                   className="h-5 w-auto object-contain"
                 />
                 <span className="text-xs flex gap-1">
-                  {property?.size}
+                  {property?.size || "--"}
                   <span className="text-xs hidden md:inline">
                     {translateCards("areaNotation")}
                   </span>

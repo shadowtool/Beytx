@@ -1,7 +1,11 @@
 "use client";
 import React, { useEffect, useRef, useState } from "react";
 import Loader from "../Reusables/Loader";
-import { CREATOR_ACTIONS, FALLBACK_IMAGE_URL } from "@/constants/constants";
+import {
+  CREATOR_ACTIONS,
+  DEFAULT_IMAGES_FOR_TYPES,
+  FALLBACK_IMAGE_URL,
+} from "@/constants/constants";
 import Image from "next/image";
 import { motion } from "framer-motion";
 import { BathroomIcon, BedIcon, DownIcon } from "@/imports/icons";
@@ -29,9 +33,7 @@ const PropertyDetailsDesktop = ({ loading, propertyData }) => {
     }
   }, [propertyData?.description]);
 
-  const images = [0, 1, 2]?.map((el) => {
-    return propertyData?.images?.[el] || FALLBACK_IMAGE_URL;
-  });
+  const images = propertyData?.images || [];
 
   return (
     <div className="hidden md:block">
@@ -43,28 +45,58 @@ const PropertyDetailsDesktop = ({ loading, propertyData }) => {
         <>
           <div className="container mx-auto hidden md:flex flex-col md:flex-row gap-6 mt-8 px-12">
             <div className="grow w-full relative">
-              <CldImage
-                src={propertyData?.images?.[0] || FALLBACK_IMAGE_URL}
-                alt={"property-image-0"}
-                className="h-full w-full object-cover rounded-lg max-h-[500px]"
-                onClick={() => setOpenImagesModal(true)}
-                height={500}
-                width={1400}
-              />
-            </div>
-            <div className="md:min-w-96 md:max-w-96 grow flex flex-col gap-6">
-              {images?.slice(1, 3).map((img, idx) => (
-                <Image
-                  key={idx}
-                  src={img || "FALLBACK_IMAGE_URL"}
-                  alt={"property-image-2"}
-                  className="h-full w-full grow object-cover rounded-lg max-h-[238px]"
+              {images?.[0] ? (
+                <CldImage
+                  src={images[0]}
+                  alt={"property-image-0"}
+                  className="h-full w-full object-cover rounded-lg max-h-[500px]"
                   onClick={() => setOpenImagesModal(true)}
-                  height={500}
-                  width={1400}
+                  height={1080}
+                  width={1920}
                 />
-              ))}
+              ) : (
+                <div className="h-full w-full object-contain bg-[#2f3b56] rounded-lg max-h-[500px]">
+                  <Image
+                    src={
+                      DEFAULT_IMAGES_FOR_TYPES?.[propertyData?.type] ||
+                      FALLBACK_IMAGE_URL
+                    }
+                    alt={"property-image-0"}
+                    className="h-full w-full object-contain rounded-lg max-h-[400px]"
+                    onClick={() => setOpenImagesModal(true)}
+                    height={500}
+                    width={1400}
+                  />
+                </div>
+              )}
             </div>
+            {images?.slice(1, 3)?.length > 0 && (
+              <div className="md:min-w-96 md:max-w-96 grow flex flex-col gap-6">
+                {[1, 2].map((img, idx) =>
+                  images[img] ? (
+                    <CldImage
+                      key={idx}
+                      src={images[img]}
+                      alt={"property-image-2"}
+                      className="h-full w-full grow object-cover rounded-lg max-h-[238px]"
+                      onClick={() => setOpenImagesModal(true)}
+                      height={500}
+                      width={1400}
+                    />
+                  ) : (
+                    <Image
+                      key={idx}
+                      src={FALLBACK_IMAGE_URL}
+                      alt={"property-image-2"}
+                      className="h-full w-full grow object-cover rounded-lg max-h-[238px]"
+                      onClick={() => setOpenImagesModal(true)}
+                      height={500}
+                      width={1400}
+                    />
+                  )
+                )}
+              </div>
+            )}
           </div>
 
           <div className="container mx-auto px-12 mb-24 flex flex-col lg-xl:flex-row gap-6 mt-8">

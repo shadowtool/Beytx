@@ -3,7 +3,6 @@ export const PROPERTY_TYPES = [
   "Apartment",
   "Land",
   "Office",
-  "Townhouse",
   "Chalet",
   "Building",
   "Farm",

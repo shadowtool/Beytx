@@ -84,6 +84,21 @@ export default function AddProperty() {
   };
 
   const onSubmit = async (data) => {
+    if (!data?.location) {
+      toast.error(translate("locationError"));
+      return;
+    }
+
+    if (!data?.type) {
+      toast.error(translate("typeError"));
+      return;
+    }
+
+    if (!data?.description) {
+      toast.error(translate("descriptionError"));
+      return;
+    }
+
     try {
       setIsLoading(true);
       let dataToSend = {
@@ -138,7 +153,7 @@ export default function AddProperty() {
   if (!session) {
     return (
       <div className="flex flex-col items-center justify-center min-h-[75vh] gap-8">
-        <h2>{translate("loginMessageText")}</h2>
+        <h2 className="text-center">{translate("loginMessageText")}</h2>
         <button
           onClick={() => signIn("google")}
           className="bg-emerald-500 text-white text-lg px-4 py-2 rounded"
@@ -150,7 +165,7 @@ export default function AddProperty() {
   } else if (!session?.user?.phoneNumber) {
     return (
       <div className="flex flex-col items-center justify-center min-h-[75vh] gap-8">
-        <h2>{translate("incompleteProfileError")}</h2>
+        <h2 className="text-center">{translate("incompleteProfileError")}</h2>
         <button
           onClick={() => router.push(`/${locale}/dashboard`)}
           className="bg-emerald-500 text-white text-lg px-4 py-2 rounded"

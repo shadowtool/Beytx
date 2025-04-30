@@ -70,7 +70,7 @@ const PlacesSearchDropdown = ({ name, classes = {}, customOnChange }) => {
           ref={inputRef}
           type="text"
           placeholder={
-            locale === "ar" ? "ابحث عن الموقع..." : "Search by location ..."
+            locale === "ar" ? "ابحث عن المنطقة. " : "Search by location ..."
           }
           className={`w-full py-2 px-4 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-emerald-600 outline-none ${
             classes.input || ""

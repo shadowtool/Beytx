@@ -5,7 +5,7 @@ import "react-quill/dist/quill.snow.css";
 
 const ReactQuill = dynamic(() => import("react-quill"), { ssr: false });
 
-const TextEditor = ({ name, placeholder }) => {
+const TextEditor = ({ name, placeholder, rules = {} }) => {
   const { control } = useFormContext();
 
   const modules = {
@@ -27,7 +27,7 @@ const TextEditor = ({ name, placeholder }) => {
       <Controller
         name={name}
         control={control}
-        rules={{ required: "Description is required" }}
+        rules={rules}
         render={({ field }) => (
           <ReactQuill
             {...field}

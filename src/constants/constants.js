@@ -6,6 +6,18 @@ import {
   ShareIcon,
   WhatsappIcon,
 } from "@/imports/icons";
+import {
+  DefaultImageApartment,
+  DefaultImageBuilding,
+  DefaultImageChalet,
+  DefaultImageCommercial,
+  DefaultImageDuplex,
+  DefaultImageFarm,
+  DefaultImageFloor,
+  DefaultImageLand,
+  DefaultImageOffice,
+  DefaultImageVilla,
+} from "@/imports/images";
 
 export const USER_ACTIONS = [
   { icon: <HeartIcon size={21} color="#16a34a" />, label: "Save" },
@@ -69,3 +81,17 @@ export const USER_ROLES = ["user", "admin"];
 
 export const FALLBACK_IMAGE_URL =
   "https://images.pexels.com/photos/28216688/pexels-photo-28216688/free-photo-of-autumn-camping.png";
+
+export const DEFAULT_IMAGES_FOR_TYPES = {
+  Villa: DefaultImageVilla,
+  Apartment: DefaultImageApartment,
+  Land: DefaultImageLand,
+  Office: DefaultImageOffice,
+  Chalet: DefaultImageChalet,
+  Building: DefaultImageBuilding,
+  Farm: DefaultImageFarm,
+  Duplex: DefaultImageDuplex,
+  Floor: DefaultImageFloor,
+  Commercial: DefaultImageCommercial,
+  Stable: DefaultImageVilla,
+};

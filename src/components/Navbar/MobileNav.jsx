@@ -1,13 +1,15 @@
 "use client";
 import Link from "next/link";
 import AuthButton from "@/components/Reusables/AuthButton";
-import { CloseIcon, HamMenuIcon } from "@/imports/icons";
+import { AddPropertyIcon, CloseIcon, HamMenuIcon } from "@/imports/icons";
 import { useTranslations } from "next-intl";
 import { useParams, useRouter } from "next/navigation";
 import { useState } from "react";
 import Image from "next/image";
 import { LogoImage } from "@/imports/images";
 import { useSession } from "next-auth/react";
+import GeneralButton from "../Buttons/GeneralButton";
+import { useModal } from "@/context/ModalContext";
 
 const MobileNav = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -18,7 +20,9 @@ const MobileNav = () => {
 
   const router = useRouter();
 
-  const { data: session } = useSession();
+  const { data: session, status } = useSession();
+
+  const { openModal } = useModal();
 
   return (
     <section>
@@ -96,13 +100,28 @@ const MobileNav = () => {
               </Link>
             </li>
             <li>
-              <Link
-                href={`/${locale}/properties/create`}
-                className="py-2 px-4 border border-emerald-500 text-emerald-600 rounded-lg block text-center"
-                onClick={() => setIsOpen(false)}
+              <GeneralButton
+                type="outlined"
+                className="flex items-center justify-center gap-3 !py-3 !px-4 whitespace-nowrap bg-transparent"
+                onClick={() => {
+                  if (!(status === "authenticated")) {
+                    toast.dismiss();
+                    toast.error(translate("loginBeforeAddProperty"));
+                    document.getElementById("login-button")?.click();
+                  } else {
+                    if (!!session?.user?.phoneNumber) {
+                      router.push(`/${locale}/properties/create`);
+                    } else {
+                      openModal("updatePhoneNumber", {});
+                      toast.dismiss();
+                      toast.error(translate("incompleteProfileError"));
+                    }
+                  }
+                }}
               >
                 {translate("addProperty")}
-              </Link>
+                <AddPropertyIcon size={21} className="text-emerald-500" />
+              </GeneralButton>
             </li>
           </ul>
         </nav>

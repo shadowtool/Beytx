@@ -3,6 +3,7 @@ const enValues = require("../messages/en.json");
 const arValues = require("../messages/ar.json");
 const fs = require("fs");
 const { default: mongoose } = require("mongoose");
+const { PROPERTY_TYPES } = require("@/constants/propertyTypes");
 
 // Constants
 const AMENITIES = [
@@ -29,7 +30,6 @@ const USER_ID = {
 const ARCHIVED = false;
 const FEATURED = false;
 
-const PROPERTY_TYPES = ["Villa", "Apartment", "Office", "Townhouse", "Land"];
 const STATUS_OPTIONS = ["sale", "rent"];
 
 const IMAGE_POOL = [
