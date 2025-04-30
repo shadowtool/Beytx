@@ -100,13 +100,27 @@ const PropertyListCard = ({ property, cardType }) => {
             ? translateCards("sale")
             : translateCards("rent")}{" "}
         </div>
-        <CldImage
-          src={property?.images?.[0]}
-          alt={locale === "en" ? property?.title : property?.titleArabic}
-          width="144"
-          height="144"
-          className="min-h-36 max-h-36 min-w-36 max-w-36 object-cover"
-        />
+        {property?.images?.[0] ? (
+          <CldImage
+            src={property.images[0]}
+            alt={locale === "en" ? property?.title : property?.titleArabic}
+            width="144"
+            height="144"
+            className="min-h-36 max-h-36 min-w-36 max-w-36 object-cover"
+          />
+        ) : (
+          <div className="w-full min-h-36 max-h-36 md:max-h-36 md:min-h-36 object-contain bg-[#2f3b56]">
+            <Image
+              src={
+                DEFAULT_IMAGES_FOR_TYPES[property?.type] || FALLBACK_IMAGE_URL
+              }
+              alt={locale === "en" ? property?.title : property?.titleArabic}
+              width="144"
+              height="144"
+              className="min-h-32 max-h-32 min-w-32 max-w-32 object-cover"
+            />
+          </div>
+        )}
       </div>
       <div className="p-4 flex w-full grow">
         <div className="flex-1">

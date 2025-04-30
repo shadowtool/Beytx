@@ -22,6 +22,7 @@ import LikeButton from "../Misc/LikeButton";
 import { toast } from "react-toastify";
 import { useModal } from "@/context/ModalContext";
 import { CldImage } from "next-cloudinary";
+import { DEFAULT_IMAGES_FOR_TYPES } from "@/constants/constants";
 
 const PropertyCard = ({ property, cardType }) => {
   const [showUserPhoneNumber, setShowUserPhoneNumber] = useState(false);
@@ -123,13 +124,25 @@ const PropertyCard = ({ property, cardType }) => {
           />
         </div>
       )}
-      <CldImage
-        src={property?.images?.[0]}
-        alt={locale === "en" ? property?.title : property?.titleArabic}
-        width="200"
-        height="600"
-        className="w-full h-36 md:h-48 object-cover"
-      />
+      {property?.images?.[0] ? (
+        <CldImage
+          src={property.images[0]}
+          alt={locale === "en" ? property?.title : property?.titleArabic}
+          width="200"
+          height="600"
+          className="w-full min-h-40 max-h-40 md:max-h-52 md:min-h-52 object-cover"
+        />
+      ) : (
+        <div className="w-full min-h-40 max-h-40 md:max-h-52 md:min-h-52 object-contain bg-[#2f3b56]">
+          <Image
+            src={DEFAULT_IMAGES_FOR_TYPES[property?.type] || FALLBACK_IMAGE_URL}
+            alt={locale === "en" ? property?.title : property?.titleArabic}
+            width={200}
+            height={600}
+            className="h-full w-full min-h-36 max-h-36 md:max-h-48 md:min-h-48 object-contain"
+          />
+        </div>
+      )}
       <div className="p-2 md:p-4 flex">
         <div className="flex-1">
           <div className="flex justify-between items-center">

@@ -23,4 +23,4 @@ export { default as DefaultImageLand } from "../../public/images/land.png";
 export { default as DefaultImageOffice } from "../../public/images/office.png";
 export { default as DefaultImageVilla } from "../../public/images/villa.png";
 export { default as DefaultImageCommercial } from "../../public/images/commercial.png";
-// export { default as DefaultImageStable } from "../../public/images/stable.png";
+export { default as DefaultImageStable } from "../../public/images/stable.jpg";

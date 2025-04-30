@@ -24,7 +24,10 @@ import Image from "next/image";
 import { toast } from "react-toastify";
 import { useModal } from "@/context/ModalContext";
 import { CldImage } from "next-cloudinary";
-import { FALLBACK_IMAGE_URL } from "@/constants/constants";
+import {
+  DEFAULT_IMAGES_FOR_TYPES,
+  FALLBACK_IMAGE_URL,
+} from "@/constants/constants";
 
 const MotionImage = motion(CldImage);
 
@@ -65,7 +68,7 @@ const MobilePropertyCard = ({ property, cardType }) => {
 
   const [dragging, setDragging] = useState(false); // Track if user is dragging
 
-  const images = property?.images ?? [FALLBACK_IMAGE_URL];
+  const images = property?.images;
 
   const handleSwipeRelease = (offsetX, velocityX) => {
     if (offsetX > 200 || velocityX > 0.5) {
@@ -126,70 +129,82 @@ const MobilePropertyCard = ({ property, cardType }) => {
       onClick={handlePropertyRedirect}
       className="w-full border bg-white shadow-md hover:shadow-xl cursor-pointer relative overflow-hidden"
     >
-      <div className="relative h-52">
-        <motion.div
-          className="flex w-full h-full"
-          drag="x"
-          dragConstraints={{ left: 0, right: 0 }}
-          dragElastic={0.5}
-          onDragStart={() => setDragging(true)}
-          onDragEnd={(event, info) => {
-            setDragging(false);
-            handleSwipeRelease(info.offset.x, info.velocity.x);
-          }}
-          style={{
-            display: "flex",
-          }}
-        >
-          {images.map((image, index) => (
-            <MotionImage
-              key={index}
-              src={image}
-              alt={`property-image-${index}`}
-              width="600"
-              height="400"
-              className="w-full h-52 object-cover"
-              style={{
-                flex: "0 0 100%",
-              }}
-              animate={{
-                x: `-${selectedImageIndex * 100}%`,
-              }}
-              transition={{
-                type: "spring",
-                stiffness: 100,
-                damping: 20,
-              }}
-            />
-          ))}
-        </motion.div>
-        <div className="absolute bottom-2 left-1/2 transform -translate-x-1/2 flex gap-2">
-          {images.map((_, index) => (
-            <div
-              key={index}
-              className={`h-2 w-2 rounded-full bg-white transition-all duration-300 ${
-                index === selectedImageIndex ? "scale-150" : "scale-100"
-              }`}
-              onClick={(e) => {
-                e.stopPropagation();
-                setSelectedImageIndex(index);
-              }}
-            />
-          ))}
+      {images?.length <= 0 ? (
+        <div className="w-full min-h-40 max-h-40 md:max-h-52 md:min-h-52 object-contain bg-[#2f3b56]">
+          <Image
+            src={DEFAULT_IMAGES_FOR_TYPES[property?.type] || FALLBACK_IMAGE_URL}
+            alt={locale === "en" ? property?.title : property?.titleArabic}
+            width={200}
+            height={600}
+            className="h-full w-full min-h-36 max-h-36 md:max-h-48 md:min-h-48 object-contain"
+          />
         </div>
-        {cardType !== "userListing" && cardType !== "savedListing" && (
-          <div className="min-h-10 max-h-10 min-w-10 max-w-10 flex items-center justify-center rounded-full shadow absolute top-4 right-4 bg-white">
-            <LikeButton
-              isLiked={isLiked}
-              onClick={async (e) => {
-                setIsLiked(!isLiked);
-                e.stopPropagation();
-                await toggleSaveListing();
-              }}
-            />
+      ) : (
+        <div className="relative h-52">
+          <motion.div
+            className="flex w-full h-full"
+            drag="x"
+            dragConstraints={{ left: 0, right: 0 }}
+            dragElastic={0.5}
+            onDragStart={() => setDragging(true)}
+            onDragEnd={(event, info) => {
+              setDragging(false);
+              handleSwipeRelease(info.offset.x, info.velocity.x);
+            }}
+            style={{
+              display: "flex",
+            }}
+          >
+            {images.map((image, index) => (
+              <MotionImage
+                key={index}
+                src={image}
+                alt={`property-image-${index}`}
+                width="600"
+                height="400"
+                className="w-full h-52 object-cover"
+                style={{
+                  flex: "0 0 100%",
+                }}
+                animate={{
+                  x: `-${selectedImageIndex * 100}%`,
+                }}
+                transition={{
+                  type: "spring",
+                  stiffness: 100,
+                  damping: 20,
+                }}
+              />
+            ))}
+          </motion.div>
+          <div className="absolute bottom-2 left-1/2 transform -translate-x-1/2 flex gap-2">
+            {images.map((_, index) => (
+              <div
+                key={index}
+                className={`h-2 w-2 rounded-full bg-white transition-all duration-300 ${
+                  index === selectedImageIndex ? "scale-150" : "scale-100"
+                }`}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setSelectedImageIndex(index);
+                }}
+              />
+            ))}
           </div>
-        )}
-      </div>
+          {cardType !== "userListing" && cardType !== "savedListing" && (
+            <div className="min-h-10 max-h-10 min-w-10 max-w-10 flex items-center justify-center rounded-full shadow absolute top-4 right-4 bg-white">
+              <LikeButton
+                isLiked={isLiked}
+                onClick={async (e) => {
+                  setIsLiked(!isLiked);
+                  e.stopPropagation();
+                  await toggleSaveListing();
+                }}
+              />
+            </div>
+          )}
+        </div>
+      )}
       <div className="p-4 flex">
         <div className="flex-1">
           <p className="text-zinc-600">

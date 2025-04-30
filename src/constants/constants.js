@@ -16,6 +16,7 @@ import {
   DefaultImageFloor,
   DefaultImageLand,
   DefaultImageOffice,
+  DefaultImageStable,
   DefaultImageVilla,
 } from "@/imports/images";
 
@@ -93,5 +94,5 @@ export const DEFAULT_IMAGES_FOR_TYPES = {
   Duplex: DefaultImageDuplex,
   Floor: DefaultImageFloor,
   Commercial: DefaultImageCommercial,
-  Stable: DefaultImageVilla,
+  Stable: DefaultImageStable,
 };
