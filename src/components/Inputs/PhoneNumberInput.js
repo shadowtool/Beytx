@@ -20,7 +20,7 @@ const PhoneNumberInput = ({ name, error, validation = {} }) => {
         <select
           value={selectedCountryCode}
           onChange={(e) => setSelectedCountryCode(e.target.value)}
-          className="px-2 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500 transition-all duration-300"
+          className="px-2 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500 transition-all duration-300 text-xs md:text-sm"
         >
           {countryCodes.map((country) => (
             <option key={country.code} value={country.code}>

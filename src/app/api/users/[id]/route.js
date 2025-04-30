@@ -77,11 +77,25 @@ export async function PUT(req, { params }) {
       const existingUser = await User.findOne({ email });
       if (existingUser) {
         return NextResponse.json(
-          { error: "Email already in use" },
+          { error: "Email already in use, please provide anathor email" },
           { status: 400 }
         );
       }
       user.email = email;
+    }
+
+    if (phoneNumber && phoneNumber !== user.phoneNumber) {
+      const existingUser = await User.findOne({ phoneNumber });
+      if (existingUser) {
+        return NextResponse.json(
+          {
+            error:
+              "Phone number is already in use. Please provide anathor number",
+          },
+          { status: 400 }
+        );
+      }
+      user.phoneNumber = phoneNumber;
     }
 
     if (phoneNumber) {
@@ -110,8 +124,10 @@ export async function PUT(req, { params }) {
       { status: 200 }
     );
   } catch (error) {
-    console.error("Update error:", error);
-    return NextResponse.json({ error: "Server error" }, { status: 500 });
+    return NextResponse.json(
+      { error: "Something went wrong" },
+      { status: 500 }
+    );
   }
 }
 

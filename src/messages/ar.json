@@ -234,6 +234,11 @@
     "inquiry": "رسالتك",
     "sendMessage": "إرسال الرسالة"
   },
+  "updatePhoneNumber": {
+    "title": "تحديث رقمك",
+    "description": "نحن بحاجة إلى رقم هاتفك لتسهيل تواصُل العملاء معك.",
+    "update": "تحديث"
+  },
   "locations": {
     "Kuwait": "الكويت",
     "Abu Halifa": "أبو حليفة",

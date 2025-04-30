@@ -9,6 +9,7 @@ import { useSession } from "next-auth/react";
 import { toast } from "react-toastify";
 import Image from "next/image";
 import { LogoImage } from "@/imports/images";
+import { useModal } from "@/context/ModalContext";
 
 const DesktopNav = () => {
   const { locale } = useParams();
@@ -18,6 +19,8 @@ const DesktopNav = () => {
   const translate = useTranslations("header");
 
   const router = useRouter();
+
+  const { openModal } = useModal();
 
   return (
     <section>
@@ -71,6 +74,7 @@ const DesktopNav = () => {
                   if (!!session?.user?.phoneNumber) {
                     router.push(`/${locale}/properties/create`);
                   } else {
+                    openModal("updatePhoneNumber", {});
                     toast.dismiss();
                     toast.error(translate("incompleteProfileError"));
                   }

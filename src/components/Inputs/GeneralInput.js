@@ -25,7 +25,7 @@ const GeneralInput = ({
         rules={validation}
         render={({ field }) => {
           useEffect(() => {
-            if (!debounce) return; // ✅ Skip debounce if not needed
+            if (!debounce) return;
 
             if (debounceRef.current) clearTimeout(debounceRef.current);
 

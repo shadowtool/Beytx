@@ -234,6 +234,11 @@
     "inquiry": "Your Message",
     "sendMessage": "Send Message"
   },
+  "updatePhoneNumber": {
+    "title": "Update your number",
+    "description": "We require your phone number, to make it easier for customers to interact with you.",
+    "update": "update"
+  },
   "locations": {
     "Kuwait": "Kuwait",
     "Abu Halifa": "Abu Halifa",

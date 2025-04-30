@@ -66,7 +66,7 @@ const Hero = () => {
         />
         <div className="hidden md:block h-full w-full bg-black/15  absolute top-0 left-0 z-[1]"></div>
 
-        <div className="md:hidden h-full w-full flex flex-col items-center justify-center gap-6 p-6 py-10 bg-gradient-to-r from-emerald-600 via-emerald-500 to-emerald-500 z-[1]">
+        <div className="md:hidden h-full w-full flex flex-col items-center justify-center gap-6 p-6 py-10 ltr:bg-gradient-to-l rtl:bg-gradient-to-r from-emerald-600 via-emerald-500 to-emerald-500 z-[1]">
           <h2 className="leading-10 text-white">
             {translate("findYourProperty")}
           </h2>
