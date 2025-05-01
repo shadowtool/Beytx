@@ -14,91 +14,104 @@ import {
 import Script from "next/script";
 
 export async function generateMetadata({ params }) {
-  const { locale, slug } = params;
+  try {
+    const { locale, slug } = params;
 
-  const slugArray = slug || [];
+    const slugArray = slug || [];
 
-  const id =
-    locale === "ar" ? slugArray?.[0] : slugArray?.[slugArray.length - 1];
+    const id =
+      locale === "ar" ? slugArray?.[0] : slugArray?.[slugArray.length - 1];
 
-  const property = await fetchPropertyFromDB(id);
+    const property = await fetchPropertyFromDB(id);
 
-  if (!property) return {};
+    if (!property) return notFound();
 
-  const title =
-    params?.locale === "en" ? property?.title : property?.titleArabic;
+    const title =
+      params?.locale === "en" ? property?.title : property?.titleArabic;
 
-  return {
-    title: `${title} | Beyt`,
-    description:
-      property.description?.slice(0, 160) ||
-      "View full details of this property.",
-    keywords: [
-      property?.status,
-      property?.type,
-      property?.location?.city,
-      property?.location?.country,
-    ],
-    openGraph: {
-      title: property.title,
-      description: property.description?.slice(0, 160),
-      images: [
-        {
-          url: property.images?.[0],
-          width: 800,
-          height: 600,
-          alt: property.title,
-        },
+    return {
+      title: `${title} | Beyt`,
+      description:
+        property.description?.slice(0, 160) ||
+        "View full details of this property.",
+      keywords: [
+        property?.status,
+        property?.type,
+        property?.location?.city,
+        property?.location?.country,
       ],
-    },
-    twitter: {
-      card: "summary_large_image",
-      title: property.title,
-      description: property.description?.slice(0, 160),
-      images: [property.images?.[0]],
-    },
-  };
+      openGraph: {
+        title: property.title,
+        description: property.description?.slice(0, 160),
+        images: [
+          {
+            url: property.images?.[0],
+            width: 800,
+            height: 600,
+            alt: property.title,
+          },
+        ],
+      },
+      twitter: {
+        card: "summary_large_image",
+        title: property.title,
+        description: property.description?.slice(0, 160),
+        images: [property.images?.[0]],
+      },
+    };
+  } catch (error) {
+    console.error("Error generating metadata:", error);
+    return notFound();
+  }
 }
 
 export default async function Page({ params }) {
-  const { locale, slug } = params;
+  try {
+    const { locale, slug } = params;
 
-  const slugArray = slug || [];
+    const slugArray = slug || [];
 
-  const id =
-    locale === "ar" ? slugArray?.[0] : slugArray?.[slugArray.length - 1];
+    const id =
+      locale === "ar" ? slugArray?.[0] : slugArray?.[slugArray.length - 1];
 
-  const path = [locale, ...slug].join("/");
+    const path = [locale, ...slug].join("/");
 
-  const pageUrl = `${process.env.NEXT_PUBLIC_DOMAIN}/${path}`;
+    const pageUrl = `${process.env.NEXT_PUBLIC_DOMAIN}/${path}`;
 
-  if (!id) return notFound();
+    if (!id) return notFound();
 
-  const finalPropertyData = await fetchPropertyFromDB(id);
+    const finalPropertyData = await fetchPropertyFromDB(id);
 
-  const jsonLdData = getJSONLDForPropertyDetails(
-    pageUrl,
-    finalPropertyData,
-    locale
-  );
+    if (!finalPropertyData) return notFound();
 
-  if (!finalPropertyData) return notFound();
+    const jsonLdData = getJSONLDForPropertyDetails(
+      pageUrl,
+      finalPropertyData,
+      locale
+    );
 
-  return (
-    <>
-      <Script
-        id="json-ld-property-details"
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLdData) }}
-      />
+    return (
+      <>
+        <Script
+          id="json-ld-property-details"
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLdData) }}
+        />
 
-      <PropertyDetailsDesktop
-        loading={false}
-        propertyData={finalPropertyData}
-      />
-      <PropertyDetailsMobile loading={false} propertyData={finalPropertyData} />
-    </>
-  );
+        <PropertyDetailsDesktop
+          loading={false}
+          propertyData={finalPropertyData}
+        />
+        <PropertyDetailsMobile
+          loading={false}
+          propertyData={finalPropertyData}
+        />
+      </>
+    );
+  } catch (error) {
+    console.error("Error loading property page:", error);
+    return notFound();
+  }
 }
 
 export async function generateStaticParams() {
