@@ -50,10 +50,12 @@ module.exports = {
         "html[dir='rtl'] body": {
           direction: "rtl",
           textAlign: "right",
+          flexDirection: "row-reverse",
         },
         "html[dir='ltr'] body": {
           direction: "ltr",
           textAlign: "left",
+          flexDirection: "row",
         },
       });
     }),

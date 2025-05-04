@@ -155,7 +155,9 @@
     "agreeToPolicies": "بالمتابعة، فإنك توافق على",
     "privacyPolicy": "سياسة الخصوصية",
     "termsAndConditions": "الشروط والأحكام",
-    "and": "و"
+    "and": "و",
+    "forgotPassword": "نسيت كلمة المرور؟"
+
   },
   "sortOptions": {
     "price_asc": "السعر - من الأقل إلى الأعلى",
@@ -237,6 +239,30 @@
     "title": "تحديث رقمك",
     "description": "نحن بحاجة إلى رقم هاتفك لتسهيل تواصُل العملاء معك.",
     "update": "تحديث"
+  },
+  "ResetPassword": {
+    "resetYourPassword": "إعادة تعيين كلمة المرور",
+    "enterEmail": "أدخل بريدك الإلكتروني",
+    "emailRequired": "البريد الإلكتروني مطلوب",
+    "invalidEmailFormat": "تنسيق البريد الإلكتروني غير صالح",
+    "sendResetCode": "إرسال رمز إعادة التعيين",
+    "sending": "جارٍ الإرسال...",
+    "otpSent": "تم إرسال رمز التحقق إلى بريدك الإلكتروني.",
+    "enterVerificationCode": "أدخل رمز التحقق",
+    "otpRequired": "رمز التحقق مطلوب",
+    "verifyCode": "تحقق من الرمز",
+    "verifying": "جارٍ التحقق...",
+    "otpVerified": "تم التحقق بنجاح",
+    "newPassword": "كلمة المرور الجديدة",
+    "confirmNewPassword": "تأكيد كلمة المرور الجديدة",
+    "passwordRequired": "كلمة المرور مطلوبة",
+    "confirmPasswordRequired": "يرجى تأكيد كلمة المرور",
+    "passwordsDoNotMatch": "كلمتا المرور غير متطابقتين",
+    "resetPassword": "إعادة تعيين كلمة المرور",
+    "resetting": "جارٍ إعادة التعيين...",
+    "passwordReset": "تمت إعادة تعيين كلمة المرور بنجاح.",
+    "somethingWentWrong": "حدث خطأ ما. حاول مرة أخرى.",
+    "error": "خطأ"
   },
   "locations": {
     "Kuwait": "الكويت",

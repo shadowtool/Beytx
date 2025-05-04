@@ -15,13 +15,15 @@ import { useParams } from "next/navigation";
 import axios from "axios";
 import { useTranslations } from "next-intl";
 import PhoneNumberInput from "@/components/Inputs/PhoneNumberInput";
-
+import { useRouter } from "next/navigation";
+``;
 const AuthModal = ({ open, handleClose }) => {
   const [userExist, setUserExist] = useState(false);
   const [hasUserProceeded, setHasUserProceeded] = useState(false);
   const methods = useForm({ defaultValues: { userInputEmail: "" } });
   const { locale } = useParams();
-  const t = useTranslations("authModal");
+  const router = useRouter();
+  const translate = useTranslations("authModal");
 
   const {
     setValue,
@@ -37,7 +39,7 @@ const AuthModal = ({ open, handleClose }) => {
   });
 
   const checkUserAccountStatus = async () => {
-    toast.loading(t("checkingStatus"));
+    toast.loading(translate("checkingStatus"));
     const doesUserExist = await fetchUserAccountStatus(userInputEmailValue);
     setHasUserProceeded(true);
     if (doesUserExist?.exists) {
@@ -60,16 +62,16 @@ const AuthModal = ({ open, handleClose }) => {
       if (result.error) {
         toast.error(result.error);
       } else {
-        toast.success(t("loginSuccess"));
+        toast.success(translate("loginSuccess"));
         handleClose();
       }
     } catch (error) {
-      toast.error(t("loginError"));
+      toast.error(translate("loginError"));
     }
   };
 
   const handleSignup = async (data) => {
-    toast.loading(t("signingUp"));
+    toast.loading(translate("signingUp"));
 
     try {
       await axios.post("/api/auth/signup", {
@@ -79,7 +81,7 @@ const AuthModal = ({ open, handleClose }) => {
         password: data.signinPassword,
       });
       toast.dismiss();
-      toast.success(t("signupSuccess"));
+      toast.success(translate("signupSuccess"));
 
       const result = await signIn("credentials", {
         identifier: data.signinEmail,
@@ -92,7 +94,7 @@ const AuthModal = ({ open, handleClose }) => {
       }
     } catch (error) {
       toast.dismiss();
-      toast.error(error.response?.data?.message || t("signupFailed"));
+      toast.error(error.response?.data?.message || translate("signupFailed"));
     }
   };
 
@@ -118,7 +120,9 @@ const AuthModal = ({ open, handleClose }) => {
                       width={288}
                     />
                   </div>
-                  <h6 className="text-center">{t("continueJourney")}</h6>
+                  <h6 className="text-center">
+                    {translate("continueJourney")}
+                  </h6>
                 </div>
                 {hasUserProceeded ? (
                   <div className="relative w-full h-fit">
@@ -128,23 +132,23 @@ const AuthModal = ({ open, handleClose }) => {
                         className="flex items-center gap-2 text-gray-600 hover:text-gray-800"
                       >
                         <CgArrowLeft className="h-5 w-5" />
-                        {t("back")}
+                        {translate("back")}
                       </button>
                     </div>
                     {userExist ? (
                       <div className="h-fit w-full flex items-center justify-center p-8 flex-col gap-4 mt-12">
-                        <h5>{t("loginWithPassword")}</h5>
+                        <h5>{translate("loginWithPassword")}</h5>
                         <GeneralInput
                           name="loginEmail"
-                          placeholder={t("enterEmail")}
+                          placeholder={translate("enterEmail")}
                           type="email"
                           disabled
                           validation={{
-                            required: t("emailRequired"),
+                            required: translate("emailRequired"),
                             pattern: {
                               value:
                                 /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/,
-                              message: t("invalidEmailFormat"),
+                              message: translate("invalidEmailFormat"),
                             },
                           }}
                           error={errors.loginEmail}
@@ -152,31 +156,39 @@ const AuthModal = ({ open, handleClose }) => {
                         <PasswordInput
                           name="loginPassword"
                           error={errors?.loginPassword}
-                          placeholder={t("enterYourPassword")}
+                          placeholder={translate("enterYourPassword")}
                         />
-
+                        <button
+                          onClick={() => {
+                            handleClose();
+                            router.push(`/${locale}/forgot-password`);
+                          }}
+                          className="text-sm text-green-600 hover:underline"
+                        >
+                          {translate("forgotPassword")}
+                        </button>
                         <GeneralButton
                           type="outlined"
                           onClick={handleSubmit(handleLogin)}
                         >
-                          {t("proceed")}
+                          {translate("proceed")}
                         </GeneralButton>
                       </div>
                     ) : (
                       <>
                         <div className="h-fit w-full flex items-center justify-center p-8 flex-col gap-4 mt-12">
-                          <h5>{t("createAccount")}</h5>
+                          <h5>{translate("createAccount")}</h5>
                           <GeneralInput
                             name="signinEmail"
-                            placeholder={t("enterEmail")}
+                            placeholder={translate("enterEmail")}
                             type="email"
                             disabled
                             validation={{
-                              required: t("emailRequired"),
+                              required: translate("emailRequired"),
                               pattern: {
                                 value:
                                   /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/,
-                                message: t("invalidEmailFormat"),
+                                message: translate("invalidEmailFormat"),
                               },
                             }}
                             error={errors.email}
@@ -184,30 +196,30 @@ const AuthModal = ({ open, handleClose }) => {
                           <PasswordInput
                             name="signinPassword"
                             error={errors?.signinPassword}
-                            placeholder={t("enterYourPassword")}
+                            placeholder={translate("enterYourPassword")}
                             validation={{
-                              required: t("passwordRequired"),
+                              required: translate("passwordRequired"),
                               pattern: {
                                 value: /.{6,}/,
-                                message: t("passwordCriteria"),
+                                message: translate("passwordCriteria"),
                               },
                             }}
                           />
                           <PasswordInput
                             name="confirmSigninPassword"
                             error={errors?.confirmSigninPassword}
-                            placeholder={t("confirmYourPassword")}
+                            placeholder={translate("confirmYourPassword")}
                             validation={{
-                              required: t("confirmPasswordRequired"),
+                              required: translate("confirmPasswordRequired"),
                               validate: (value) =>
                                 value === enteredSigninPasswordValue ||
-                                t("passwordsDoNotMatch"),
+                                translate("passwordsDoNotMatch"),
                             }}
                           />
                           <PhoneNumberInput
                             name="phoneNumber"
                             validation={{
-                              required: t("phoneNumberRequired"),
+                              required: translate("phoneNumberRequired"),
                             }}
                             error={errors.phoneNumber}
                           />
@@ -215,7 +227,7 @@ const AuthModal = ({ open, handleClose }) => {
                             type="outlined"
                             onClick={handleSubmit(handleSignup)}
                           >
-                            {t("signUp")}
+                            {translate("signUp")}
                           </GeneralButton>
                         </div>
                       </>
@@ -226,19 +238,19 @@ const AuthModal = ({ open, handleClose }) => {
                     <GoogleLoginButton />
                     <div className="w-full flex gap-4 items-center">
                       <div className="h-[1.5px] w-full grow bg-gray-500"></div>
-                      <h5 className="text-gray-500">{t("or")}</h5>
+                      <h5 className="text-gray-500">{translate("or")}</h5>
                       <div className="h-[1.5px] w-full grow bg-gray-500"></div>
                     </div>
                     <GeneralInput
                       name="userInputEmail"
-                      placeholder={t("enterEmail")}
+                      placeholder={translate("enterEmail")}
                       type="email"
                       validation={{
-                        required: t("emailRequired"),
+                        required: translate("emailRequired"),
                         pattern: {
                           value:
                             /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/,
-                          message: t("invalidEmailFormat"),
+                          message: translate("invalidEmailFormat"),
                         },
                       }}
                       error={errors.email}
@@ -249,22 +261,22 @@ const AuthModal = ({ open, handleClose }) => {
                         checkUserAccountStatus();
                       }}
                     >
-                      {t("continueWithEmail")}
+                      {translate("continueWithEmail")}
                     </GeneralButton>
                     <p className="text-gray-600 text-center">
-                      {t("agreeToPolicies")}{" "}
+                      {translate("agreeToPolicies")}{" "}
                       <a
                         href={`/${locale}/privacy-policy`}
                         className="text-green-600"
                       >
-                        {t("privacyPolicy")}
+                        {translate("privacyPolicy")}
                       </a>{" "}
-                      {t("and")}{" "}
+                      {translate("and")}{" "}
                       <a
                         href={`/${locale}/terms-and-conditions`}
                         className="text-green-600"
                       >
-                        {t("termsAndConditions")}
+                        {translate("termsAndConditions")}
                       </a>
                     </p>
                   </div>

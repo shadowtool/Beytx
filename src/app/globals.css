@@ -71,10 +71,6 @@ body {
   box-sizing: border-box;
 }
 
-html[dir="rtl"] {
-  flex-direction: row-reverse;
-}
-
 button:focus {
   outline: none;
 }

@@ -24,6 +24,7 @@ const propertySchema = new mongoose.Schema(
     bedrooms: { type: Number },
     bathrooms: { type: Number },
     description: { type: String },
+    descriptionArabic: { type: String },
     images: [{ type: String }],
     amenities: [{ type: String }],
     featured: { type: Boolean },

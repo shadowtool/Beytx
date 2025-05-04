@@ -18,6 +18,7 @@ import { PROPERTY_TYPES } from "@/constants/propertyTypes";
 import arValues from "../../../../messages/ar.json";
 import enValues from "../../../../messages/en.json";
 import FileUpload from "@/components/Misc/FileUpload";
+import { translateText, detectLanguage } from "@/lib/translation";
 
 export default function AddProperty() {
   const [isLoading, setIsLoading] = useState(false);
@@ -109,11 +110,22 @@ export default function AddProperty() {
         type: data?.type,
         bedrooms: data?.beds,
         bathrooms: data?.baths,
-        description: data?.description,
         images: [],
         amenities: data?.amenities,
         userId: session?.user?.id,
       };
+
+      const originalLang = detectLanguage(data?.description);
+
+      if (originalLang === "ar") {
+        dataToSend.descriptionArabic = data?.description;
+        const translatedDesc = await translateText(data?.description, "en");
+        dataToSend.description = translatedDesc || data?.description;
+      } else {
+        dataToSend.description = data?.description;
+        const translatedDesc = await translateText(data?.description, "ar");
+        dataToSend.descriptionArabic = translatedDesc || data?.description;
+      }
 
       const title = `${data?.beds} ${enValues?.createPropertyPage?.bedrooms} ${
         enValues.propertyTypes[data?.type?.toLowerCase()]

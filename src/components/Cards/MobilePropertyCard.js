@@ -142,7 +142,7 @@ const MobilePropertyCard = ({ property, cardType }) => {
       ) : (
         <div className="relative h-52">
           <motion.div
-            className="flex w-full h-full"
+            className="flex ltr:flex-row rtl:flex-row-reverse w-full h-full"
             drag="x"
             dragConstraints={{ left: 0, right: 0 }}
             dragElastic={0.5}
@@ -150,9 +150,6 @@ const MobilePropertyCard = ({ property, cardType }) => {
             onDragEnd={(event, info) => {
               setDragging(false);
               handleSwipeRelease(info.offset.x, info.velocity.x);
-            }}
-            style={{
-              display: "flex",
             }}
           >
             {images.map((image, index) => (
@@ -177,7 +174,7 @@ const MobilePropertyCard = ({ property, cardType }) => {
               />
             ))}
           </motion.div>
-          <div className="absolute bottom-2 left-1/2 transform -translate-x-1/2 flex gap-2">
+          <div className="absolute bottom-2 left-1/2 transform -translate-x-1/2 flex gap-2 ltr:flex-row rtl:flex-row-reverse">
             {images.map((_, index) => (
               <div
                 key={index}

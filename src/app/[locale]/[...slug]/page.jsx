@@ -12,10 +12,16 @@ import {
   getJSONLDForPropertyDetails,
 } from "@/lib/helpers";
 import Script from "next/script";
+import ar from "@/messages/ar.json";
+import en from "@/messages/en.json";
+import { parseDocument } from "htmlparser2";
+
 
 export async function generateMetadata({ params }) {
   try {
     const { locale, slug } = params;
+
+    const translations = locale === "ar" ? ar : en;
 
     const slugArray = slug || [];
 
@@ -29,33 +35,65 @@ export async function generateMetadata({ params }) {
     const title =
       params?.locale === "en" ? property?.title : property?.titleArabic;
 
+    const translatedStatus =
+      locale === "en"
+        ? property?.status
+        : property?.status === "sale"
+          ? translations.cards.sale
+          : translations.cards.rent;
+
+    const translatedType =
+      locale === "en"
+        ? property?.type
+        : translations.propertyTypes[property?.type];
+
+    const translatedCity =
+      locale === "en"
+        ? property?.location?.city
+        : translations.locations[property?.location?.city];
+
+    const translatedCountry =
+      locale === "en"
+        ? property?.location?.country
+        : translations.locations[property?.location?.country];
+
+
+    const stripHtml = (html) => {
+      const doc = parseDocument(html);
+      return doc?.children?.[0]?.data || "";
+    };
+
     return {
       title: `${title} | Beyt`,
       description:
-        property.description?.slice(0, 160) ||
-        "View full details of this property.",
+        locale === "en"
+          ? stripHtml(property?.description)
+          : stripHtml(property?.descriptionArabic),
       keywords: [
-        property?.status,
-        property?.type,
-        property?.location?.city,
-        property?.location?.country,
+        translatedStatus,
+        translatedType,
+        translatedCity,
+        translatedCountry,
       ],
       openGraph: {
-        title: property.title,
-        description: property.description?.slice(0, 160),
+        title: title,
+        description: stripHtml(property.description),
         images: [
           {
             url: property.images?.[0],
             width: 800,
             height: 600,
-            alt: property.title,
+            alt: title,
           },
         ],
       },
       twitter: {
         card: "summary_large_image",
-        title: property.title,
-        description: property.description?.slice(0, 160),
+        title: title,
+        description:
+          locale === "en"
+            ? stripHtml(property?.description)
+            : stripHtml(property?.descriptionArabic),
         images: [property.images?.[0]],
       },
     };

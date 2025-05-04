@@ -47,7 +47,7 @@ const PropertyImagesModal = ({ open, handleClose, images }) => {
           <div className="p-8 md:p-24">
             <div className="max-h-[calc(100vh-280px)] min-h-[calc(100vh-280px)] w-full flex items-center justify-center overflow-hidden">
               <motion.div
-                className="flex w-full h-full"
+                className="flex ltr:flex-row rtl:flex-row-reverse w-full h-full"
                 drag="x"
                 dragConstraints={{ left: 0, right: 0 }}
                 dragElastic={0.5}
@@ -83,10 +83,10 @@ const PropertyImagesModal = ({ open, handleClose, images }) => {
             </div>
           </div>
 
-          <div className="px-24 fixed bottom-8">
-            <div className="h-20 flex items-center justify-between px-4">
+          <div className="px-24 fixed bottom-8 left-0">
+            <div className="h-20 flex ltr:flex-row rtl:flex-row-reverse items-center justify-between px-4">
               <button
-                className="bg-white p-3 rounded-md cursor-pointer absolute left-4"
+                className="bg-white p-3 rounded-md cursor-pointer"
                 onClick={handlePreviousImage}
               >
                 <PreviousIcon size={21} color="#000" />
@@ -110,7 +110,7 @@ const PropertyImagesModal = ({ open, handleClose, images }) => {
                 ))}
               </div>
               <button
-                className="bg-white p-3 rounded-md cursor-pointer absolute right-4"
+                className="bg-white p-3 rounded-md cursor-pointer"
                 onClick={handleNextImage}
               >
                 <NextIcon size={21} color="#000" />

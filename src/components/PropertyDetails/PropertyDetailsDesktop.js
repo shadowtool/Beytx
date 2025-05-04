@@ -31,7 +31,7 @@ const PropertyDetailsDesktop = ({ loading, propertyData }) => {
     if (contentRef.current) {
       setHeight(contentRef.current.scrollHeight);
     }
-  }, [propertyData?.description]);
+  }, [propertyData?.description, propertyData?.descriptionArabic]);
 
   const images = propertyData?.images || [];
 
@@ -163,8 +163,12 @@ const PropertyDetailsDesktop = ({ loading, propertyData }) => {
                     <div
                       ref={contentRef}
                       dangerouslySetInnerHTML={{
-                        __html: propertyData?.description,
+                        __html:
+                          locale === "ar"
+                            ? propertyData?.descriptionArabic
+                            : propertyData?.description,
                       }}
+                      className={locale === "ar" ? "rtl" : "ltr"}
                     />
                   </motion.div>
 

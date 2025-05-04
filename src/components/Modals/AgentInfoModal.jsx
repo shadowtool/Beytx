@@ -1,8 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import ModalWrapper from "./ModalWrapper";
-import GeneralButton from "../Buttons/GeneralButton";
 import { useModal } from "@/context/ModalContext";
-import { useTranslations } from "next-intl";
 import { FALLBACK_IMAGE_URL } from "@/constants/constants";
 import Image from "next/image";
 import { CloseIcon } from "@/imports/icons";
@@ -24,7 +22,7 @@ const AgentInfoModal = ({ open, handleClose }) => {
         >
           <CloseIcon
             size={21}
-            className="absolute top-4 right-4 cursor-pointer"
+            className="absolute top-4 rtl:left-4 ltr:right-4 cursor-pointer"
             onClick={() => handleClose()}
           />
           <h5 className="mb-4">You are calling</h5>

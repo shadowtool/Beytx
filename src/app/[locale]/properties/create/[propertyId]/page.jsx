@@ -18,6 +18,7 @@ import PlacesSearchDropdown from "@/components/Dropdowns/PlacesSearchDropdown";
 import { PROPERTY_TYPES } from "@/constants/propertyTypes";
 import FileUpload from "@/components/Misc/FileUpload";
 import Loader from "@/components/Reusables/Loader";
+import { detectLanguage, translateText } from "@/lib/translation";
 
 export default function index() {
   const translate = useTranslations("createPropertyPage");
@@ -102,6 +103,18 @@ export default function index() {
         images: data?.images,
         amenities: data?.amenities,
       };
+
+      const originalLang = detectLanguage(data?.description);
+
+      if (originalLang === "ar") {
+        dataToSend.descriptionArabic = data?.description;
+        const translatedDesc = await translateText(data?.description, "en");
+        dataToSend.description = translatedDesc || data?.description;
+      } else {
+        dataToSend.description = data?.description;
+        const translatedDesc = await translateText(data?.description, "ar");
+        dataToSend.descriptionArabic = translatedDesc || data?.description;
+      }
 
       const allImages = data?.images || [];
       const existingImageUrls = allImages.filter(

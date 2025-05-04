@@ -3,9 +3,9 @@ import { getMessages } from "next-intl/server";
 import { notFound } from "next/navigation";
 import { routing } from "@/i18n/routing";
 import Footer from "@/components/Footer/Footer";
-import Header from "@/components/Navbar/Header";
 import Script from "next/script";
 import ContextWrapper from "@/context/ContextWrapper";
+import Navbar from "@/components/Navbar/Navbar";
 
 const baseUrl = process.env.NEXT_PUBLIC_DOMAIN || "https://beyt.co";
 
@@ -111,8 +111,11 @@ export default async function LocaleLayout({ children, params }) {
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLdData) }}
         />
-        <Header />
-        {children}
+        <div className=""></div>
+        <Navbar />
+        <div className="min-h-[calc(100vh-250px)] flex flex-col">
+          {children}
+        </div>
         <Footer />
       </ContextWrapper>
     </NextIntlClientProvider>

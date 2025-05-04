@@ -1,12 +1,15 @@
 "use client";
 
-import PropertyCard from "@/components/Cards/PropertyCard";
 import { ROUTES } from "@/constants/routes";
-import { CloseIcon, EditIcon, HeartIcon, MyListingIcon } from "@/imports/icons";
+import {
+  EditIcon,
+  HeartIcon,
+  MyListingIcon,
+  ResetPasswordIcon,
+} from "@/imports/icons";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useSession } from "next-auth/react";
 import React, { useEffect, useRef, useState } from "react";
-import Image from "next/image";
 import {
   fetchFavorites,
   fetchPropertiesOfLoggedUser,
@@ -16,13 +19,16 @@ import { FormProvider, useForm, useWatch } from "react-hook-form";
 import { updateUserMutation } from "@/lib/mutationFunctions";
 import { toast } from "react-toastify";
 import useMediaQuery from "@/hooks/useMediaQuery";
-import MobileDashboard from "@/components/Dashboard/MobileDashboard";
-import DesktopDashboard from "@/components/Dashboard/DesktopDashboard";
 import { useRouter } from "next/navigation";
-import ConfirmDeletePropertyModal from "@/components/Modals/ConfirmDeletePropertyModal";
+import Dashboard from "@/components/Dashboard/Dashboard";
 
 const TABS = [
   { label: "editProfile", value: "editProfile", icon: <EditIcon size={18} /> },
+  {
+    label: "resetPassword",
+    value: "reset-password",
+    icon: <ResetPasswordIcon size={18} className="rotate-[45deg]" />,
+  },
   {
     label: "myListings",
     value: "my-listings",
@@ -37,22 +43,15 @@ const TABS = [
 
 const index = () => {
   const [selectedTab, setSelectedTab] = useState("my-listings");
-
   const [selectedImage, setSelectedImage] = useState(null);
-
   const fileInputRef = useRef(null);
-
   const methods = useForm();
-
   const formValues = useWatch({ control: methods.control });
-
   const { data, status, update } = useSession();
-
   const userInfo = data?.user ?? {};
-
   const queryClient = useQueryClient();
-
   const router = useRouter();
+  const { isBigScreen } = useMediaQuery();
 
   useEffect(() => {
     if (status === "unauthenticated") {
@@ -137,8 +136,6 @@ const index = () => {
     });
   };
 
-  const { isBigScreen } = useMediaQuery();
-
   const props = {
     userInfo,
     TABS,
@@ -152,15 +149,12 @@ const index = () => {
     properties,
     savedListings,
     refetchProperties,
+    isBigScreen,
   };
 
   return (
     <FormProvider {...methods}>
-      {isBigScreen ? (
-        <DesktopDashboard {...props} />
-      ) : (
-        <MobileDashboard {...props} />
-      )}
+      <Dashboard {...props} />
     </FormProvider>
   );
 };

@@ -32,6 +32,7 @@ import { FaArrowLeftLong as LongArrowIcon } from "react-icons/fa6";
 import { MdOutlineHomeWork as MyListingIcon } from "react-icons/md";
 import { FaRegCheckCircle as TickIcon } from "react-icons/fa";
 import { AiOutlineCloseCircle as CloseIconCircle } from "react-icons/ai";
+import { IoKeyOutline as ResetPasswordIcon } from "react-icons/io5";
 
 export {
   HeartIcon,
@@ -68,4 +69,5 @@ export {
   LongArrowIcon,
   MyListingIcon,
   TickIcon,
+  ResetPasswordIcon
 };

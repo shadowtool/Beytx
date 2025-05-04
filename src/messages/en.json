@@ -87,7 +87,8 @@
     "noListings": "No listings found",
     "myListings": "My Listings",
     "savedListings": "Saved Listings",
-    "editProfile": "Edit Profile"
+    "editProfile": "Edit Profile",
+    "resetPassword": "Reset Password"
   },
   "cards": {
     "beds": "Beds",
@@ -158,7 +159,8 @@
     "agreeToPolicies": "By continuing, you agree to our",
     "privacyPolicy": "Privacy Policy",
     "termsAndConditions": "Terms & Conditions",
-    "and": "and"
+    "and": "and",
+    "forgotPassword": "Forgot Password?"
   },
   "sortOptions": {
     "price_asc": "Price - Low to High",
@@ -240,6 +242,30 @@
     "title": "Update your number",
     "description": "We require your phone number, to make it easier for customers to interact with you.",
     "update": "update"
+  },
+  "ResetPassword": {
+    "resetYourPassword": "Reset Your Password",
+    "enterEmail": "Enter your email address",
+    "emailRequired": "Email is required",
+    "invalidEmailFormat": "Invalid email format",
+    "sendResetCode": "Send Reset Code",
+    "sending": "Sending...",
+    "otpSent": "A verification code has been sent to your email.",
+    "enterVerificationCode": "Enter verification code",
+    "otpRequired": "Verification code is required",
+    "verifyCode": "Verify Code",
+    "verifying": "Verifying...",
+    "otpVerified": "Verification successful",
+    "newPassword": "New Password",
+    "confirmNewPassword": "Confirm New Password",
+    "passwordRequired": "Password is required",
+    "confirmPasswordRequired": "Please confirm your password",
+    "passwordsDoNotMatch": "Passwords do not match",
+    "resetPassword": "Reset Password",
+    "resetting": "Resetting...",
+    "passwordReset": "Your password has been successfully reset.",
+    "somethingWentWrong": "Something went wrong. Please try again.",
+    "error": "Error"
   },
   "locations": {
     "Kuwait": "Kuwait",

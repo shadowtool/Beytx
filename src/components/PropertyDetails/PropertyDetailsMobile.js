@@ -34,7 +34,7 @@ const PropertyDetailsMobile = ({ loading, propertyData }) => {
     if (contentRef.current) {
       setHeight(contentRef.current.scrollHeight);
     }
-  }, [propertyData?.description, isDescriptionExpanded]);
+  }, [propertyData?.description, propertyData?.descriptionArabic]);
 
   const images = propertyData?.images ?? [FALLBACK_IMAGE_URL];
 
@@ -77,15 +77,12 @@ const PropertyDetailsMobile = ({ loading, propertyData }) => {
                 </div>
               ) : (
                 <motion.div
-                  className="flex w-full h-full"
+                  className="flex ltr:flex-row rtl:flex-row-reverse w-full h-full"
                   drag="x"
                   dragConstraints={{ left: 0, right: 0 }}
                   dragElastic={0.5}
                   onDragEnd={(event, info) => {
                     handleSwipeRelease(info.offset.x, info.velocity.x);
-                  }}
-                  style={{
-                    display: "flex",
                   }}
                 >
                   {images.map((image, index) => (
@@ -112,7 +109,7 @@ const PropertyDetailsMobile = ({ loading, propertyData }) => {
                   ))}
                 </motion.div>
               )}
-              <div className="absolute bottom-2 left-1/2 transform -translate-x-1/2 flex gap-2">
+              <div className="absolute bottom-2 left-1/2 transform -translate-x-1/2 flex gap-2 ltr:flex-row rtl:flex-row-reverse">
                 {images.map((_, index) => (
                   <div
                     key={index}
@@ -191,8 +188,12 @@ const PropertyDetailsMobile = ({ loading, propertyData }) => {
                     <div
                       ref={contentRef}
                       dangerouslySetInnerHTML={{
-                        __html: propertyData?.description,
+                        __html:
+                          locale === "ar"
+                            ? propertyData?.descriptionArabic
+                            : propertyData?.description,
                       }}
+                      className={locale === "ar" ? "rtl" : "ltr"}
                     />
                   </motion.div>
 

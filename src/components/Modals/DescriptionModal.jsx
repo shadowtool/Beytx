@@ -1,8 +1,11 @@
 import React from "react";
 import ModalWrapper from "./ModalWrapper";
 import { CloseIcon } from "@/imports/icons";
+import { useParams } from "next/navigation";
 
 const DescriptionModal = ({ open, handleClose, propertyData }) => {
+  const { locale } = useParams();
+
   return (
     <ModalWrapper open={open} handleClose={handleClose}>
       <div
@@ -21,9 +24,12 @@ const DescriptionModal = ({ open, handleClose, propertyData }) => {
           />
           <div
             dangerouslySetInnerHTML={{
-              __html: propertyData?.description,
+              __html:
+                locale === "ar"
+                  ? propertyData?.descriptionArabic
+                  : propertyData?.description,
             }}
-            className="text-black"
+            className={`text-black ${locale === "ar" ? "rtl" : "ltr"}`}
           />
         </div>
       </div>
