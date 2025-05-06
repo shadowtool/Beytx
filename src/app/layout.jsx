@@ -2,6 +2,7 @@ import ContextWrapper from "@/context/ContextWrapper";
 import "./globals.css";
 import { Montserrat, Raleway, Orbitron } from "next/font/google";
 import { cookies } from "next/headers";
+import Analytics from "@/components/Misc/Analytics";
 
 const montserrat = Montserrat({
   subsets: ["latin"],
@@ -28,6 +29,9 @@ export default function RootLayout({ children }) {
 
   return (
     <html lang={lang} hrefLang={lang} dir={lang === "ar" ? "rtl" : "ltr"}>
+      <head>
+        <Analytics />
+      </head>
       <body
         className={`${montserrat.variable} ${raleway.variable} ${orbitron.variable} antialiased`}
       >
