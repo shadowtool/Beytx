@@ -2,7 +2,7 @@ import ContextWrapper from "@/context/ContextWrapper";
 import "./globals.css";
 import { Montserrat, Raleway, Orbitron } from "next/font/google";
 import { cookies } from "next/headers";
-import Analytics from "@/components/Misc/Analytics";
+import Analytics from "@/components/Reusables/Misc/Analytics";
 
 const montserrat = Montserrat({
   subsets: ["latin"],

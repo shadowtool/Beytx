@@ -9,14 +9,13 @@ import {
   SORT_OPTIONS,
 } from "@/constants/constants";
 import { useTranslations } from "next-intl";
-import SearchableDropdown from "../Dropdowns/SearchableDropdown";
-import GeneralDropdown from "../Dropdowns/GeneralDropdown";
-import BedsAndBathsDropdown from "../Dropdowns/BedsAndBathsDropdown";
-import PriceRangeDropdown from "../Dropdowns/PriceRangeDropdown";
+import GeneralDropdown from "../Reusables/Dropdowns/GeneralDropdown";
+import BedsAndBathsDropdown from "../Reusables/Dropdowns/BedsAndBathsDropdown";
+import PriceRangeDropdown from "../Reusables/Dropdowns/PriceRangeDropdown";
 import { useMemo } from "react";
-import PlacesSearchDropdown from "../Dropdowns/PlacesSearchDropdown";
+import PlacesSearchDropdown from "../Reusables/Dropdowns/PlacesSearchDropdown";
 
-const PropertyFilter = ({ onReset, locationsData }) => {
+const PropertyFilter = ({ onReset }) => {
   const { setValue, watch } = useFormContext();
 
   const translateFilters = useTranslations("filterKeys");

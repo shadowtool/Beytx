@@ -3,21 +3,21 @@
 import { useState, useRef, useEffect } from "react";
 import { useSession, signIn } from "next-auth/react";
 import { FormProvider, useForm, useWatch } from "react-hook-form";
-import MultiTagInput from "@/components/Reusables/TagInput";
+import MultiTagInput from "@/components/Reusables/Inputs/TagInput";
 import { toast } from "react-toastify";
-import TextEditor from "@/components/Reusables/TextEditor";
+import TextEditor from "@/components/Reusables/Inputs/TextEditor";
 import { useMutation } from "@tanstack/react-query";
 import { uploadImage } from "@/lib/queryFunctions";
 import { createPropertyMutation } from "@/lib/mutationFunctions";
 import { useTranslations } from "next-intl";
 import { useParams, useRouter } from "next/navigation";
-import PlacesSearchDropdown from "@/components/Dropdowns/PlacesSearchDropdown";
-import GeneralInput from "@/components/Inputs/GeneralInput";
-import GeneralDropdown from "@/components/Dropdowns/GeneralDropdown";
+import PlacesSearchDropdown from "@/components/Reusables/Dropdowns/PlacesSearchDropdown";
+import GeneralInput from "@/components/Reusables/Inputs/GeneralInput";
+import GeneralDropdown from "@/components/Reusables/Dropdowns/GeneralDropdown";
 import { PROPERTY_TYPES } from "@/constants/propertyTypes";
 import arValues from "../../../../messages/ar.json";
 import enValues from "../../../../messages/en.json";
-import FileUpload from "@/components/Misc/FileUpload";
+import FileUpload from "@/components/Reusables/Misc/FileUpload";
 import { translateText, detectLanguage } from "@/lib/translation";
 
 export default function AddProperty() {

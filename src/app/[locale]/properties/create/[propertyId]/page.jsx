@@ -3,21 +3,21 @@
 import { useState, useRef, useEffect } from "react";
 import { useSession, signIn } from "next-auth/react";
 import { FormProvider, useForm } from "react-hook-form";
-import MultiTagInput from "@/components/Reusables/TagInput";
+import MultiTagInput from "@/components/Reusables/Inputs/TagInput";
 import { toast } from "react-toastify";
-import TextEditor from "@/components/Reusables/TextEditor";
+import TextEditor from "@/components/Reusables/Inputs/TextEditor";
 import { useParams, useRouter } from "next/navigation";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { ROUTES } from "@/constants/routes";
 import { fetchPropertyDetails, uploadImage } from "@/lib/queryFunctions";
 import { updatePropertyMutation } from "@/lib/mutationFunctions";
 import { useTranslations } from "next-intl";
-import GeneralDropdown from "@/components/Dropdowns/GeneralDropdown";
-import GeneralInput from "@/components/Inputs/GeneralInput";
-import PlacesSearchDropdown from "@/components/Dropdowns/PlacesSearchDropdown";
+import GeneralDropdown from "@/components/Reusables/Dropdowns/GeneralDropdown";
+import GeneralInput from "@/components/Reusables/Inputs/GeneralInput";
+import PlacesSearchDropdown from "@/components/Reusables/Dropdowns/PlacesSearchDropdown";
 import { PROPERTY_TYPES } from "@/constants/propertyTypes";
-import FileUpload from "@/components/Misc/FileUpload";
-import Loader from "@/components/Reusables/Loader";
+import FileUpload from "@/components/Reusables/Misc/FileUpload";
+import Loader from "@/components/Reusables/Misc/Loader";
 import { detectLanguage, translateText } from "@/lib/translation";
 
 export default function index() {

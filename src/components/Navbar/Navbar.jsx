@@ -1,6 +1,6 @@
 "use client";
 import Link from "next/link";
-import AuthButton from "@/components/Reusables/AuthButton";
+import AuthButton from "../Reusables/Misc/AuthButton";
 import { AddPropertyIcon, CloseIcon, HamMenuIcon } from "@/imports/icons";
 import { useTranslations } from "next-intl";
 import { useParams, usePathname, useRouter } from "next/navigation";
@@ -8,7 +8,7 @@ import { useState } from "react";
 import Image from "next/image";
 import { LogoImage } from "@/imports/images";
 import { useSession } from "next-auth/react";
-import GeneralButton from "../Buttons/GeneralButton";
+import GeneralButton from "../Reusables/Buttons/GeneralButton";
 import { useModal } from "@/context/ModalContext";
 import { toast } from "react-toastify";
 

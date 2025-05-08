@@ -1,8 +1,8 @@
 "use client";
 import PropertyFilter from "./PropertyFilter";
-import PropertyCard from "../Cards/PropertyCard";
+import PropertyCard from "../Reusables/Cards/PropertyCard";
 import { useFormContext } from "react-hook-form";
-import Loader from "../Reusables/Loader";
+import Loader from "../Reusables/Misc/Loader";
 import { useTranslations } from "next-intl";
 import { useParams, useRouter, useSearchParams } from "next/navigation";
 import { useInView } from "react-intersection-observer";

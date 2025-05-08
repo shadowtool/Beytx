@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import PropertyFilter from "../SearchedProperties/PropertyFilter";
 import ModalWrapper from "./ModalWrapper";
 import { CloseIcon, LeftArrowIcon } from "@/imports/icons";
 import { useFormContext, useWatch } from "react-hook-form";

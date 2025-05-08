@@ -1,8 +1,8 @@
 "use client";
 import { createContext, useContext, useState, useCallback } from "react";
-import ConfirmDeletePropertyModal from "@/components/Modals/ConfirmDeletePropertyModal";
-import AgentInfoModal from "@/components/Modals/AgentInfoModal";
-import UpdatePhoneNumberModal from "@/components/Modals/UpdatePhoneNumberModal";
+import ConfirmDeletePropertyModal from "@/components/Reusables/Modals/ConfirmDeletePropertyModal";
+import AgentInfoModal from "@/components/Reusables/Modals/AgentInfoModal";
+import UpdatePhoneNumberModal from "@/components/Reusables/Modals/UpdatePhoneNumberModal";
 
 const ModalContext = createContext();
 

@@ -1,4 +1,4 @@
-import GeneralDropdown from "@/components/Dropdowns/GeneralDropdown";
+import GeneralDropdown from "@/components/Reusables/Dropdowns/GeneralDropdown";
 import { useTranslations } from "next-intl";
 import React from "react";
 

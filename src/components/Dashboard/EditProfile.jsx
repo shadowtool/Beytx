@@ -2,7 +2,7 @@ import React from "react";
 import Image from "next/image";
 import { useFormContext } from "react-hook-form";
 import { useTranslations } from "next-intl";
-import PhoneNumberInput from "../Inputs/PhoneNumberInput";
+import PhoneNumberInput from "../Reusables/Inputs/PhoneNumberInput";
 
 const EditProfile = ({
   isBigScreen,

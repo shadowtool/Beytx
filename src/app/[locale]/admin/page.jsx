@@ -9,8 +9,8 @@ import {
   fetchAllUsers,
   fetchPropertyListingsAdmin,
 } from "@/lib/queryFunctions";
-import Loader from "@/components/Reusables/Loader";
-import Popup from "@/components/Popup";
+import Loader from "@/components/Reusables/Misc/Loader";
+import Popup from "@/components/Reusables/Misc/Popup";
 import { toast } from "react-toastify";
 import Table from "@/components/Tables/Table";
 import {
@@ -19,8 +19,8 @@ import {
   updatePropertyStatusMutation,
 } from "@/lib/mutationFunctions";
 import TablePagination from "@/components/Tables/TablePagination";
-import EditProfile from "@/components/Modals/EditProfile";
-import GeneralInput from "@/components/Inputs/GeneralInput";
+import EditProfile from "@/components/Reusables/Modals/EditProfile";
+import GeneralInput from "@/components/Reusables/Inputs/GeneralInput";
 import { FormProvider, useForm, useWatch } from "react-hook-form";
 
 const index = () => {

@@ -2,17 +2,17 @@
 import { CloseIcon, FilterIcon, SearchIcon } from "@/imports/icons";
 import React, { useMemo, useState } from "react";
 import { useFormContext, useWatch } from "react-hook-form";
-import MobilePropertyCard from "../Cards/MobilePropertyCard";
-import Loader from "../Reusables/Loader";
-import MobileFilterModal from "../Modals/MobileFilterModal";
-import ListingTypeFilterModal from "../Modals/MobileDropdownModal/DropdownModals/ListingTypeFilterModal";
-import PropertyTypeFilterModal from "../Modals/MobileDropdownModal/DropdownModals/PropertyTypeFilterModal";
-import BedsFilterModal from "../Modals/MobileDropdownModal/DropdownModals/BedsFilterModal";
-import BathsFilterModal from "../Modals/MobileDropdownModal/DropdownModals/BathsFilterModal";
-import PriceFilterModal from "../Modals/MobileDropdownModal/DropdownModals/PriceFilterModal";
-import MobileDropdownModal from "../Modals/MobileDropdownModal/MobileDropdownModal";
-import SortByModal from "../Modals/MobileDropdownModal/DropdownModals/SortByModal";
-import MobileSearchModal from "../Modals/MobileSearchModal";
+import MobilePropertyCard from "../Reusables/Cards/MobilePropertyCard";
+import Loader from "../Reusables/Misc/Loader";
+import MobileFilterModal from "../Reusables/Modals/MobileFilterModal";
+import ListingTypeFilterModal from "../Reusables/Modals/MobileDropdownModal/DropdownModals/ListingTypeFilterModal";
+import PropertyTypeFilterModal from "../Reusables/Modals/MobileDropdownModal/DropdownModals/PropertyTypeFilterModal";
+import BedsFilterModal from "../Reusables/Modals/MobileDropdownModal/DropdownModals/BedsFilterModal";
+import BathsFilterModal from "../Reusables/Modals/MobileDropdownModal/DropdownModals/BathsFilterModal";
+import PriceFilterModal from "../Reusables/Modals/MobileDropdownModal/DropdownModals/PriceFilterModal";
+import MobileDropdownModal from "../Reusables/Modals/MobileDropdownModal/MobileDropdownModal";
+import SortByModal from "../Reusables/Modals/MobileDropdownModal/DropdownModals/SortByModal";
+import MobileSearchModal from "../Reusables/Modals/MobileSearchModal";
 import { useTranslations } from "next-intl";
 import { useParams, useRouter } from "next/navigation";
 

@@ -1,7 +1,7 @@
 "use client";
-import MobilePropertyCard from "@/components/Cards/MobilePropertyCard";
-import PropertyCard from "@/components/Cards/PropertyCard";
-import Loader from "@/components/Reusables/Loader";
+import MobilePropertyCard from "@/components/Reusables/Cards/MobilePropertyCard";
+import PropertyCard from "@/components/Reusables/Cards/PropertyCard";
+import Loader from "@/components/Reusables/Misc/Loader";
 import { ROUTES } from "@/constants/routes";
 import useMediaQuery from "@/hooks/useMediaQuery";
 import { fetchAgentListings, fetchUserInfo } from "@/lib/queryFunctions";

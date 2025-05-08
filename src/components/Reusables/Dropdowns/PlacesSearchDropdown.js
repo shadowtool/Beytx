@@ -5,8 +5,8 @@ import { useTranslations } from "next-intl";
 import { useParams } from "next/navigation";
 import { useState, useRef, useEffect } from "react";
 import { useFormContext, useWatch } from "react-hook-form";
-import enTranslations from "../../messages/en.json";
-import arTranslations from "../../messages/ar.json";
+import enTranslations from "../../../messages/en.json";
+import arTranslations from "../../../messages/ar.json";
 
 const PlacesSearchDropdown = ({ name, classes = {}, customOnChange }) => {
   const translate = useTranslations("locations");

@@ -1,7 +1,7 @@
 import React from "react";
 import { useTranslations } from "next-intl";
-import PropertyCard from "../Cards/PropertyCard";
-import MobilePropertyCard from "../Cards/MobilePropertyCard";
+import PropertyCard from "../Reusables/Cards/PropertyCard";
+import MobilePropertyCard from "../Reusables/Cards/MobilePropertyCard";
 
 const ListingSection = ({ listings, type, isBigScreen }) => {
   const translate = useTranslations("dashboard");

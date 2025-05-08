@@ -4,14 +4,10 @@ import { Controller, FormProvider, useForm, useWatch } from "react-hook-form";
 import { FilterBgImage } from "@/imports/images";
 import Image from "next/image";
 import { useParams, useRouter } from "next/navigation";
-import SearchableDropdown from "../Dropdowns/SearchableDropdown";
-import { useQuery } from "@tanstack/react-query";
-import { ROUTES } from "@/constants/routes";
-import { fetchCities } from "@/lib/queryFunctions";
-import GeneralDropdown from "../Dropdowns/GeneralDropdown";
+import GeneralDropdown from "../Reusables/Dropdowns/GeneralDropdown";
 import { PROPERTY_TYPES } from "@/constants/propertyTypes";
 import { useTranslations } from "next-intl";
-import PlacesSearchDropdown from "../Dropdowns/PlacesSearchDropdown";
+import PlacesSearchDropdown from "../Reusables/Dropdowns/PlacesSearchDropdown";
 
 const Hero = () => {
   const [filterStatus, setFilterStatus] = useState("sale");

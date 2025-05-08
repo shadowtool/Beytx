@@ -1,6 +1,6 @@
 "use client";
 import React, { useEffect, useRef, useState } from "react";
-import Loader from "../Reusables/Loader";
+import Loader from "../Reusables/Misc/Loader";
 import {
   CREATOR_ACTIONS,
   DEFAULT_IMAGES_FOR_TYPES,
@@ -9,8 +9,8 @@ import {
 import Image from "next/image";
 import { motion } from "framer-motion";
 import { BathroomIcon, BedIcon, DownIcon } from "@/imports/icons";
-import PropertyImagesModal from "../Modals/PropertyImagesModal";
-import MapPicker from "../Misc/MapPicker";
+import PropertyImagesModal from "../Reusables/Modals/PropertyImagesModal";
+import MapPicker from "../Reusables/Misc/MapPicker";
 import { AreaIcon, LocationIcon } from "@/imports/images";
 import { useTranslations } from "next-intl";
 import SimilarProperties from "./SimilarProperties";

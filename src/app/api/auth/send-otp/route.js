@@ -1,6 +1,6 @@
 import { Resend } from "resend";
 import { NextResponse } from "next/server";
-import EmailTemplate from "@/components/Misc/EmailTemplate";
+import EmailTemplate from "@/components/Reusables/Misc/EmailTemplate";
 import dbConnect from "@/lib/mongodb";
 import Otps from "@/models/Otps";
 

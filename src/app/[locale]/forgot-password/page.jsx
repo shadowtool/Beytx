@@ -6,8 +6,8 @@ import axios from "axios";
 import { toast } from "react-toastify";
 import { useTranslations } from "next-intl";
 import { FormProvider, useForm } from "react-hook-form";
-import GeneralInput from "@/components/Inputs/GeneralInput";
-import GeneralButton from "@/components/Buttons/GeneralButton";
+import GeneralInput from "@/components/Reusables/Inputs/GeneralInput";
+import GeneralButton from "@/components/Reusables/Buttons/GeneralButton";
 
 export default function ResetPassword() {
   const translate = useTranslations("ResetPassword");

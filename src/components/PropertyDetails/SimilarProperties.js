@@ -1,5 +1,5 @@
 import React from "react";
-import PropertyCard from "../Cards/PropertyCard";
+import PropertyCard from "../Reusables/Cards/PropertyCard";
 import { useTranslations } from "next-intl";
 
 const SimilarProperties = ({ propertyData }) => {

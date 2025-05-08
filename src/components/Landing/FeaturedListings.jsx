@@ -1,16 +1,16 @@
 "use client";
 import { useQuery } from "@tanstack/react-query";
-import PropertyCard from "../Cards/PropertyCard";
+import PropertyCard from "../Reusables/Cards/PropertyCard";
 import { useState } from "react";
 import { ROUTES } from "@/constants/routes";
-import Loader from "../Reusables/Loader";
+import Loader from "../Reusables/Misc/Loader";
 import { PROPERTY_TYPES } from "@/constants/propertyTypes";
 import {
   fetchFeaturedListings,
   fetchPropertyListings,
 } from "@/lib/queryFunctions";
 import { ListIcon } from "@/imports/icons";
-import PropertyListCard from "../Cards/PropertyListCard";
+import PropertyListCard from "../Reusables/Cards/PropertyListCard";
 import { useTranslations } from "next-intl";
 import { useParams, useRouter } from "next/navigation";
 

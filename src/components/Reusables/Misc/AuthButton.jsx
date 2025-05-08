@@ -2,9 +2,9 @@
 
 import { LoginIcon, LogoutIcon, UserIcon } from "@/imports/icons";
 import { useSession, signIn, signOut } from "next-auth/react";
-import ClickAwayListener from "@/components/Reusables/ClickAwayListener";
+import ClickAwayListener from "./ClickAwayListener";
 import { useState } from "react";
-import EditProfile from "@/components/Modals/EditProfile";
+import EditProfile from "../Modals/EditProfile";
 import { useParams, useRouter } from "next/navigation";
 import { useTranslations } from "next-intl";
 import AuthModal from "../Modals/AuthModals/AuthModal";
