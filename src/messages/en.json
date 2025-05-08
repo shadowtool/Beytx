@@ -466,5 +466,150 @@
     "pageNotFound": "Page Not Found",
     "pageNotFoundDescription": "Sorry, we couldn't find the page you're looking for.",
     "backToHome": "Back to Home"
+  },
+  "TermsAndConditions": {
+    "title": "Terms and Conditions",
+    "definitions": {
+      "title": "Definitions",
+      "content": "\"Site\" means Beyt.co and its related subdomains and mobile applications. \"User\" means any visitor, registered member, agent, or advertiser using the Site. \"Content\" means all text, images, data, listings, feedback, and other materials uploaded to or displayed on the Site."
+    },
+    "acceptance": {
+      "title": "Acceptance of Terms",
+      "content": "By accessing or using the Site, you agree to be bound by these Terms & Conditions and any updates thereto. If you do not agree, do not use the Site."
+    },
+    "changes": {
+      "title": "Changes to Terms",
+      "content": "We may modify these Terms at any time by posting updates on the Site. Your continued use after changes are posted constitutes acceptance of the revised Terms."
+    },
+    "access": {
+      "title": "Access & Use",
+      "content": "You must be at least 18 years old and legally capable of entering binding contracts. You agree not to interfere with or disrupt the Site’s servers or infrastructure."
+    },
+    "userAccounts": {
+      "title": "User Accounts",
+      "content": "To list properties or post Content, you must register and maintain accurate account information. You are responsible for safeguarding your password and any activity that occurs under your account."
+    },
+    "listingContent": {
+      "title": "Listing Content",
+      "content": "By posting a property listing or other Content, you grant Beyt.co a non-exclusive, worldwide, royalty-free license to use, reproduce, modify, distribute, and display your Content in connection with the Site’s operation. Listings must comply with our Community Guidelines and all applicable laws and regulations."
+    },
+    "intellectualProperty": {
+      "title": "Intellectual Property",
+      "content": "All Site design elements, text, graphics, logos, and software are the property of Beyt.co or its licensors. You may not copy, adapt, or create derivative works without our prior written consent."
+    },
+    "prohibitedConduct": {
+      "title": "Prohibited Conduct",
+      "content": "Users agree not to: Post fraudulent, defamatory, or infringing Content. Use bots or automated tools to scrape or harvest data. Circumvent any technical measures to access restricted areas of the Site."
+    },
+    "thirdPartyLinks": {
+      "title": "Third‐Party Links & Services",
+      "content": "The Site may contain links to third‐party websites or services. We do not endorse them and are not responsible for their content or practices."
+    },
+    "disclaimers": {
+      "title": "Disclaimers",
+      "content": "The Site and all Content are provided \"as is\" and \"as available.\" We make no warranties regarding accuracy, completeness, or fitness for a particular purpose."
+    },
+    "limitationOfLiability": {
+      "title": "Limitation of Liability",
+      "content": "To the maximum extent permitted by law, Beyt.co and its affiliates will not be liable for any indirect, incidental, or consequential damages arising from your use of the Site."
+    },
+    "indemnification": {
+      "title": "Indemnification",
+      "content": "You agree to indemnify and hold harmless Beyt.co, its officers, employees, and agents from any claims arising out of: Your breach of these Terms Your violation of any law or third-party rights Your User Content on the Site."
+    },
+    "termination": {
+      "title": "Termination",
+      "content": "We may suspend or terminate your access at our discretion, without notice, for any violation of these Terms or unlawful conduct."
+    },
+    "governingLaw": {
+      "title": "Governing Law & Dispute Resolution",
+      "content": "These Terms are governed by the laws of Kuwait. Any dispute shall be resolved by the courts of Kuwait."
+    },
+    "contactInformation": {
+      "title": "Contact Information",
+      "content": "For questions or notices regarding these Terms, please contact: Beyt.co Legal Department Email: support@beyt.co Address: ______________________"
+    }
+  },
+  "About": {
+    "title": "About Us",
+    "description": "Welcome to Beyt.co, Kuwait’s premier real-estate marketplace, where buyers, sellers, landlords, tenants, and agents come together in one seamless platform.",
+    "mission": {
+      "title": "Our Mission",
+      "content": "At Beyt.co, our mission is to make property search effortless by offering the largest inventory of residential and commercial listings, powered by cutting-edge search tools and data insights."
+    },
+    "vision": {
+      "title": "Our Vision",
+      "content": "We envision a future where every real-estate need—from listing and discovery to transaction and management—is met in one place, with the highest standards of convenience, security, and satisfaction."
+    },
+    "offer": {
+      "title": "What We Offer",
+      "listings": "Comprehensive Listings: Browse thousands of verified properties for sale, rent, or exchange across Kuwait’s most sought-after neighborhoods.",
+      "tools": "Agent & Landlord Tools: Dedicated dashboards for real-estate professionals to manage listings, track leads, and showcase premium featured ads.",
+      "filters": "Advanced Search & Filters: Find properties by location, price, size, amenities, and more—our intuitive filters put you in control of your search."
+    },
+    "whyChooseUs": {
+      "title": "Why Choose Us?",
+      "localExpertise": "Local Expertise, Global Standards: We combine deep Kuwait-market knowledge with the reliability and user experience of top international portals.",
+      "trust": "Trust & Transparency: All listings undergo a rigorous verification process to ensure accuracy and protect you from misleading or fraudulent ads.",
+      "insights": "Data-Driven Insights: Leverage market analytics and neighborhood guides to understand price trends, demand hotspots, and investment opportunities."
+    },
+    "story": {
+      "title": "Our Story",
+      "content": "Founded to fill a gap in Kuwait’s property market, Beyt.co evolved from a simple classifieds site into a full-service real-estate ecosystem. Over the years, we’ve grown our team of tech, data, and real-estate experts, expanded our partner network, and continuously refined our platform—always with one goal in mind: making property search better for everyone."
+    },
+    "contact": {
+      "title": "Contact Information",
+      "email": "For partnership inquiries or more information, contact us at: support@beyt.co"
+    }
+  },
+  "PrivacyPolicy": {
+    "title": "Privacy Policy",
+    "effectiveDate": "Effective Date: May 2025",
+    "introduction": {
+      "title": "Introduction & Scope",
+      "content": "Beyt.co (“we”, “our”, “us”) operates https://beyt.co and related mobile apps (collectively, “Services”), and is committed to protecting your privacy. By using our Services, you agree to the practices described in this Policy."
+    },
+    "dataCollection": {
+      "providedData": {
+        "title": "Personal Data You Provide",
+        "content": "Account Information: name, email address, phone number, and password when you register.\n\nProperty Listings: details, photos, and documents you upload to advertise real estate."
+      },
+      "automaticData": {
+        "title": "Automatically Collected Data",
+        "content": "Log & Usage Data: IP address, browser type, pages visited, and timestamps via server logs.\n\nCookies & Tracking: essential, analytics, and marketing cookies to operate and improve our site; you may disable non-essential cookies in your browser, though some features may not work."
+      }
+    },
+    "dataUsage": {
+      "title": "How We Use Your Data",
+      "content": "Service Delivery: to enable account creation, listing management, search functionality, and support.\n\nCommunications: to send transactional messages (e.g., listing confirmations) and, with your consent, promotional emails; you can opt out at any time.\n\nAnalytics & Personalization: to analyze usage trends and personalize your experience."
+    },
+    "dataSharing": {
+      "title": "Data Sharing & Disclosure",
+      "content": "Service Providers: we share data with hosting, payment, and email vendors under confidentiality agreements.\n\nLegal Compliance: we may disclose data to comply with laws or protect rights and safety.\n\nBusiness Transfers: in a merger or sale, user data may be transferred, subject to this Policy."
+    },
+    "dataRetention": {
+      "title": "Data Retention & Security",
+      "content": "Retention: we keep personal data as long as your account is active or as legally required.\n\nSecurity: we implement encryption, access controls, and regular audits to protect data."
+    },
+    "userRights": {
+      "title": "Your Rights & Choices",
+      "content": "Access & Correction: update your data via your account settings at any time.\n\nDeletion: request account deletion by emailing privacy@beyt.co; we’ll remove data except where retention is legally mandated.\n\nCookie Controls: manage cookie preferences in your browser settings."
+    },
+    "childrenPrivacy": {
+      "title": "Children’s Privacy",
+      "content": "Our Services are not intended for children under 16; we do not knowingly collect data from minors, and will delete any such data promptly."
+    },
+    "internationalTransfers": {
+      "title": "International Data Transfers",
+      "content": "Data may be processed in countries outside your residence; we use appropriate safeguards (e.g., standard contractual clauses) to protect your rights."
+    },
+    "policyUpdates": {
+      "title": "Updates to This Policy",
+      "content": "We may update this Policy; the “Effective Date” will reflect changes. Significant updates will be notified via email or site banner."
+    },
+    "contact": {
+      "title": "Contact Us",
+      "content": "For questions or to exercise your rights, contact us at:\nEmail: support@beyt.co"
+    }
   }
 }

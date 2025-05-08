@@ -1,72 +1,70 @@
-"use client";
+import { useTranslations } from "next-intl";
 
 export default function PrivacyPolicy() {
+  const t = useTranslations("PrivacyPolicy");
+
   return (
     <div className="max-w-4xl mx-auto px-4 py-12">
-      <h1 className="     mb-8">Privacy Policy</h1>
+      <h1 className="mb-8">{t("title")}</h1>
+      <p className="text-gray-500 mb-4">{t("effectiveDate")}</p>
 
       <section className="mb-8">
-        <h2 className="     mb-4">Introduction</h2>
+        <h2 className="mb-4">{t("introduction.title")}</h2>
+        <p className="text-gray-700 mb-4">{t("introduction.content")}</p>
+      </section>
+
+      <section className="mb-8">
+        <h2 className="mb-4">{t("dataCollection.providedData.title")}</h2>
         <p className="text-gray-700 mb-4">
-          This Privacy Policy describes how we collect, use, and handle your
-          personal information when you use our services.
+          {t("dataCollection.providedData.content")}
         </p>
-      </section>
 
-      <section className="mb-8">
-        <h2 className="     mb-4">Information We Collect</h2>
+        <h2 className="mb-4">{t("dataCollection.automaticData.title")}</h2>
         <p className="text-gray-700 mb-4">
-          We collect information that you provide directly to us, including:
+          {t("dataCollection.automaticData.content")}
         </p>
-        <ul className="list-disc pl-6 text-gray-700 mb-4">
-          <li>Name and contact information</li>
-          <li>Account credentials</li>
-          <li>Payment information</li>
-          <li>Communications with us</li>
-        </ul>
       </section>
 
       <section className="mb-8">
-        <h2 className="     mb-4">How We Use Your Information</h2>
+        <h2 className="mb-4">{t("dataUsage.title")}</h2>
+        <p className="text-gray-700 mb-4">{t("dataUsage.content")}</p>
+      </section>
+
+      <section className="mb-8">
+        <h2 className="mb-4">{t("dataSharing.title")}</h2>
+        <p className="text-gray-700 mb-4">{t("dataSharing.content")}</p>
+      </section>
+
+      <section className="mb-8">
+        <h2 className="mb-4">{t("dataRetention.title")}</h2>
+        <p className="text-gray-700 mb-4">{t("dataRetention.content")}</p>
+      </section>
+
+      <section className="mb-8">
+        <h2 className="mb-4">{t("userRights.title")}</h2>
+        <p className="text-gray-700 mb-4">{t("userRights.content")}</p>
+      </section>
+
+      <section className="mb-8">
+        <h2 className="mb-4">{t("childrenPrivacy.title")}</h2>
+        <p className="text-gray-700 mb-4">{t("childrenPrivacy.content")}</p>
+      </section>
+
+      <section className="mb-8">
+        <h2 className="mb-4">{t("internationalTransfers.title")}</h2>
         <p className="text-gray-700 mb-4">
-          We use the information we collect to:
-        </p>
-        <ul className="list-disc pl-6 text-gray-700 mb-4">
-          <li>Provide and maintain our services</li>
-          <li>Process your transactions</li>
-          <li>Send you important updates and notifications</li>
-          <li>Improve our services</li>
-          <li>Comply with legal obligations</li>
-        </ul>
-      </section>
-
-      <section className="mb-8">
-        <h2 className="     mb-4">Data Security</h2>
-        <p className="text-gray-700 mb-4">
-          We implement appropriate security measures to protect your personal
-          information from unauthorized access, alteration, disclosure, or
-          destruction.
+          {t("internationalTransfers.content")}
         </p>
       </section>
 
       <section className="mb-8">
-        <h2 className="     mb-4">Your Rights</h2>
-        <p className="text-gray-700 mb-4">You have the right to:</p>
-        <ul className="list-disc pl-6 text-gray-700 mb-4">
-          <li>Access your personal information</li>
-          <li>Correct inaccurate data</li>
-          <li>Request deletion of your data</li>
-          <li>Object to data processing</li>
-          <li>Data portability</li>
-        </ul>
+        <h2 className="mb-4">{t("policyUpdates.title")}</h2>
+        <p className="text-gray-700 mb-4">{t("policyUpdates.content")}</p>
       </section>
 
       <section className="mb-8">
-        <h2 className="     mb-4">Contact Us</h2>
-        <p className="text-gray-700">
-          If you have any questions about this Privacy Policy, please contact us
-          at privacy@example.com
-        </p>
+        <h2 className="mb-4">{t("contact.title")}</h2>
+        <p className="text-gray-700 mb-4">{t("contact.content")}</p>
       </section>
     </div>
   );

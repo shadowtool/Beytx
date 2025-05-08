@@ -9,69 +9,71 @@ import Navbar from "@/components/Navbar/Navbar";
 
 const baseUrl = process.env.NEXT_PUBLIC_DOMAIN || "https://beyt.co";
 
-export const metadata = {
-  title:
-    "Buy & Rent Property in Kuwait | Villas, Apartments & Commercial Spaces | Beyt",
-  description:
-    "Kuwait's property marketplace connecting buyers and renters. Search updated listings or list your property free. Find your perfect property in Kuwait.",
-  keywords: [
-    "Real Estate Kuwait",
-    "Apartments for rent Kuwait",
-    "Villas for sale Kuwait",
-    "Beyt",
-  ],
-  robots: "index, follow, max-image-preview:large",
-  metadataBase: new URL(baseUrl),
+export async function generateMetadata({ params }) {
+  const { locale } = params;
 
-  alternates: {
-    canonical: `${baseUrl}/en/`,
-    languages: {
-      en: `${baseUrl}/en/`,
-      ar: `${baseUrl}/ar/`,
-      "x-default": `${baseUrl}/en/`,
-    },
-  },
-
-  openGraph: {
-    title: "Find Properties in Kuwait | Beyt Real Estate Platform",
+  return {
+    title:
+      locale === "ar"
+        ? "شراء وتأجير عقارات في الكويت | فلل، شقق ومساحات تجارية | Beyt | بيت"
+        : "Buy & Rent Property in Kuwait | Villas, Apartments & Commercial Spaces | Beyt",
     description:
-      "Connect directly with property owners in Kuwait. Free listings available. Search villas, apartments & commercial spaces.",
-    url: `${baseUrl}/en/`,
-    siteName: "Beyt",
-    type: "website",
-    images: [
-      {
-        url: `${baseUrl}/og-image-home.jpg`,
-        width: 1200,
-        height: 630,
-        alt: "Beyt Real Estate Kuwait",
+      locale === "ar"
+        ? "اكتشف أفضل عقارات الكويت—فلل، شقق، مكاتب ومساحات تجارية. أضف عقارك مجانًا وتواصل مباشرة مع المشترين والمستأجرين على Beyt | بيت."
+        : "Kuwait's property marketplace connecting buyers and renters. Search updated listings or list your property free. Find your perfect property in Kuwait.",
+    keywords:
+      locale === "ar"
+        ? "عقارات الكويت, شقق للإيجار الكويت, فلل للبيع الكويت, عقارات تجارية الكويت, Beyt | بيت"
+        : "Real Estate Kuwait, Apartments for rent Kuwait, Villas for sale Kuwait, Beyt",
+    alternates: {
+      canonical: `${baseUrl}/${locale}/`,
+      languages: {
+        en: `${baseUrl}/en/`,
+        ar: `${baseUrl}/ar/`,
+        "x-default": `${baseUrl}/en/`,
       },
-    ],
-  },
-
-  twitter: {
-    card: "summary_large_image",
-    title: "Kuwait Real Estate Listings | Beyt",
-    description:
-      "Find properties for sale/rent in Kuwait. Free listings available. Updated daily.",
-    images: [`${baseUrl}/twitter-home.jpg`],
-  },
-
-  // verification: {
-  //   google: "YOUR_GOOGLE_VERIFICATION_TOKEN",
-  //   other: {
-  //     "msvalidate.01": "YOUR_BING_VERIFICATION_TOKEN",
-  //   },
-  // },
-
-  icons: {
-    icon: `${baseUrl}/favicon.ico`,
-    apple: `${baseUrl}/apple-icon.png`,
-  },
-};
+    },
+    openGraph: {
+      title:
+        locale === "ar"
+          ? "شراء وتأجير عقارات في الكويت | منصة Beyt | بيت للعقارات"
+          : "Find Properties in Kuwait | Beyt Real Estate Platform",
+      description:
+        locale === "ar"
+          ? "تواصل مباشرة مع مالكي العقار في الكويت على Beyt | بيت. قوائم مجانية للفلل والشقق والمساحات التجارية."
+          : "Connect directly with property owners in Kuwait. Free listings available. Search villas, apartments & commercial spaces.",
+      url: `${baseUrl}/${locale}/`,
+      siteName: "Beyt",
+      type: "website",
+      images: [
+        {
+          url: `${baseUrl}/og-image-home.jpg`,
+          width: 1200,
+          height: 630,
+          alt:
+            locale === "ar"
+              ? "منصة Beyt | بيت للعقارات في الكويت"
+              : "Beyt Real Estate Kuwait",
+        },
+      ],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title:
+        locale === "ar"
+          ? "عقارات الكويت للبيع والإيجار | Beyt | بيت"
+          : "Kuwait Real Estate Listings | Beyt",
+      description:
+        locale === "ar"
+          ? "اعثر على فلل، شقق ومساحات تجارية في الكويت مجانًا على Beyt | بيت. قوائم محدثة يومياً."
+          : "Find properties for sale/rent in Kuwait. Free listings available. Updated daily.",
+      images: [`${baseUrl}/twitter-home.jpg`],
+    },
+  };
+}
 
 export default async function LocaleLayout({ children, params }) {
-  const { locale } = await params;
+  const { locale } = params;
 
   if (!routing.locales.includes(locale)) {
     notFound();
@@ -82,11 +84,18 @@ export default async function LocaleLayout({ children, params }) {
   const jsonLdData = {
     "@context": "https://schema.org",
     "@type": "WebSite",
-    name: "Beyt",
+    name: "Beyt | بيت",
     url: baseUrl,
     description:
       "Kuwait's property marketplace connecting buyers and renters. Search updated listings or list your property free. Find your perfect property in Kuwait.",
     inLanguage: locale,
+    sameAs: [
+      "https://www.facebook.com/Beyt.co",
+      "https://www.instagram.com/beyt.co/",
+      "https://www.linkedin.com/company/beyt-co/",
+      "https://www.tiktok.com/@beyt.co",
+      "https://x.com/beytkw",
+    ],
     publisher: {
       "@type": "Organization",
       name: "Beyt",
@@ -104,7 +113,7 @@ export default async function LocaleLayout({ children, params }) {
   };
 
   return (
-    <NextIntlClientProvider messages={messages}>
+    <NextIntlClientProvider messages={messages} locale={locale}>
       <ContextWrapper>
         <Script
           id="json-ld-home"
