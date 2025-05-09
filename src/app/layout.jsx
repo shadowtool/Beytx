@@ -3,6 +3,7 @@ import "./globals.css";
 import { Montserrat, Raleway, Orbitron } from "next/font/google";
 import { cookies } from "next/headers";
 import Analytics from "@/components/Reusables/Misc/Analytics";
+import Script from "next/script";
 
 const montserrat = Montserrat({
   subsets: ["latin"],
@@ -36,6 +37,18 @@ export default function RootLayout({ children }) {
         className={`${montserrat.variable} ${raleway.variable} ${orbitron.variable} antialiased`}
       >
         <>{children}</>
+        <Script
+          id="google-tag-manager-noscript"
+          strategy="afterInteractive"
+          dangerouslySetInnerHTML={{
+            __html: `
+              <!-- Google Tag Manager (noscript) -->
+              <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-5KPM9CD9"
+              height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+              <!-- End Google Tag Manager (noscript) -->
+            `,
+          }}
+        />
       </body>
     </html>
   );
