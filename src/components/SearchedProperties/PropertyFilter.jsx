@@ -1,9 +1,7 @@
 "use client";
 import { useFormContext } from "react-hook-form";
 import { CloseIcon } from "@/imports/icons";
-import { PROPERTY_TYPES } from "@/constants/propertyTypes";
 import {
-  PRICE_OPTIONS,
   PRICE_OPTIONS_RENT,
   PRICE_OPTIONS_SALE,
   SORT_OPTIONS,
@@ -14,8 +12,16 @@ import BedsAndBathsDropdown from "../Reusables/Dropdowns/BedsAndBathsDropdown";
 import PriceRangeDropdown from "../Reusables/Dropdowns/PriceRangeDropdown";
 import { useMemo } from "react";
 import PlacesSearchDropdown from "../Reusables/Dropdowns/PlacesSearchDropdown";
+import { ROUTES } from "@/constants/routes";
+import { fetchPropertyTypes } from "@/lib/queryFunctions";
+import { useQuery } from "@tanstack/react-query";
 
 const PropertyFilter = ({ onReset }) => {
+  const { data: PROPERTY_TYPES } = useQuery({
+    queryKey: [ROUTES.GET_PROPERTY_TYPES],
+    queryFn: fetchPropertyTypes,
+  });
+
   const { setValue, watch } = useFormContext();
 
   const translateFilters = useTranslations("filterKeys");
@@ -81,7 +87,7 @@ const PropertyFilter = ({ onReset }) => {
           <GeneralDropdown
             name="type"
             placeholder={translateFilters("type")}
-            options={PROPERTY_TYPES.map((type) => ({
+            options={(PROPERTY_TYPES || []).map((type) => ({
               label: translatePropertyTypes(type.toLowerCase()),
               value: type,
             }))}

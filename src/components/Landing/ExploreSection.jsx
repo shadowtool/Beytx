@@ -1,19 +1,29 @@
 "use client";
-import { PROPERTY_TYPES } from "@/constants/propertyTypes";
 import { ROUTES } from "@/constants/routes";
-import { fetchCities } from "@/lib/queryFunctions";
+import { fetchCities, fetchPropertyTypes } from "@/lib/queryFunctions";
 import { useQuery } from "@tanstack/react-query";
 import { useParams } from "next/navigation";
 import React, { useEffect, useMemo, useState } from "react";
+import { useTranslations } from "next-intl";
+import Loader from "../Reusables/Misc/Loader";
 
 export default function ExploreSection() {
+  const { data: PROPERTY_TYPES, isPending: propertyTypesLoading } = useQuery({
+    queryKey: [ROUTES.GET_PROPERTY_TYPES],
+    queryFn: fetchPropertyTypes,
+  });
+
   const { locale } = useParams();
 
   const [activeTab, setActiveTab] = useState("Sale");
 
   const [selectedLocation, setSelectedLocation] = useState();
 
-  const { data: locationsData, isFetched: isLocationsFetched } = useQuery({
+  const {
+    data: locationsData,
+    isPending: locationsLoading,
+    isFetched: locationsFetched,
+  } = useQuery({
     queryKey: [ROUTES.GET_LOCATIONS],
     queryFn: fetchCities,
   });
@@ -21,21 +31,33 @@ export default function ExploreSection() {
   const handleLocationClick = (location) => {
     setSelectedLocation(location);
   };
+  const translate = useTranslations();
 
   const propertyLinks = useMemo(() => {
     return PROPERTY_TYPES?.map((el) => {
       return {
-        name: `${el} in ${selectedLocation?.city}`,
-        link: `/${locale}/properties?type=${el}`,
+        name: `${translate(`propertyTypes.${el?.toLowerCase()}`)} ${translate("exploreSection.in")} ${translate(`locations.${selectedLocation?.city}`)}`,
+        link: `/${locale}/explore/${translate(`exploreSection.${activeTab?.toLowerCase()}`).toLowerCase() || ""}/${translate(`propertyTypes.${el?.toLowerCase()}`)}/${translate(`locations.${selectedLocation?.city}`)}/${translate("exploreSection.properties")}-${translate("exploreSection.in")}-${translate(`locations.${selectedLocation?.city}`)}`,
       };
     });
-  }, [selectedLocation]);
+  }, [selectedLocation, activeTab, PROPERTY_TYPES, locale, translate]);
 
   useEffect(() => {
-    if (isLocationsFetched) {
-      setSelectedLocation(locationsData[0]);
+    if (locationsFetched) {
+      setSelectedLocation(locationsData?.[0]);
     }
-  }, [locationsData, isLocationsFetched]);
+  }, [locationsData, locationsFetched]);
+
+  const isLoading = locationsLoading || propertyTypesLoading;
+
+  if (isLoading) {
+    return (
+      <div className="p-6 md:p-16 pt-0">
+        <h2 className="text-4xl font-light mb-16">Explore more properties</h2>
+        <Loader />
+      </div>
+    );
+  }
 
   return (
     <div className="p-6 md:p-16 pt-0">
@@ -45,13 +67,13 @@ export default function ExploreSection() {
           <button
             key={tab}
             onClick={() => setActiveTab(tab)}
-            className={`relative text-emerald-600 pb-2 transition-all duration-300 ${
-              activeTab === tab ? "font-medium" : "font-normal"
+            className={`relative text-lg text-emerald-600 pb-2 ${
+              activeTab === tab ? "font-bold" : "font-medium"
             }`}
           >
-            {tab}
+            {translate(`exploreSection.${tab?.toLowerCase()}`)}
             {activeTab === tab && (
-              <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-emerald-600 transition-all duration-300" />
+              <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-emerald-600" />
             )}
           </button>
         ))}
@@ -68,17 +90,17 @@ export default function ExploreSection() {
             }`}
             onClick={() => handleLocationClick(loc)}
           >
-            {loc?.city}
+            {translate(`locations.${loc?.city}`)}
           </button>
         ))}
       </div>
       {/* Property Type Links */}
-      <div className="grid gap-4">
-        {propertyLinks.map((type) => (
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 py-4 gap-4">
+        {propertyLinks?.map((type) => (
           <a
             key={type.name}
             href={type.link}
-            className="text-base font-normal text-emerald-600 hover:underline"
+            className="text-base font-medium text-emerald-600 underline underline-offset-[6px] tracking-wide"
           >
             {type.name}
           </a>

@@ -1,14 +1,21 @@
 import React from "react";
 import ModalWrapper from "./ModalWrapper";
 import { BathroomIcon, BedIcon, CloseIcon, PriceIcon } from "@/imports/icons";
-import { PROPERTY_TYPES } from "@/constants/propertyTypes";
 import { useFormContext, useWatch } from "react-hook-form";
 import GeneralDropdown from "../Dropdowns/GeneralDropdown";
 import { PROPERTY_STATUS } from "@/constants/propertyStatus";
 import { useTranslations } from "next-intl";
 import { SORT_OPTIONS } from "@/constants/constants";
+import { useQuery } from "@tanstack/react-query";
+import { ROUTES } from "@/constants/routes";
+import { fetchPropertyTypes } from "@/lib/queryFunctions";
 
 const MobileFilterModal = ({ open, handleClose, refetchListings }) => {
+  const { data: PROPERTY_TYPES } = useQuery({
+    queryKey: [ROUTES.GET_PROPERTY_TYPES],
+    queryFn: fetchPropertyTypes,
+  });
+
   const translate = useTranslations("filterKeys");
 
   const translatePropertyTypes = useTranslations("propertyTypes");
@@ -53,12 +60,12 @@ const MobileFilterModal = ({ open, handleClose, refetchListings }) => {
                       ? "rounded-l-lg"
                       : "rounded-r-lg"
                   } ${
-                    formValues?.propertyStatus === el
+                    formValues?.status === el
                       ? "bg-green-100 border-green-600 text-green-600"
                       : "bg-white border-white text-black"
                   }`}
                   onClick={() => {
-                    setValue("propertyStatus", el);
+                    setValue("status", el);
                   }}
                   key={el}
                 >

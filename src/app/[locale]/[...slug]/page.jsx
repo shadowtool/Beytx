@@ -15,7 +15,7 @@ import Script from "next/script";
 import ar from "@/messages/ar.json";
 import en from "@/messages/en.json";
 import { parseDocument } from "htmlparser2";
-
+import mongoose from "mongoose";
 
 export async function generateMetadata({ params }) {
   try {
@@ -27,6 +27,12 @@ export async function generateMetadata({ params }) {
 
     const id =
       locale === "ar" ? slugArray?.[0] : slugArray?.[slugArray.length - 1];
+
+    console.log({ id });
+
+    if (!id || !mongoose.Types.ObjectId.isValid(id)) {
+      return notFound();
+    }
 
     const property = await fetchPropertyFromDB(id);
 
@@ -56,7 +62,6 @@ export async function generateMetadata({ params }) {
       locale === "en"
         ? property?.location?.country
         : translations.locations[property?.location?.country];
-
 
     const stripHtml = (html) => {
       const doc = parseDocument(html);
@@ -98,7 +103,7 @@ export async function generateMetadata({ params }) {
       },
     };
   } catch (error) {
-    console.error("Error generating metadata:", error);
+    // console.error("Error generating metadata:", error);
     return notFound();
   }
 }
@@ -116,8 +121,9 @@ export default async function Page({ params }) {
 
     const pageUrl = `${process.env.NEXT_PUBLIC_DOMAIN}/${path}`;
 
-    if (!id) return notFound();
-
+    if (!id || !mongoose.Types.ObjectId.isValid(id)) {
+      return notFound();
+    }
     const finalPropertyData = await fetchPropertyFromDB(id);
 
     if (!finalPropertyData) return notFound();

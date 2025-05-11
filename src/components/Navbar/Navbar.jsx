@@ -80,7 +80,10 @@ const Navbar = () => {
   );
 
   const Logo = () => (
-    <div className="flex items-center gap-2">
+    <div
+      className="flex items-center gap-2 cursor-pointer"
+      onClick={() => router.push("/")}
+    >
       <Image
         src={LogoImage}
         alt="Logo"

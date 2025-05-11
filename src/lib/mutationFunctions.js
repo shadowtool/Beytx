@@ -64,3 +64,15 @@ export const updatePropertyStatusMutation = async (variables) => {
   );
   return response.data;
 };
+
+export async function markReportAsResolvedMutation(reportId) {
+  const response = await axiosInstance.put(ROUTES.UPDATE_REPORT, {
+    id: reportId,
+  });
+
+  if (!response) {
+    throw new Error("Failed to mark report as resolved");
+  }
+
+  return response.data;
+}

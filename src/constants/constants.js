@@ -96,3 +96,14 @@ export const DEFAULT_IMAGES_FOR_TYPES = {
   Commercial: DefaultImageCommercial,
   Stable: DefaultImageStable,
 };
+
+export const DEFAULT_VALUES_PROPERTY_LISTINGS_FILTERS = {
+  location: "",
+  type: [],
+  status: "",
+  beds: "",
+  baths: "",
+  price_from: "",
+  price_to: "",
+  sortBy: "",
+};

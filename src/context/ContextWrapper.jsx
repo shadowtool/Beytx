@@ -10,7 +10,7 @@ export default function ContextWrapper({ children }) {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <SessionProvider>
+      <SessionProvider refetchOnWindowFocus={false}>
         <ModalProvider>
           <>{children}</>
         </ModalProvider>

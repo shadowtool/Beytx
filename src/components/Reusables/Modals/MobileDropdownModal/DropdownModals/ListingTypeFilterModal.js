@@ -15,12 +15,12 @@ const ListingTypeFilterModal = () => {
       {PROPERTY_STATUS?.map((el) => (
         <button
           className={`h-fit w-full grow border border-solid shadow px-6 py-2 cursor-pointer transition-all duration-200 rounded-md ${
-            formValues?.propertyStatus === el
+            formValues?.status === el
               ? "bg-green-100 border-green-600 text-green-600"
               : "bg-white border-white text-black"
           }`}
           onClick={() => {
-            setValue("propertyStatus", el);
+            setValue("status", el);
           }}
           key={el}
         >

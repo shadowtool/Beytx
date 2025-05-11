@@ -1,6 +1,7 @@
 "use client";
-import MobilePropertyListings from "@/components/SearchedProperties/MobilePropertyListings";
+
 import PropertyListings from "@/components/SearchedProperties/PropertyListings";
+import { DEFAULT_VALUES_PROPERTY_LISTINGS_FILTERS } from "@/constants/constants";
 import { ROUTES } from "@/constants/routes";
 import { fetchCities, fetchPropertyListings } from "@/lib/queryFunctions";
 import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
@@ -19,14 +20,26 @@ export default function index() {
     const params = Object.fromEntries(searchParams.entries());
 
     return {
-      location: params?.loc ? params.loc : "",
-      type: params?.type ? params.type.split(",") : [],
-      status: params.status || "",
-      beds: params.bed ? Number(params.bed) : "",
-      baths: params.bath ? Number(params.bath) : "",
-      price_from: params.price_from ? Number(params.price_from) : "",
-      price_to: params.price_to ? Number(params.price_to) : "",
-      sortBy: params?.sortBy || "",
+      location: params?.loc
+        ? params.loc
+        : DEFAULT_VALUES_PROPERTY_LISTINGS_FILTERS.location,
+      type: params?.type
+        ? params.type.split(",")
+        : DEFAULT_VALUES_PROPERTY_LISTINGS_FILTERS.type,
+      status: params.status || DEFAULT_VALUES_PROPERTY_LISTINGS_FILTERS.status,
+      beds: params.bed
+        ? Number(params.bed)
+        : DEFAULT_VALUES_PROPERTY_LISTINGS_FILTERS.beds,
+      baths: params.bath
+        ? Number(params.bath)
+        : DEFAULT_VALUES_PROPERTY_LISTINGS_FILTERS.baths,
+      price_from: params.price_from
+        ? Number(params.price_from)
+        : DEFAULT_VALUES_PROPERTY_LISTINGS_FILTERS.price_from,
+      price_to: params.price_to
+        ? Number(params.price_to)
+        : DEFAULT_VALUES_PROPERTY_LISTINGS_FILTERS.price_to,
+      sortBy: params?.sortBy || DEFAULT_VALUES_PROPERTY_LISTINGS_FILTERS.sortBy,
     };
   };
 
@@ -176,15 +189,6 @@ export default function index() {
           isFetchingNextPage={isFetchingNextPage}
           hasNextPage={hasNextPage}
           fetchNextPage={fetchNextPage}
-        />
-        <MobilePropertyListings
-          properties={properties}
-          locationsData={locationsData}
-          refetchListings={refetch}
-          isFetchingData={isPending}
-          isFetchingNextPage={isFetchingNextPage}
-          loadMoreRef={loadMoreRef}
-          totalCount={totalCount}
         />
       </FormProvider>
     </main>

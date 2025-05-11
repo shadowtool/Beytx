@@ -235,8 +235,16 @@
     "name": "Name",
     "email": "Email",
     "phone": "Phone",
-    "inquiry": "Your Message",
-    "sendMessage": "Send Message"
+    "inquiry": "Inquiry",
+    "sendMessage": "Send Message",
+    "nameRequired": "Name is required.",
+    "emailRequired": "Email is required.",
+    "emailInvalid": "Please enter a valid email address.",
+    "phoneRequired": "Phone number is required.",
+    "phoneInvalid": "Please enter a valid phone number.",
+    "inquiryRequired": "Inquiry is required.",
+    "successMessage": "Your message has been sent successfully!",
+    "errorMessage": "An error occurred. Please try again later."
   },
   "updatePhoneNumber": {
     "title": "Update your number",
@@ -611,5 +619,11 @@
       "title": "Contact Us",
       "content": "For questions or to exercise your rights, contact us at:\nEmail: support@beyt.co"
     }
+  },
+  "exploreSection": {
+    "sale": "Sale",
+    "rent": "Rent",
+    "in": "In",
+    "properties": "Properties"
   }
 }

@@ -6,6 +6,7 @@ import { useParams, useRouter } from "next/navigation";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { ROUTES } from "@/constants/routes";
 import {
+  fetchAllReports,
   fetchAllUsers,
   fetchPropertyListingsAdmin,
 } from "@/lib/queryFunctions";
@@ -17,6 +18,7 @@ import {
   deletePropertyMutation,
   deleteUserMutation,
   updatePropertyStatusMutation,
+  markReportAsResolvedMutation,
 } from "@/lib/mutationFunctions";
 import TablePagination from "@/components/Tables/TablePagination";
 import EditProfile from "@/components/Reusables/Modals/EditProfile";
@@ -61,6 +63,12 @@ const index = () => {
   const { data: usersData, isPending: usersLoading } = useQuery({
     queryKey: [ROUTES.GET_ALL_USERS, currentPage],
     queryFn: () => fetchAllUsers(currentPage, 10),
+    keepPreviousData: true,
+  });
+
+  const { data: reportsData, isLoading: reportsLoading } = useQuery({
+    queryKey: [ROUTES.GET_ALL_REPORTS],
+    queryFn: () => fetchAllReports(currentPage, 10),
     keepPreviousData: true,
   });
 
@@ -114,6 +122,23 @@ const index = () => {
     onError: () => {
       toast.dismiss();
       toast.error("Failed to delete user");
+    },
+  });
+
+  const { mutate: markReportAsResolved } = useMutation({
+    mutationFn: markReportAsResolvedMutation,
+    onMutate: () => {
+      toast.dismiss();
+      toast.loading("Marking report as resolved...");
+    },
+    onSuccess: () => {
+      toast.dismiss();
+      toast.success("Report marked as resolved successfully!");
+      queryClient.invalidateQueries([ROUTES.GET_ALL_REPORTS]);
+    },
+    onError: () => {
+      toast.dismiss();
+      toast.error("Failed to mark report as resolved");
     },
   });
 
@@ -203,6 +228,33 @@ const index = () => {
     } else return [];
   }, [usersData]);
 
+  const reportsDataFilteredForTable = useMemo(() => {
+    if (reportsData) {
+      const reportsToReturn = reportsData?.reports || [];
+
+      return reportsToReturn?.map((el) => {
+        return {
+          ...el,
+          message: el?.message,
+          emailId: el?.email,
+          phoneNumber: el?.phone,
+          createdAt: new Date(el?.createdAt).toLocaleDateString(),
+          options: (
+            <Popup
+              direction="right"
+              options={[
+                {
+                  title: "Mark as resolved",
+                  onClick: () => markReportAsResolved(el?._id),
+                },
+              ]}
+            />
+          ),
+        };
+      });
+    } else return [];
+  }, [reportsData]);
+
   return (
     <FormProvider {...methods}>
       <div className="p-8 min-h-screen">
@@ -233,6 +285,19 @@ const index = () => {
               }}
             >
               Users
+            </button>
+            <button
+              className={`px-4 py-2 rounded-md transition-all duration-300 ${
+                activeTab === "reports"
+                  ? "bg-emerald-600 text-white"
+                  : "bg-white text-jet-black"
+              }`}
+              onClick={() => {
+                setActiveTab("reports");
+                setCurrentPage(1);
+              }}
+            >
+              Reports
             </button>
           </div>
           {activeTab === "properties" && (
@@ -329,9 +394,35 @@ const index = () => {
               </>
             )}
           </>
-        ) : (
-          <></>
-        )}
+        ) : activeTab === "reports" ? (
+          <>
+            {reportsLoading ? (
+              <Loader />
+            ) : reportsDataFilteredForTable?.length <= 0 ? (
+              <div className="h-36 w-full flex items-center justify-center">
+                <h6>No Reports Found</h6>
+              </div>
+            ) : (
+              <>
+                <Table
+                  headers={[
+                    "message",
+                    "emailId",
+                    "phoneNumber",
+                    "createdAt",
+                    "options",
+                  ]}
+                  data={reportsDataFilteredForTable}
+                />
+                <TablePagination
+                  currentPage={currentPage}
+                  totalPages={reportsData?.totalPages || 1}
+                  onPageChange={(page) => setCurrentPage(page)}
+                />
+              </>
+            )}
+          </>
+        ) : null}
       </div>
     </FormProvider>
   );

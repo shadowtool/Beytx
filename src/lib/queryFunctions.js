@@ -141,3 +141,15 @@ export const fetchAgentListings = async (agentId) => {
   );
   return data;
 };
+
+export const fetchPropertyTypes = async () => {
+  const { data } = await axiosInstance.get(`${ROUTES.GET_PROPERTY_TYPES}`);
+  return data;
+};
+
+export const fetchAllReports = async (pageParam = 1, itemsPerPage) => {
+  const { data } = await axiosInstance.get(`${ROUTES.GET_ALL_REPORTS}`, {
+    params: { page: pageParam, limit: itemsPerPage },
+  });
+  return data;
+};

@@ -202,7 +202,16 @@ const MobilePropertyCard = ({ property, cardType }) => {
           )}
         </div>
       )}
-      <div className="p-4 flex">
+      <div className="p-4 flex relative">
+        <span
+          className={`px-3 py-1 rounded-md text-white text-xs absolute top-5 right-5 h-fit w-fit ${
+            property?.status === "sale" ? "bg-emerald-600" : "bg-amber-600"
+          }`}
+        >
+          {property?.status === "sale"
+            ? translateCards("sale")
+            : translateCards("rent")}
+        </span>
         <div className="flex-1">
           <p className="text-zinc-600">
             {translatePropertyTypes(property?.type?.toLowerCase())}

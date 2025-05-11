@@ -1,9 +1,11 @@
-import React, { useState } from "react";
+import React, { useEffect } from "react";
 import { Controller, useFormContext } from "react-hook-form";
 
 const PhoneNumberInput = ({ name, error, validation = {} }) => {
-  const [selectedCountryCode, setSelectedCountryCode] = useState("+965"); // Default to KW
-  const { control } = useFormContext();
+  const { control, setValue, watch } = useFormContext();
+
+  const selectedCountryCode = watch("selectedCountryCode", "+965"); // Default to KW
+  const phoneNumber = watch(name, "");
 
   const countryCodes = [
     { code: "+973", country: "BH" }, // Bahrain
@@ -14,12 +16,31 @@ const PhoneNumberInput = ({ name, error, validation = {} }) => {
     { code: "+974", country: "QA" }, // Qatar
   ];
 
+  const handleCountryCodeChange = (e) => {
+    setValue("selectedCountryCode", e.target.value);
+    // Ensure the phone number is updated without appending the country code repeatedly
+    const currentPhoneNumber = phoneNumber.replace(/^\+\d+\s/, "");
+    setValue(name, e.target.value + " " + currentPhoneNumber);
+  };
+
+  const handlePhoneNumberChange = (e) => {
+    const value = e.target.value.replace(/[^0-9]/g, "");
+    setValue(name, selectedCountryCode + " " + value);
+  };
+
+  useEffect(() => {
+    setValue(
+      name,
+      selectedCountryCode + " " + phoneNumber.replace(/^\+\d+\s/, "")
+    );
+  }, [selectedCountryCode, setValue, phoneNumber, name]);
+
   return (
     <div className="w-full">
       <div className="flex gap-2">
         <select
           value={selectedCountryCode}
-          onChange={(e) => setSelectedCountryCode(e.target.value)}
+          onChange={handleCountryCodeChange}
           className="px-2 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500 transition-all duration-300 text-xs md:text-sm"
         >
           {countryCodes.map((country) => (
@@ -36,17 +57,25 @@ const PhoneNumberInput = ({ name, error, validation = {} }) => {
           rules={validation}
           render={({ field }) => (
             <input
-              type="tel"
+              type="text" // Changed to text to avoid arrows
               placeholder="Enter phone number"
               className={`w-full px-4 py-2 border rounded-md outline-none focus:outline-none focus:ring-2 focus:ring-green-500 transition-all duration-300 ${
                 error ? "border-red-500" : "border-gray-300"
               }`}
               {...field}
-              onChange={(e) => {
-                const value = e.target.value.replace(/[^0-9]/g, "");
-                field.onChange(selectedCountryCode + " " + value);
+              onBeforeInput={(e) => {
+                // Prevent non-numeric characters
+                if (!/[0-9]/.test(e.data)) {
+                  e.preventDefault();
+                }
               }}
-              value={field.value?.replace(selectedCountryCode + " ", "") || ""}
+              onChange={(e) => {
+                // Sanitize input to allow only numbers
+                const sanitizedValue = e.target.value.replace(/[^0-9]/g, "");
+                handlePhoneNumberChange({ target: { value: sanitizedValue } });
+                field.onChange({ target: { value: sanitizedValue } });
+              }}
+              value={phoneNumber.replace(selectedCountryCode + " ", "")}
             />
           )}
         />

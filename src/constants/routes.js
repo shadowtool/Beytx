@@ -11,4 +11,8 @@ export const ROUTES = {
   CHECK_USER_EXISTS: "/users/user-exist",
   GET_ALL_USERS_ADMIN: "/admin/users",
   GET_ALL_PROPERTIES_ADMIN: "/admin/properties",
+  GET_PROPERTY_TYPES: "/propertyTypes",
+  GET_ALL_REPORTS: "/reports",
+  CREATE_REPORT: "/reports",
+  UPDATE_REPORT: "/reports",
 };

@@ -232,7 +232,15 @@
     "email": "البريد الإلكتروني",
     "phone": "الهاتف",
     "inquiry": "رسالتك",
-    "sendMessage": "إرسال الرسالة"
+    "sendMessage": "إرسال الرسالة",
+    "nameRequired": "الاسم مطلوب.",
+    "emailRequired": "البريد الإلكتروني مطلوب.",
+    "emailInvalid": "يرجى ادخال بريد الكتروني صحيح.",
+    "phoneRequired": "رقم الهاتف مطلوب.",
+    "phoneInvalid": "يرجى ادخال رقم هاتف صحيح.",
+    "inquiryRequired": "الاستفسار مطلوب.",
+    "successMessage": "تم ارسال رسالتك بنجاح!",
+    "errorMessage": "حدث خطأ. يرجى المحاولة مرة اخرى."
   },
   "updatePhoneNumber": {
     "title": "تحديث رقمك",
@@ -624,5 +632,11 @@
       "title": "اتصل بنا",
       "content": "للاستفسارات أو ممارسة حقوقك، راسلنا على:\nالبريد الإلكتروني: support@beyt.co"
     }
+  },
+  "exploreSection": {
+    "sale": "بيع",
+    "rent": "إيجار",
+    "in": "في",
+    "properties": "العقارات"
   }
 }

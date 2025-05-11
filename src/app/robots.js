@@ -5,7 +5,7 @@ export default function robots() {
     rules: {
       userAgent: "*",
       allow: "/",
-      disallow: ["/*/admin"],
+      disallow: ["/_next/static/", "/*/admin"],
     },
     sitemap: `${
       process.env.NEXT_PUBLIC_DOMAIN ?? "https://beyt-personal.vercel.app"

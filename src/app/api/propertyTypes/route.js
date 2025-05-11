@@ -1,23 +1,23 @@
-import { LOCATIONS_DATA } from "@/lib/locationsData";
+import { PROPERTY_TYPES } from "@/constants/propertyTypes";
 import Property from "@/models/Property";
 import { NextResponse } from "next/server";
 
 export async function GET() {
   try {
-    const locations = await Promise.all(
-      LOCATIONS_DATA.map(async (location) => {
+    const propertyTypes = await Promise.all(
+      PROPERTY_TYPES.map(async (type) => {
         const propertyCount = await Property.countDocuments({
-          "location.city": location.city,
+          type: type,
         });
-        return { ...location, propertyCount };
+        return { type, propertyCount };
       })
     );
 
-    const sortedLocations = locations.sort(
+    const sortedLocations = propertyTypes.sort(
       (a, b) => b.propertyCount - a.propertyCount
     );
 
-    return NextResponse.json(sortedLocations);
+    return NextResponse.json(sortedLocations?.map((el) => el.type));
   } catch (error) {
     return NextResponse.json({ error: error.message }, { status: 500 });
   }
