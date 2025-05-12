@@ -1,6 +1,7 @@
 import Property from "@/models/Property";
 import User from "@/models/User";
 import dbConnect from "./mongodb";
+import { PROPERTY_TYPE_SCHEMA_MAPPING } from "@/constants/constants";
 
 export const getAddressDetails = async (lat, lng) => {
   const apiKey = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY;
@@ -58,6 +59,47 @@ export const getAddressDetails = async (lat, lng) => {
 };
 
 export const getJSONLDForPropertyDetails = (pageUrl, propertyData, locale) => {
+  const mapping = PROPERTY_TYPE_SCHEMA_MAPPING[propertyData?.type] || {
+    "@type": "Accommodation",
+  };
+
+  const itemOffered = {
+    "@type": mapping["@type"],
+    name: locale === "en" ? propertyData?.title : propertyData?.titleArabic,
+    description: propertyData?.summary || "",
+    image: propertyData?.images,
+    location: {
+      "@type": "Place",
+      address: {
+        "@type": "PostalAddress",
+        addressLocality: propertyData?.location?.city,
+        addressCountry: propertyData?.location?.country,
+      },
+    },
+    numberOfRooms: propertyData?.bedrooms,
+    numberOfBathroomsTotal: propertyData?.bathrooms,
+    floorSize: {
+      "@type": "QuantitativeValue",
+      value: propertyData?.size,
+      unitCode: "MTK", // square meters
+    },
+    amenityFeature: propertyData?.amenities?.map((el) => ({
+      "@type": "LocationFeatureSpecification",
+      name: el,
+      value: true,
+    })),
+  };
+
+  // Add additionalType if available
+  if (mapping.additionalType) {
+    itemOffered.additionalType = mapping.additionalType;
+  }
+
+  // Add additionalProperty if available
+  if (mapping.additionalProperty) {
+    itemOffered.additionalProperty = mapping.additionalProperty;
+  }
+
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "RealEstateListing",
@@ -65,38 +107,13 @@ export const getJSONLDForPropertyDetails = (pageUrl, propertyData, locale) => {
       "@type": "WebPage",
       "@id": pageUrl,
     },
-    datePosted: `${new Date(propertyData?.createdAt)?.toLocaleDateString()}`,
+    datePosted: new Date(propertyData?.createdAt).toISOString(),
     breadcrumb: { "@id": `${pageUrl}#breadcrumb` },
     primaryImageOfPage: {
       "@type": "ImageObject",
-      url: `${propertyData?.images?.[0]}`,
+      url: propertyData?.images?.[0],
     },
-    itemOffered: {
-      "@type": `${propertyData?.type}`,
-      name: `${
-        locale === "en" ? propertyData?.title : propertyData?.titleArabic
-      }`,
-      description: "{{property.summary}}",
-      image: propertyData?.images?.join(","),
-      location: {
-        "@type": "location",
-        locationRegion: propertyData?.location?.city,
-        locationCountry: propertyData?.location?.country,
-      },
-      numberOfRooms: propertyData.bedrooms,
-      numberOfBathrooms: propertyData.bathrooms,
-      propertySize: {
-        "@type": "QuantitativeValue",
-        value: propertyData.size,
-      },
-      amenityFeature: propertyData?.amenities?.map((el) => {
-        return {
-          "@type": "LocationFeatureSpecification",
-          name: "el",
-          value: true,
-        };
-      }),
-    },
+    itemOffered,
   };
 
   return jsonLd;

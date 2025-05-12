@@ -28,8 +28,6 @@ export async function generateMetadata({ params }) {
     const id =
       locale === "ar" ? slugArray?.[0] : slugArray?.[slugArray.length - 1];
 
-    console.log({ id });
-
     if (!id || !mongoose.Types.ObjectId.isValid(id)) {
       return notFound();
     }

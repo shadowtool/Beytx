@@ -107,3 +107,47 @@ export const DEFAULT_VALUES_PROPERTY_LISTINGS_FILTERS = {
   price_to: "",
   sortBy: "",
 };
+
+export const PROPERTY_TYPE_SCHEMA_MAPPING = {
+  Villa: {
+    "@type": "SingleFamilyResidence",
+    additionalType: "Villa",
+  },
+  Apartment: {
+    "@type": "Apartment",
+  },
+  Land: {
+    "@type": "Landform",
+    additionalType: "Residential Lot",
+  },
+  Office: {
+    "@type": "Office",
+  },
+  Chalet: {
+    "@type": "SingleFamilyResidence",
+    additionalType: "Chalet",
+  },
+  Building: {
+    "@type": "Building",
+  },
+  Farm: {
+    "@type": "SingleFamilyResidence",
+    additionalType: "Farmhouse",
+  },
+  Commercial: {
+    "@type": "Landform",
+    additionalType: "Commercial Lot",
+  },
+  Floor: {
+    "@type": "Accommodation",
+    additionalProperty: { name: "Floor", value: true },
+  },
+  Duplex: {
+    "@type": "SingleFamilyResidence",
+    additionalType: "Duplex",
+  },
+  Stable: {
+    "@type": "Building",
+    additionalType: "Stable",
+  },
+};
