@@ -638,5 +638,9 @@
     "rent": "إيجار",
     "in": "في",
     "properties": "العقارات"
+  },
+  "propertyStatus": {
+    "sale": "بيع",
+    "rent": "إيجار"
   }
 }

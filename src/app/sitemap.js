@@ -2,6 +2,8 @@ import dbConnect from "@/lib/mongodb";
 import Property from "@/models/Property";
 import { LOCATIONS_DATA } from "@/lib/locationsData";
 import { PROPERTY_TYPES } from "@/constants/propertyTypes";
+import enTranslations from "../messages/en.json";
+import arTranslations from "../messages/ar.json";
 
 export default async function sitemap() {
   const baseUrl = process.env.SITE_URL || "https://example.com";
@@ -19,14 +21,14 @@ export default async function sitemap() {
     "/terms-and-conditions",
   ];
 
-  const sitemapEntries = locales.flatMap((locale) =>
-    routes.map((route) => ({
+  const sitemapEntries = locales.flatMap((locale) => {
+    return routes.map((route) => ({
       url: `${baseUrl}/${locale}${route}`,
       lastModified: new Date(),
       changeFrequency: "monthly",
       priority: route === "" ? 1 : 0.8,
-    }))
-  );
+    }));
+  });
 
   let dynamicEntries = [];
 
@@ -35,8 +37,10 @@ export default async function sitemap() {
 
     const properties = await Property.find({}).limit(100).lean();
 
-    dynamicEntries = locales.flatMap((locale) =>
-      properties.map((property) => {
+    dynamicEntries = locales.flatMap((locale) => {
+      const translations = locale === "en" ? enTranslations : arTranslations;
+
+      return properties.map((property) => {
         const id = property._id.toString();
 
         const dashedTitle =
@@ -45,10 +49,10 @@ export default async function sitemap() {
             : property?.titleArabic?.trim().replace(/ +/g, "-");
 
         const baseParts = [
-          property?.location?.country ?? "",
-          property?.status ?? "",
-          property?.type ?? "",
-          property?.location?.city ?? "",
+          translations.locations[property?.location?.country] ?? "",
+          translations.propertyStatus[property?.status] ?? "",
+          translations.propertyTypes[property?.type?.toLowerCase()] ?? "",
+          translations.locations[property?.location?.city] ?? "",
           dashedTitle,
         ];
 
@@ -63,8 +67,8 @@ export default async function sitemap() {
           changeFrequency: "weekly",
           priority: 0.7,
         };
-      })
-    );
+      });
+    });
 
     // Fetch property types and locations for explore links
     const propertyTypes = await Promise.all(
@@ -89,12 +93,15 @@ export default async function sitemap() {
       })
     ).then((locs) => locs.sort((a, b) => b.propertyCount - a.propertyCount));
 
-    const exploreEntries = locales.flatMap((locale) =>
-      ["Sale", "Rent"].flatMap((activeTab) =>
+    const exploreEntries = locales.flatMap((locale) => {
+      const translations = locale === "en" ? enTranslations : arTranslations;
+
+      return ["Sale", "Rent"].flatMap((activeTab) =>
         locations
+          .slice(0, 5)
           .map((location) =>
             propertyTypes.map((type) => {
-              const link = `/${locale}/explore/${activeTab.toLowerCase()}/${type}/${location.city}/properties-in-${location.city}`;
+              const link = `/${locale}/explore/${translations.exploreSection[activeTab.toLowerCase()].toLowerCase()}/${translations.propertyTypes[type.toLowerCase()]}/${translations.locations[location.city]}/${translations.exploreSection.properties}-${translations.exploreSection.in}-${translations.locations[location.city]}`;
               return {
                 url: `${baseUrl}${link}`,
                 lastModified: new Date(),
@@ -104,8 +111,8 @@ export default async function sitemap() {
             })
           )
           .flat()
-      )
-    );
+      );
+    });
 
     dynamicEntries = [...dynamicEntries, ...exploreEntries];
   } catch (error) {

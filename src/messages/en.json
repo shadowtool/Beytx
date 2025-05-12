@@ -625,5 +625,9 @@
     "rent": "Rent",
     "in": "In",
     "properties": "Properties"
+  },
+  "propertyStatus": {
+    "sale": "Sale",
+    "rent": "Rent"
   }
 }
