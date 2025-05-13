@@ -6,6 +6,7 @@ import { useState, useEffect } from "react";
 import { useSession } from "next-auth/react";
 import PhoneNumberInput from "@/components/Reusables/Inputs/PhoneNumberInput";
 import { toast } from "react-toastify";
+import { axiosInstance } from "@/lib/axios";
 
 const Contact = () => {
   const translate = useTranslations("contactUs");
@@ -34,7 +35,7 @@ const Contact = () => {
 
   const onSubmit = async (data) => {
     try {
-      await axios.post("/api/reports", data);
+      await axiosInstance.post("/reports", data);
       reset();
       toast.success(translate("successMessage"));
     } catch (error) {
@@ -42,10 +43,6 @@ const Contact = () => {
       toast.error(translate("errorMessage"));
     }
   };
-
-  useEffect(() => {
-    console.log({ formValues });
-  }, [formValues]);
 
   return (
     <FormProvider {...methods}>
@@ -116,22 +113,22 @@ const Contact = () => {
                 </div>
 
                 <div>
-                  <label htmlFor="inquiry" className="block text-gray-700 mb-1">
-                    {translate("inquiry")}
+                  <label htmlFor="message" className="block text-gray-700 mb-1">
+                    {translate("message")}
                   </label>
                   <textarea
-                    id="inquiry"
+                    id="message"
                     rows="4"
-                    {...register("inquiry", {
-                      required: translate("inquiryRequired"),
+                    {...register("message", {
+                      required: translate("messageRequired"),
                     })}
                     className={`mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-all duration-300 text-black ${
-                      errors.inquiry ? "border-red-500" : ""
+                      errors.message ? "border-red-500" : ""
                     }`}
                   ></textarea>
-                  {errors.inquiry && (
+                  {errors.message && (
                     <p className="text-red-500 text-sm">
-                      {errors.inquiry.message}
+                      {errors.message.message}
                     </p>
                   )}
                 </div>

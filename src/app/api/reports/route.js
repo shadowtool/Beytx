@@ -44,6 +44,7 @@ export async function POST(req) {
     const newReport = await Report.create(body);
     return NextResponse.json(newReport, { status: 201 });
   } catch (error) {
+    console.error("Error creating report:", error);
     return NextResponse.json(
       { error: "Failed to save report" },
       { status: 500 }
