@@ -204,7 +204,7 @@ const MobilePropertyCard = ({ property, cardType }) => {
       )}
       <div className="p-4 flex relative">
         <span
-          className={`px-3 py-1 rounded-md text-white text-xs absolute top-5 right-5 h-fit w-fit ${
+          className={`px-3 py-1 rounded-md text-white text-xs absolute top-5 ltr:right-5 rtl:left-5 h-fit w-fit ${
             property?.status === "sale" ? "bg-emerald-600" : "bg-amber-600"
           }`}
         >
@@ -262,7 +262,7 @@ const MobilePropertyCard = ({ property, cardType }) => {
             <>
               <div className="flex gap-2 w-full">
                 <button
-                  className="text-white px-0 pl-2 md:px-4 py-2 rounded-md flex items-center bg-amber-500 backdrop-blur w-full grow"
+                  className="text-white px-0 pl-2 md:px-4 py-2 rounded-md flex items-center bg-amber-500 backdrop-blur text-xs md:text-sm w-full grow gap-1 ltr:flex-row rtl:flex-row-reverse"
                   onClick={(e) => {
                     e.stopPropagation();
                     router.push(
@@ -275,7 +275,7 @@ const MobilePropertyCard = ({ property, cardType }) => {
                 </button>
 
                 <button
-                  className="text-white px-0 pl-2 md:px-4 py-2 rounded-md flex items-center bg-red-700 backdrop-blur   md:     w-full grow"
+                  className="text-white px-0 pl-2 md:px-4 py-2 rounded-md flex items-center bg-red-700 backdrop-blur text-xs md:text-sm w-full grow gap-1 ltr:flex-row rtl:flex-row-reverse"
                   onClick={(e) => {
                     e.stopPropagation();
                     openModal("deleteConfirmation", {
@@ -291,7 +291,7 @@ const MobilePropertyCard = ({ property, cardType }) => {
           ) : cardType === "savedListing" ? (
             <>
               <button
-                className="text-white px-0 pl-2 md:px-4 py-2 rounded-md flex items-center bg-red-700 backdrop-blur text-xs md:text-sm w-full grow"
+                className="text-white px-0 pl-2 md:px-4 py-2 rounded-md flex items-center bg-red-700 backdrop-blur text-xs md:text-sm w-full grow gap-1 ltr:flex-row rtl:flex-row-reverse"
                 onClick={(e) => {
                   e.stopPropagation();
                   toggleSaveListing();
@@ -309,7 +309,7 @@ const MobilePropertyCard = ({ property, cardType }) => {
                     /\s/g,
                     ""
                   )}`}
-                  className="text-white px-0 pl-2 md:px-4 py-2 rounded-md flex items-center justify-center bg-green-600 backdrop-blur w-full grow"
+                  className="text-white px-3 md:px-4 py-2 rounded-md flex items-center justify-center bg-green-600 backdrop-blur text-xs md:text-sm w-full grow md:max-w-full gap-1 ltr:flex-row rtl:flex-row-reverse"
                   onClick={(e) => {
                     e.stopPropagation();
                     openModal("agentInfo", {
@@ -338,7 +338,7 @@ const MobilePropertyCard = ({ property, cardType }) => {
                   )}`}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-white px-0 pl-2 md:px-4 py-2 rounded-md flex items-center justify-center bg-green-600 backdrop-blur w-full grow"
+                  className="text-white px-0 pl-2 md:px-4 py-2 rounded-md flex items-center justify-center bg-green-600 backdrop-blur text-xs md:text-sm w-full grow gap-1 ltr:flex-row rtl:flex-row-reverse"
                   onClick={(e) => e.stopPropagation()}
                 >
                   <WhatsappIcon size={18} color="#fff" className="mr-2" />

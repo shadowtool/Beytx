@@ -99,7 +99,7 @@ const Navbar = () => {
   const AddPropertyButton = ({ className = "" }) => (
     <GeneralButton
       type="outlined"
-      className={`flex items-center justify-center gap-3 max-w-48 !py-3 !px-4 whitespace-nowrap ${className}`}
+      className={`flex items-center justify-center gap-3 w-full !py-3 !px-4 whitespace-nowrap ${className}`}
       onClick={handleAddProperty}
     >
       {translate("addProperty")}
@@ -133,7 +133,7 @@ const Navbar = () => {
           </div>
 
           {/* Mobile Menu */}
-          <bar
+          <div
             className={`absolute top-20 w-full bg-white shadow-lg rounded-b-lg p-6 px-8 z-[9] transform transition-all duration-300 ease-in-out ${
               isOpen
                 ? "ltr:left-0 rtl:right-0 opacity-100"
@@ -142,11 +142,11 @@ const Navbar = () => {
           >
             <ul className="flex flex-col gap-4 text-gray-800">
               <NavLinks />
-              <li>
+              <li className="w-full flex items-center justify-center px-[10%]">
                 <AddPropertyButton />
               </li>
             </ul>
-          </bar>
+          </div>
         </div>
 
         {/* Desktop Header */}

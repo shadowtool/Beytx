@@ -73,12 +73,14 @@ export default function AuthButton() {
         <GeneralButton
           id="login-button"
           type="outlined"
-          className="text-white border-white flex items-center gap-2 !py-3 !px-4 hover:bg-transparent max-w-fit"
+          className="text-white border-white flex items-center gap-2 !p-2 md:!py-3 md:!px-4 hover:bg-transparent max-w-fit"
           onClick={() => {
             setShowAuthModal(true);
           }}
         >
-          <p className="hidden md:inline">{translate("login")}</p>
+          <p className="text-xs md:text-sm whitespace-nowrap">
+            {translate("login")}
+          </p>
           <LoginIcon size={21} color="#fff" />
         </GeneralButton>
       )}

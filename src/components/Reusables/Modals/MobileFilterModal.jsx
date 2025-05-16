@@ -75,26 +75,6 @@ const MobileFilterModal = ({ open, handleClose, refetchListings }) => {
             </div>
           </div>
           <div className="border-b border-solid border-gray-200 shadow p-6">
-            <h5 className="text-green-900 mb-2">{translate("sortBy")}</h5>
-            <div className="flex gap-4 flex-nowrap hide-scrollbar p-2 overflow-x-auto w-full h-fit">
-              {sortOptions?.map((el) => (
-                <div
-                  className={`h-fit w-fit border border-solid rounded-md shadow px-6 py-2 cursor-pointer min-w-fit transition-all duration-200 ${
-                    formValues?.sortBy === el?.value
-                      ? "bg-green-100 border-green-600 text-green-600"
-                      : "bg-white border-white text-black"
-                  }`}
-                  onClick={() => {
-                    setValue("sortBy", el?.value);
-                  }}
-                  key={el?.value}
-                >
-                  {el?.label}
-                </div>
-              ))}
-            </div>
-          </div>
-          <div className="border-b border-solid border-gray-200 shadow p-6">
             <h5 className="text-green-900 mb-2">{translate("type")}</h5>
             <div className="flex gap-4 flex-nowrap hide-scrollbar p-2 overflow-x-auto w-full h-fit">
               {PROPERTY_TYPES?.map((el) => (
