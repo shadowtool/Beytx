@@ -20,17 +20,54 @@ import enValues from "../../../../messages/en.json";
 import FileUpload from "@/components/Reusables/Misc/FileUpload";
 import { translateText, detectLanguage } from "@/lib/translation";
 
+// —— DIGIT CONVERSION UTILS ——
+const ARABIC_TO_LATIN = {
+  "٠": "0",
+  "١": "1",
+  "٢": "2",
+  "٣": "3",
+  "٤": "4",
+  "٥": "5",
+  "٦": "6",
+  "٧": "7",
+  "٨": "8",
+  "٩": "9",
+  "۰": "0",
+  "۱": "1",
+  "۲": "2",
+  "۳": "3",
+  "۴": "4",
+  "۵": "5",
+  "۶": "6",
+  "۷": "7",
+  "۸": "8",
+  "۹": "9",
+};
+const LATIN_TO_ARABIC = Object.entries(ARABIC_TO_LATIN).reduce(
+  (acc, [arabic, latin]) => ((acc[latin] = arabic), acc),
+  {}
+);
+
+function convertArabicDigitsToLatin(str) {
+  return str.replace(
+    /[\u0660-\u0669\u06F0-\u06F9]/g,
+    (d) => ARABIC_TO_LATIN[d] || d
+  );
+}
+function convertLatinDigitsToArabic(str) {
+  return str.replace(/\d/g, (d) => LATIN_TO_ARABIC[d] || d);
+}
+function isArabicDigits(str) {
+  return /[\u0660-\u0669\u06F0-\u06F9]/.test(str);
+}
+// ————————————————
+
 export default function AddProperty() {
   const [isLoading, setIsLoading] = useState(false);
-
   const translate = useTranslations("createPropertyPage");
-
   const propertyTypeTranslations = useTranslations("propertyTypes");
-
   const { data: session } = useSession();
-
   const router = useRouter();
-
   const { locale } = useParams();
 
   const methods = useForm({
@@ -47,17 +84,14 @@ export default function AddProperty() {
       amenities: [],
     },
   });
-
   const status = useWatch({ name: "status", control: methods.control });
-
   const { handleSubmit, reset, setValue } = methods;
 
-  const { mutateAsync } = useMutation({
+  const { mutateAsync: uploadSingleImage } = useMutation({
     mutationFn: uploadImage,
   });
-
   const { mutate: createProperty } = useMutation({
-    mutationFn: (variables) => createPropertyMutation(variables),
+    mutationFn: createPropertyMutation,
     onSuccess: () => {
       toast.dismiss();
       toast.success(translate("createPropertySuccess"));
@@ -70,93 +104,128 @@ export default function AddProperty() {
     },
   });
 
-  const uploadImagesCall = async (imageFiles) => {
-    if (!imageFiles || imageFiles.length === 0) return [];
-
+  const uploadImagesCall = async (files) => {
+    if (!files?.length) return [];
     try {
-      const uploadPromises = imageFiles.map((file) => mutateAsync(file));
-
-      const uploadedUrls = await Promise.all(uploadPromises);
-
-      return uploadedUrls;
-    } catch (error) {
+      const urls = await Promise.all(files.map((f) => uploadSingleImage(f)));
+      return urls;
+    } catch {
       return [];
     }
   };
 
   const onSubmit = async (data) => {
-    if (!data?.location) {
+    if (!data.location) {
       toast.error(translate("locationError"));
       return;
     }
-
-    if (!data?.type) {
+    if (!data.type) {
       toast.error(translate("typeError"));
       return;
     }
-
-    if (!data?.description) {
+    if (!data.description) {
       toast.error(translate("descriptionError"));
       return;
     }
 
     try {
       setIsLoading(true);
-      let dataToSend = {
-        status: data?.status,
-        price: data?.price,
-        location: data?.location,
-        size: data?.area,
-        type: data?.type,
-        bedrooms: data?.beds,
-        bathrooms: data?.baths,
-        images: [],
-        amenities: data?.amenities,
+
+      // build base payload
+      const dataToSend = {
+        status: data.status,
+        // numeric fields + their Arabic variants
+        price: "",
+        priceArabic: "",
+        bedrooms: "",
+        bedroomsArabic: "",
+        bathrooms: "",
+        bathroomsArabic: "",
+        location: data.location,
+        size: data.area,
+        sizeArabic: "",
+        type: data.type,
+        amenities: data.amenities,
         userId: session?.user?.id,
+        title: "",
+        titleArabic: "",
+        description: "",
+        descriptionArabic: "",
+        images: [],
       };
 
-      const originalLang = detectLanguage(data?.description);
-
-      if (originalLang === "ar") {
-        dataToSend.descriptionArabic = data?.description;
-        const translatedDesc = await translateText(data?.description, "en");
-        dataToSend.description = translatedDesc || data?.description;
+      // —— PRICE ——
+      if (isArabicDigits(data.price)) {
+        dataToSend.priceArabic = data.price;
+        dataToSend.price = convertArabicDigitsToLatin(data.price);
       } else {
-        dataToSend.description = data?.description;
-        const translatedDesc = await translateText(data?.description, "ar");
-        dataToSend.descriptionArabic = translatedDesc || data?.description;
+        dataToSend.price = data.price;
+        dataToSend.priceArabic = convertLatinDigitsToArabic(data.price);
       }
 
-      const title = `${data?.beds} ${enValues?.createPropertyPage?.bedrooms} ${
-        enValues.propertyTypes[data?.type?.toLowerCase()]
-      } ${enValues?.createPropertyPage?.for} ${
-        enValues.createPropertyPage[data?.status?.toLowerCase()]
-      } ${enValues?.createPropertyPage?.in} ${
-        enValues.locations[data?.location?.city]
-      } `;
+      // —— SIZE ——
+      if (isArabicDigits(data.size)) {
+        dataToSend.sizeArabic = data.size;
+        dataToSend.size = convertArabicDigitsToLatin(data.size);
+      } else {
+        dataToSend.size = data.size;
+        dataToSend.sizeArabic = convertLatinDigitsToArabic(data.size);
+      }
 
-      const titleArabic = `${data?.beds} ${
-        arValues?.createPropertyPage?.bedrooms
-      } ${arValues.propertyTypes[data?.type?.toLowerCase()]} ${
-        arValues?.createPropertyPage?.for
-      } ${arValues.createPropertyPage[data?.status?.toLowerCase()]} ${
-        arValues?.createPropertyPage?.in
-      } ${arValues.locations[data?.location?.city]} `;
+      // —— BEDROOMS ——
+      if (isArabicDigits(data.beds)) {
+        dataToSend.bedroomsArabic = data.beds;
+        dataToSend.bedrooms = convertArabicDigitsToLatin(data.beds);
+      } else {
+        dataToSend.bedrooms = data.beds;
+        dataToSend.bedroomsArabic = convertLatinDigitsToArabic(data.beds);
+      }
 
-      dataToSend["title"] = title;
-      dataToSend["titleArabic"] = titleArabic;
+      // —— BATHROOMS ——
+      if (isArabicDigits(data.baths)) {
+        dataToSend.bathroomsArabic = data.baths;
+        dataToSend.bathrooms = convertArabicDigitsToLatin(data.baths);
+      } else {
+        dataToSend.bathrooms = data.baths;
+        dataToSend.bathroomsArabic = convertLatinDigitsToArabic(data.baths);
+      }
 
-      if (data?.images?.length > 0) {
+      // —— DESCRIPTION TRANSLATION ——
+      const originalLang = detectLanguage(data.description);
+      if (originalLang === "ar") {
+        dataToSend.descriptionArabic = data.description;
+        dataToSend.description =
+          (await translateText(data.description, "en")) || data.description;
+      } else {
+        dataToSend.description = data.description;
+        dataToSend.descriptionArabic =
+          (await translateText(data.description, "ar")) || data.description;
+      }
+
+      // —— TITLE & TITLE_ARABIC ——
+      const common = {
+        beds: dataToSend.bedrooms,
+        bedsAr: dataToSend.bedroomsArabic,
+        type: data.type.toLowerCase(),
+        status: data.status.toLowerCase(),
+        city: data.location.city,
+      };
+
+      dataToSend.title = `${common.beds} ${enValues.createPropertyPage.bedrooms} ${enValues.propertyTypes[common.type]} ${enValues.createPropertyPage.for} ${enValues.createPropertyPage[common.status]} ${enValues.createPropertyPage.in} ${enValues.locations[common.city]}`;
+      dataToSend.titleArabic = `${common.bedsAr} ${arValues.createPropertyPage.bedrooms} ${arValues.propertyTypes[common.type]} ${arValues.createPropertyPage.for} ${arValues.createPropertyPage[common.status]} ${arValues.createPropertyPage.in} ${arValues.locations[common.city]}`;
+
+      // —— IMAGE UPLOAD ——
+      if (data.images?.length) {
         toast.loading(translate("uploadingImages"));
-        const response = await uploadImagesCall(data?.images);
-
-        dataToSend["images"] = response;
+        dataToSend.images = await uploadImagesCall(data.images);
         toast.dismiss();
       }
+
+      // —— CREATE PROPERTY ——
       toast.loading(translate("creatingProperty"));
-      createProperty({ ...dataToSend });
-    } catch (error) {
-      console.error(error);
+      createProperty(dataToSend);
+    } catch (err) {
+      console.error(err);
     } finally {
       setIsLoading(false);
     }
@@ -174,7 +243,7 @@ export default function AddProperty() {
         </button>
       </div>
     );
-  } else if (!session?.user?.phoneNumber) {
+  } else if (!session.user?.phoneNumber) {
     return (
       <div className="flex flex-col items-center justify-center min-h-[75vh] gap-8">
         <h2 className="text-center">{translate("incompleteProfileError")}</h2>
@@ -186,162 +255,145 @@ export default function AddProperty() {
         </button>
       </div>
     );
-  } else {
-    return (
-      <div className="min-h-screen bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-md mx-auto bg-white rounded-xl shadow-md overflow-hidden md:max-w-2xl">
-          <div className="p-8">
-            <FormProvider {...methods}>
-              <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-                <div className="flex flex-col gap-6">
-                  <div className="flex flex-col md:flex-row justify-center gap-4 px-12 py-4">
-                    <button
-                      type="button"
-                      onClick={() => {
-                        setValue("status", "sale");
-                      }}
-                      className={`px-6 py-2 w-full border-none rounded-lg transition-all duration-300 shadow-lg ${
-                        status === "sale"
-                          ? "bg-emerald-500 hover:bg-emerald-400 text-white"
-                          : "bg-gray-300 hover:bg-gray-200 text-gray-700"
-                      }`}
-                    >
-                      {translate("sale")}
-                    </button>
+  }
 
-                    <button
-                      type="button"
-                      onClick={() => {
-                        setValue("status", "rent");
-                      }}
-                      className={`px-6 py-2 w-full border-none rounded-lg transition-all duration-300 shadow-lg ${
-                        status === "rent"
-                          ? "bg-emerald-500 hover:bg-emerald-400 text-white"
-                          : "bg-gray-300 hover:bg-gray-200 text-gray-700"
-                      }`}
-                    >
-                      {translate("rent")}
-                    </button>
-                  </div>
+  return (
+    <div className="min-h-screen bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
+      <div className="max-w-md mx-auto bg-white rounded-xl shadow-md overflow-hidden md:max-w-2xl">
+        <div className="p-8">
+          <FormProvider {...methods}>
+            <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+              {/* STATUS TOGGLE */}
+              <div className="flex flex-col md:flex-row justify-center gap-4 px-12 py-4">
+                {["sale", "rent"].map((s) => (
+                  <button
+                    key={s}
+                    type="button"
+                    onClick={() => setValue("status", s)}
+                    className={`px-6 py-2 w-full rounded-lg transition-all duration-300 shadow-lg ${
+                      status === s
+                        ? "bg-emerald-500 hover:bg-emerald-400 text-white"
+                        : "bg-gray-300 hover:bg-gray-200 text-gray-700"
+                    }`}
+                  >
+                    {translate(s)}
+                  </button>
+                ))}
+              </div>
 
-                  <div>
-                    <label htmlFor="type" className="block text-gray-700 mb-1">
-                      {translate("type")}
-                    </label>
-                    <GeneralDropdown
-                      name={"type"}
-                      options={PROPERTY_TYPES?.map((el) => {
-                        return {
-                          label: propertyTypeTranslations(el?.toLowerCase()),
-                          value: el,
-                        };
-                      })}
-                      showSelectedEffect={false}
-                      placeholder={translate("selectPropertyType")}
-                    />
-                  </div>
+              {/* PROPERTY TYPE */}
+              <div>
+                <label className="block text-gray-700 mb-1">
+                  {translate("type")}
+                </label>
+                <GeneralDropdown
+                  name="type"
+                  options={PROPERTY_TYPES.map((el) => ({
+                    label: propertyTypeTranslations(el.toLowerCase()),
+                    value: el,
+                  }))}
+                  showSelectedEffect={false}
+                  placeholder={translate("selectPropertyType")}
+                />
+              </div>
 
-                  <div>
-                    <label htmlFor="price" className="block text-gray-700 mb-1">
-                      {translate("price")}
-                    </label>
-                    <GeneralInput
-                      name={"price"}
-                      placeholder={translate("enterPrice")}
-                      type="number"
-                    />
-                  </div>
+              {/* PRICE */}
+              <div>
+                <label className="block text-gray-700 mb-1">
+                  {translate("price")}
+                </label>
+                <GeneralInput
+                  name="price"
+                  placeholder={translate("enterPrice")}
+                  type="number"
+                />
+              </div>
 
-                  <div>
-                    <label
-                      htmlFor="location"
-                      className="block text-gray-700 mb-1"
-                    >
-                      {translate("location")}
-                    </label>
-                    <PlacesSearchDropdown name={"location"} />
-                  </div>
+              {/* LOCATION */}
+              <div>
+                <label className="block text-gray-700 mb-1">
+                  {translate("location")}
+                </label>
+                <PlacesSearchDropdown name="location" />
+              </div>
 
-                  <div>
-                    <label htmlFor="beds" className="block text-gray-700 mb-1">
-                      {translate("bedrooms")}
-                    </label>
-                    <GeneralInput
-                      name={"beds"}
-                      placeholder={translate("enterNumberOfBeds")}
-                      type="number"
-                    />
-                  </div>
+              {/* BEDROOMS */}
+              <div>
+                <label className="block text-gray-700 mb-1">
+                  {translate("bedrooms")}
+                </label>
+                <GeneralInput
+                  name="beds"
+                  placeholder={translate("enterNumberOfBeds")}
+                  type="number"
+                />
+              </div>
 
-                  <div>
-                    <label htmlFor="baths" className="block text-gray-700 mb-1">
-                      {translate("bathrooms")}
-                    </label>
-                    <GeneralInput
-                      name={"baths"}
-                      placeholder={translate("enterNumberOfBaths")}
-                      type="number"
-                    />
-                  </div>
+              {/* BATHROOMS */}
+              <div>
+                <label className="block text-gray-700 mb-1">
+                  {translate("bathrooms")}
+                </label>
+                <GeneralInput
+                  name="baths"
+                  placeholder={translate("enterNumberOfBaths")}
+                  type="number"
+                />
+              </div>
 
-                  <div>
-                    <label htmlFor="area" className="block text-gray-700 mb-1">
-                      {translate("area")}
-                    </label>
-                    <GeneralInput
-                      name={"area"}
-                      placeholder={translate("enterPropertyArea")}
-                      type="number"
-                    />
-                  </div>
+              {/* AREA */}
+              <div>
+                <label className="block text-gray-700 mb-1">
+                  {translate("area")}
+                </label>
+                <GeneralInput
+                  name="area"
+                  placeholder={translate("enterPropertyArea")}
+                  type="number"
+                />
+              </div>
 
-                  <div>
-                    <label
-                      htmlFor="amenities"
-                      className="block text-gray-700 mb-1"
-                    >
-                      {translate("amenities")}
-                    </label>
-                    <MultiTagInput
-                      name={"amenities"}
-                      placeholder={translate("enterAmenities")}
-                      emptyTagsBlockPlaceholder={translate(
-                        "emptyTagsPlaceholder"
-                      )}
-                      typingTagsBlockPlaceholder={translate(
-                        "typingTagsPlaceholder"
-                      )}
-                    />
-                  </div>
+              {/* AMENITIES */}
+              <div>
+                <label className="block text-gray-700 mb-1">
+                  {translate("amenities")}
+                </label>
+                <MultiTagInput
+                  name="amenities"
+                  placeholder={translate("enterAmenities")}
+                  emptyTagsBlockPlaceholder={translate("emptyTagsPlaceholder")}
+                  typingTagsBlockPlaceholder={translate(
+                    "typingTagsPlaceholder"
+                  )}
+                />
+              </div>
 
-                  <div>
-                    <label
-                      htmlFor="description"
-                      className="block text-gray-700 mb-1"
-                    >
-                      {translate("description")}
-                    </label>
-                    <TextEditor
-                      name={"description"}
-                      placeholder={translate("enterDescription")}
-                    />
-                  </div>
+              {/* DESCRIPTION */}
+              <div>
+                <label className="block text-gray-700 mb-1">
+                  {translate("description")}
+                </label>
+                <TextEditor
+                  name="description"
+                  placeholder={translate("enterDescription")}
+                />
+              </div>
 
-                  <FileUpload name={"images"} />
-                </div>
+              {/* IMAGES */}
+              <FileUpload name="images" />
 
-                <button
-                  type="submit"
-                  className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-white bg-green-500 hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 transition-colors duration-300 active:scale-95"
-                  disabled={isLoading}
-                >
-                  {isLoading ? translate("adding") : translate("addProperty")}
-                </button>
-              </form>
-            </FormProvider>
-          </div>
+              {/* SUBMIT */}
+              <button
+                type="submit"
+                disabled={isLoading}
+                className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-white bg-green-500 hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 transition-colors duration-300 active:scale-95"
+              >
+                {isLoading ? translate("adding") : translate("addProperty")}
+              </button>
+            </form>
+          </FormProvider>
         </div>
       </div>
-    );
-  }
+    </div>
+  );
 }

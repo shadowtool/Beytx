@@ -94,6 +94,8 @@ export async function PUT(req, { params }) {
       );
     }
 
+    console.log(id, updates);
+
     const updatedProperty = await Property.findByIdAndUpdate(id, updates, {
       new: true,
       runValidators: true,

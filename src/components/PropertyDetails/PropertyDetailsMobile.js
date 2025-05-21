@@ -132,10 +132,13 @@ const PropertyDetailsMobile = ({ loading, propertyData }) => {
                 <div className="flex flex-col md:flex-row items-start md:items-end justify-between mb-4">
                   <h4 className="text-gray-800 text-left">
                     {t("pricePerYear", {
-                      price: new Intl.NumberFormat("en-US", {
-                        style: "decimal",
-                        maximumFractionDigits: 0,
-                      }).format(propertyData?.price),
+                      price:
+                        locale === "ar"
+                          ? propertyData?.priceArabic
+                          : new Intl.NumberFormat("en-US", {
+                              style: "decimal",
+                              maximumFractionDigits: 0,
+                            }).format(propertyData?.price),
                     })}
                   </h4>
                   <p className="text-gray-500 flex items-center my-4">
@@ -151,7 +154,10 @@ const PropertyDetailsMobile = ({ loading, propertyData }) => {
                       <BedIcon color="#aaa" size={28} />
                       <span className="text-xs font-medium">
                         {t("bedrooms", {
-                          count: propertyData?.bedrooms,
+                          count:
+                            locale === "ar"
+                              ? propertyData?.bedroomsArabic
+                              : propertyData?.bedrooms,
                         })}
                       </span>
                     </div>
@@ -160,7 +166,10 @@ const PropertyDetailsMobile = ({ loading, propertyData }) => {
                       <BathroomIcon color="#aaa" size={28} />
                       <span className="text-xs font-medium">
                         {t("bathrooms", {
-                          count: propertyData?.bathrooms,
+                          count:
+                            locale === "ar"
+                              ? propertyData?.bathroomsArabic
+                              : propertyData?.bathrooms,
                         })}
                       </span>
                     </div>
@@ -172,7 +181,12 @@ const PropertyDetailsMobile = ({ loading, propertyData }) => {
                         className="h-5 w-auto object-contain"
                       />
                       <span className="text-xs font-medium">
-                        {t("area", { size: propertyData?.size })}
+                        {t("area", {
+                          size:
+                            locale === "ar"
+                              ? propertyData?.sizeArabic
+                              : propertyData?.size,
+                        })}
                       </span>
                     </div>
                   </div>

@@ -5,6 +5,7 @@ import { LOCATIONS_DATA } from "@/lib/locationsData";
 import { PROPERTY_TYPES } from "@/constants/propertyTypes";
 import enTranslations from "../../../../messages/en.json";
 import arTranslations from "../../../../messages/ar.json";
+import seoData from "@/constants/seoData";
 
 export async function generateStaticParams() {
   const locales = ["en", "ar"];
@@ -58,6 +59,40 @@ export async function generateStaticParams() {
   });
 
   return params;
+}
+
+export async function generateMetadata({ params }) {
+  const { locale, slug } = params;
+
+  let seoDataToAdd = {};
+
+  if (
+    slug?.[0] === "sale" ||
+    slug?.[0] === "rent" ||
+    slug?.[0] === "villa" ||
+    slug?.[0] === "apartment"
+  ) {
+    seoDataToAdd = seoData?.[slug?.[0]];
+  }
+
+  if (!!seoDataToAdd) {
+    return {
+      title: seoDataToAdd?.[locale]?.title,
+      description: seoDataToAdd?.[locale]?.metaDescription,
+      alternates: {
+        canonical: seoDataToAdd?.[locale]?.canonical,
+        languages: {
+          en: seoDataToAdd?.[locale]?.hrefEn,
+          ar: seoDataToAdd?.[locale]?.hrefAr,
+          "x-default": seoDataToAdd?.[locale]?.hrefDefault,
+        },
+      },
+    };
+  }
+  return {
+    title: "Explore Properties – Beyt",
+    description: "Browse all available real estate listings on beyt.",
+  };
 }
 
 export default async function Page({ params }) {

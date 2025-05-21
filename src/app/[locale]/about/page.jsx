@@ -1,52 +1,71 @@
-import { useTranslations } from "next-intl";
+import { getTranslations } from "next-intl/server";
+import seoData from "@/constants/seoData";
 
-const AboutUs = () => {
-  const t = useTranslations("About");
+export async function generateMetadata({ params }) {
+  const locale = params?.locale || "en";
+
+  const dataToAdd = seoData?.about?.[locale || "en"];
+
+  return {
+    title: dataToAdd?.title,
+    description: dataToAdd?.metaDescription,
+    keywords: dataToAdd?.metaKeywords,
+    alternates: {
+      canonical: dataToAdd?.canonical,
+      languages: {
+        en: dataToAdd?.hrefEn,
+        ar: dataToAdd?.hrefAr,
+        "x-default": dataToAdd?.hrefDefault,
+      },
+    },
+  };
+}
+
+export default async function AboutPage() {
+  const translate = await getTranslations("About");
 
   return (
     <div className="max-w-4xl mx-auto px-4 py-12">
-      <h1 className="mb-8">{t("title")}</h1>
-      <p className="text-gray-700 mb-4">{t("description")}</p>
+      <h1 className="mb-8">{translate("title")}</h1>
+      <p className="text-gray-700 mb-4">{translate("description")}</p>
 
       <section className="my-8">
-        <h2 className="mb-4">{t("mission.title")}</h2>
-        <p className="text-gray-700 mb-4">{t("mission.content")}</p>
+        <h2 className="mb-4">{translate("mission.title")}</h2>
+        <p className="text-gray-700 mb-4">{translate("mission.content")}</p>
       </section>
 
       <section className="my-8">
-        <h2 className="mb-4">{t("vision.title")}</h2>
-        <p className="text-gray-700 mb-4">{t("vision.content")}</p>
+        <h2 className="mb-4">{translate("vision.title")}</h2>
+        <p className="text-gray-700 mb-4">{translate("vision.content")}</p>
       </section>
 
       <section className="my-8">
-        <h2 className="mb-4">{t("offer.title")}</h2>
+        <h2 className="mb-4">{translate("offer.title")}</h2>
         <ul className="list-disc pl-5 text-gray-700">
-          <li>{t("offer.listings")}</li>
-          <li>{t("offer.tools")}</li>
-          <li>{t("offer.filters")}</li>
+          <li>{translate("offer.listings")}</li>
+          <li>{translate("offer.tools")}</li>
+          <li>{translate("offer.filters")}</li>
         </ul>
       </section>
 
       <section className="my-8">
-        <h2 className="mb-4">{t("whyChooseUs.title")}</h2>
+        <h2 className="mb-4">{translate("whyChooseUs.title")}</h2>
         <ul className="list-disc pl-5 text-gray-700">
-          <li>{t("whyChooseUs.localExpertise")}</li>
-          <li>{t("whyChooseUs.trust")}</li>
-          <li>{t("whyChooseUs.insights")}</li>
+          <li>{translate("whyChooseUs.localExpertise")}</li>
+          <li>{translate("whyChooseUs.trust")}</li>
+          <li>{translate("whyChooseUs.insights")}</li>
         </ul>
       </section>
 
       <section className="my-8">
-        <h2 className="mb-4">{t("story.title")}</h2>
-        <p className="text-gray-700 mb-4">{t("story.content")}</p>
+        <h2 className="mb-4">{translate("story.title")}</h2>
+        <p className="text-gray-700 mb-4">{translate("story.content")}</p>
       </section>
 
       <section className="my-8">
-        <h2 className="mb-4">{t("contact.title")}</h2>
-        <p className="text-gray-700 mb-4">{t("contact.email")}</p>
+        <h2 className="mb-4">{translate("contact.title")}</h2>
+        <p className="text-gray-700 mb-4">{translate("contact.email")}</p>
       </section>
     </div>
   );
-};
-
-export default AboutUs;
+}

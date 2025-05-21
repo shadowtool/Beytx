@@ -89,23 +89,108 @@ export default function index() {
     }
   };
 
+  // —— DIGIT CONVERSION UTILS —__
+  const ARABIC_TO_LATIN = {
+    "٠": "0",
+    "١": "1",
+    "٢": "2",
+    "٣": "3",
+    "٤": "4",
+    "٥": "5",
+    "٦": "6",
+    "٧": "7",
+    "٨": "8",
+    "٩": "9",
+    "۰": "0",
+    "۱": "1",
+    "۲": "2",
+    "۳": "3",
+    "۴": "4",
+    "۵": "5",
+    "۶": "6",
+    "۷": "7",
+    "۸": "8",
+    "۹": "9",
+  };
+  const LATIN_TO_ARABIC = Object.entries(ARABIC_TO_LATIN).reduce(
+    (acc, [arabic, latin]) => ((acc[latin] = arabic), acc),
+    {}
+  );
+
+  function convertArabicDigitsToLatin(str) {
+    return str.replace(
+      /[\u0660-\u0669\u06F0-\u06F9]/g,
+      (d) => ARABIC_TO_LATIN[d] || d
+    );
+  }
+  function convertLatinDigitsToArabic(str) {
+    return str.replace(/\d/g, (d) => LATIN_TO_ARABIC[d] || d);
+  }
+  function isArabicDigits(str) {
+    return /[\u0660-\u0669\u06F0-\u06F9]/.test(str);
+  }
+  // ————————————————
+
   const onSubmit = async (data) => {
     try {
+      // build base payload
       const dataToSend = {
         status: data?.status,
-        price: data?.price,
+        // numeric fields + their Arabic variants
+        price: "",
+        priceArabic: "",
+        bedrooms: "",
+        bedroomsArabic: "",
+        bathrooms: "",
+        bathroomsArabic: "",
         location: data?.location,
         size: data?.area,
+        sizeArabic: "",
         type: data?.type,
-        bedrooms: data?.beds,
-        bathrooms: data?.baths,
-        description: data?.description,
-        images: data?.images,
         amenities: data?.amenities,
+        description: "",
+        descriptionArabic: "",
+        images: data?.images,
       };
 
-      const originalLang = detectLanguage(data?.description);
+      // —— PRICE —__
+      if (isArabicDigits(data.price)) {
+        dataToSend.priceArabic = data.price;
+        dataToSend.price = convertArabicDigitsToLatin(data.price);
+      } else {
+        dataToSend.price = data.price;
+        dataToSend.priceArabic = convertLatinDigitsToArabic(data.price);
+      }
 
+      // —— SIZE —__
+      if (isArabicDigits(data.area)) {
+        dataToSend.sizeArabic = data.area;
+        dataToSend.size = convertArabicDigitsToLatin(data.area);
+      } else {
+        dataToSend.size = data.area;
+        dataToSend.sizeArabic = convertLatinDigitsToArabic(data.area);
+      }
+
+      // —— BEDROOMS —__
+      if (isArabicDigits(data.beds)) {
+        dataToSend.bedroomsArabic = data.beds;
+        dataToSend.bedrooms = convertArabicDigitsToLatin(data.beds);
+      } else {
+        dataToSend.bedrooms = data.beds;
+        dataToSend.bedroomsArabic = convertLatinDigitsToArabic(data.beds);
+      }
+
+      // —— BATHROOMS —__
+      if (isArabicDigits(data.baths)) {
+        dataToSend.bathroomsArabic = data.baths;
+        dataToSend.bathrooms = convertArabicDigitsToLatin(data.baths);
+      } else {
+        dataToSend.bathrooms = data.baths;
+        dataToSend.bathroomsArabic = convertLatinDigitsToArabic(data.baths);
+      }
+
+      // —— DESCRIPTION TRANSLATION —__
+      const originalLang = detectLanguage(data?.description);
       if (originalLang === "ar") {
         dataToSend.descriptionArabic = data?.description;
         const translatedDesc = await translateText(data?.description, "en");

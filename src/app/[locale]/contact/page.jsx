@@ -1,151 +1,26 @@
-"use client";
-import { FormProvider, useForm, useWatch } from "react-hook-form";
-import axios from "axios";
-import { useTranslations } from "next-intl";
-import { useState, useEffect } from "react";
-import { useSession } from "next-auth/react";
-import PhoneNumberInput from "@/components/Reusables/Inputs/PhoneNumberInput";
-import { toast } from "react-toastify";
-import { axiosInstance } from "@/lib/axios";
+import seoData from "@/constants/seoData";
+import Contact from "@/components/Contact/contact";
 
-const Contact = () => {
-  const translate = useTranslations("contactUs");
-  const methods = useForm();
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-    reset,
-    control,
-  } = methods;
+export async function generateMetadata({ params }) {
+  const locale = params?.locale || "en";
 
-  const { data: session } = useSession();
+  const dataToAdd = seoData?.contact?.[locale || "en"];
 
-  const formValues = useWatch({ control });
-
-  useEffect(() => {
-    if (session?.user) {
-      reset({
-        name: session.user.name || "",
-        email: session.user.email || "",
-        phone: session.user.phoneNumber || "",
-      });
-    }
-  }, [session, reset]);
-
-  const onSubmit = async (data) => {
-    try {
-      await axiosInstance.post("/reports", data);
-      reset();
-      toast.success(translate("successMessage"));
-    } catch (error) {
-      console.error(error);
-      toast.error(translate("errorMessage"));
-    }
+  return {
+    title: dataToAdd?.title,
+    description: dataToAdd?.metaDescription,
+    keywords: dataToAdd?.metaKeywords,
+    alternates: {
+      canonical: dataToAdd?.canonical,
+      languages: {
+        en: dataToAdd?.hrefEn,
+        ar: dataToAdd?.hrefAr,
+        "x-default": dataToAdd?.hrefDefault,
+      },
+    },
   };
+}
 
-  return (
-    <FormProvider {...methods}>
-      <div className="min-h-screen bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
-        <div className="container mx-auto max-w-md bg-white rounded-xl shadow-md overflow-hidden md:max-w-2xl">
-          <div className="p-8">
-            <h2 className="text-green-700 mb-6 text-center">
-              {translate("contactUs")}
-            </h2>
-            <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-              <div className="grid grid-cols-1 gap-6">
-                <div>
-                  <label htmlFor="name" className="block text-gray-700 mb-1">
-                    {translate("name")}
-                  </label>
-                  <input
-                    type="text"
-                    id="name"
-                    {...register("name", {
-                      required: translate("nameRequired"),
-                    })}
-                    className={`mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-all duration-300 text-black ${
-                      errors.name ? "border-red-500" : ""
-                    }`}
-                  />
-                  {errors.name && (
-                    <p className="text-red-500 text-sm">
-                      {errors.name.message}
-                    </p>
-                  )}
-                </div>
-
-                <div>
-                  <label htmlFor="email" className="block text-gray-700 mb-1">
-                    {translate("email")}
-                  </label>
-                  <input
-                    type="email"
-                    id="email"
-                    {...register("email", {
-                      required: translate("emailRequired"),
-                      pattern: {
-                        value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
-                        message: translate("emailInvalid"),
-                      },
-                    })}
-                    className={`mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-all duration-300 text-black ${
-                      errors.email ? "border-red-500" : ""
-                    }`}
-                  />
-                  {errors.email && (
-                    <p className="text-red-500 text-sm">
-                      {errors.email.message}
-                    </p>
-                  )}
-                </div>
-
-                <div>
-                  <label htmlFor="phone" className="block text-gray-700 mb-1">
-                    {translate("phone")}
-                  </label>
-                  <PhoneNumberInput name={"phone"} />
-                  {errors.phone && (
-                    <p className="text-red-500 text-sm">
-                      {errors.phone.message}
-                    </p>
-                  )}
-                </div>
-
-                <div>
-                  <label htmlFor="message" className="block text-gray-700 mb-1">
-                    {translate("message")}
-                  </label>
-                  <textarea
-                    id="message"
-                    rows="4"
-                    {...register("message", {
-                      required: translate("messageRequired"),
-                    })}
-                    className={`mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-all duration-300 text-black ${
-                      errors.message ? "border-red-500" : ""
-                    }`}
-                  ></textarea>
-                  {errors.message && (
-                    <p className="text-red-500 text-sm">
-                      {errors.message.message}
-                    </p>
-                  )}
-                </div>
-              </div>
-
-              <button
-                type="submit"
-                className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-white bg-green-500 hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 transition-colors duration-300 active:scale-95"
-              >
-                {translate("sendMessage")}
-              </button>
-            </form>
-          </div>
-        </div>
-      </div>
-    </FormProvider>
-  );
-};
-
-export default Contact;
+export default function Page() {
+  return <Contact />;
+}

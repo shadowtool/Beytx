@@ -4,7 +4,7 @@ import PropertyCard from "@/components/Reusables/Cards/PropertyCard";
 import Loader from "@/components/Reusables/Misc/Loader";
 import { ROUTES } from "@/constants/routes";
 import useMediaQuery from "@/hooks/useMediaQuery";
-import { fetchAgentListings, fetchUserInfo } from "@/lib/queryFunctions";
+import { fetchUserInfo } from "@/lib/queryFunctions";
 import { useQuery } from "@tanstack/react-query";
 import Image from "next/image";
 import { useParams } from "next/navigation";

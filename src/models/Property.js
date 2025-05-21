@@ -8,6 +8,7 @@ const propertySchema = new mongoose.Schema(
     titleArabic: { type: String },
     status: { type: String, enum: PROPERTY_STATUS },
     price: { type: Number },
+    priceArabic: { type: String },
     location: {
       lat: { type: String },
       lng: { type: String },
@@ -17,12 +18,15 @@ const propertySchema = new mongoose.Schema(
       country: { type: String },
     },
     size: { type: Number },
+    sizeArabic: { type: String },
     type: {
       type: String,
       enum: PROPERTY_TYPES,
     },
     bedrooms: { type: Number },
     bathrooms: { type: Number },
+    bedroomsArabic: { type: String },
+    bathroomsArabic: { type: String },
     description: { type: String },
     descriptionArabic: { type: String },
     images: [{ type: String }],

@@ -110,11 +110,14 @@ const PropertyDetailsDesktop = ({ loading, propertyData }) => {
                   <div className="flex flex-col gap-1 items-start">
                     <h3 className="text-gray-800 text-left font-semibold">
                       {t("pricePerYear", {
-                        price: new Intl.NumberFormat("en-US", {
-                          style: "decimal",
-                          maximumFractionDigits: 0,
-                        }).format(propertyData?.price),
-                      })}{" "}
+                        price:
+                          locale === "ar"
+                            ? propertyData?.priceArabic
+                            : new Intl.NumberFormat("en-US", {
+                                style: "decimal",
+                                maximumFractionDigits: 0,
+                              }).format(propertyData?.price),
+                      })}
                     </h3>
                     <p className="text-gray-500 flex items-center mb-2 mt-1 ">
                       <Image
@@ -129,14 +132,20 @@ const PropertyDetailsDesktop = ({ loading, propertyData }) => {
                     <div className="flex flex-col gap-1 items-center">
                       <BedIcon color="#aaa" size={21} />
                       {t("bedrooms", {
-                        count: propertyData?.bedrooms,
+                        count:
+                          locale === "ar"
+                            ? propertyData?.bedroomsArabic
+                            : propertyData?.bedrooms,
                       })}
                     </div>
                     <div className="h-8 w-[1.5px] bg-[#aaa]"></div>
                     <div className="flex flex-col gap-1 items-center">
                       <BathroomIcon color="#aaa" size={21} />
                       {t("bathrooms", {
-                        count: propertyData?.bathrooms,
+                        count:
+                          locale === "ar"
+                            ? propertyData?.bathroomsArabic
+                            : propertyData?.bathrooms,
                       })}{" "}
                     </div>
                     <div className="h-8 w-[1.5px] bg-[#aaa]"></div>
@@ -147,7 +156,10 @@ const PropertyDetailsDesktop = ({ loading, propertyData }) => {
                         className="h-5 w-auto object-contain"
                       />
                       {t("area", {
-                        size: propertyData?.size,
+                        size:
+                          locale === "ar"
+                            ? propertyData?.sizeArabic
+                            : propertyData?.size,
                       })}
                     </div>
                   </div>

@@ -1,50 +1,52 @@
 "use client";
 
-import PropertyListings from "./PropertyListings";
+import React, { useEffect, useMemo, useRef } from "react";
 import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
-import { useEffect, useMemo, useRef } from "react";
-import { FormProvider, useForm, useWatch } from "react-hook-form";
+import { useForm, FormProvider, useWatch } from "react-hook-form";
+import PropertyListings from "./PropertyListings";
 import { ROUTES } from "@/constants/routes";
 import { fetchCities, fetchPropertyListings } from "@/lib/queryFunctions";
+import { PROPERTY_STATUS } from "@/constants/propertyStatus";
+import { PROPERTY_TYPES } from "@/constants/propertyTypes";
 
 const itemsPerPage = 10;
 
 export default function ExploreProperties({ locale, slug }) {
-  const methods = useForm({
-    defaultValues: {},
-  });
-
+  const methods = useForm({ defaultValues: {} });
   const loadMoreRef = useRef(null);
-
   const formValues = useWatch({ control: methods.control });
 
+  // Build the filters object for your API
   const filters = useMemo(() => {
-    const filtersToReturn = Object.fromEntries(
-      Object.entries({
-        location: formValues?.location ? [formValues.location] : [],
-        type: formValues?.type ? formValues.type : [],
-        status: formValues?.status,
-        bedrooms: formValues?.beds,
-        bathrooms: formValues?.baths,
-        sortBy: formValues?.sortBy,
-        minPrice: formValues?.price_from,
-        maxPrice: formValues?.price_to,
-      }).filter(([_, value]) => {
-        if (Array.isArray(value)) {
-          return value.some((v) => v != null && v !== "" && v !== 0);
-        }
-        return value != null && value !== "" && value !== 0;
-      })
+    const raw = {
+      location: formValues.location ? [formValues.location] : [],
+      type: formValues.type ? formValues.type : [],
+      status: formValues.status,
+      bedrooms: formValues.beds,
+      bathrooms: formValues.baths,
+      sortBy: formValues.sortBy,
+      minPrice: formValues.price_from,
+      maxPrice: formValues.price_to,
+    };
+
+    // drop empty fields
+    const filtered = Object.fromEntries(
+      Object.entries(raw).filter(([_, v]) =>
+        Array.isArray(v)
+          ? v.some((x) => x != null && x !== "" && x !== 0)
+          : v != null && v !== "" && v !== 0
+      )
     );
 
-    Object.entries(filtersToReturn).forEach(([key, value]) => {
-      if (Array.isArray(value)) {
-        filtersToReturn[key] = JSON.stringify(value);
-      }
+    // stringify arrays for the API
+    Object.entries(filtered).forEach(([k, v]) => {
+      if (Array.isArray(v)) filtered[k] = JSON.stringify(v);
     });
-    return filtersToReturn;
+
+    return filtered;
   }, [formValues]);
 
+  // === Data fetching ===
   const {
     data,
     fetchNextPage,
@@ -56,11 +58,8 @@ export default function ExploreProperties({ locale, slug }) {
     queryKey: [ROUTES.GET_PROPERTIES, filters],
     queryFn: ({ pageParam = 1 }) =>
       fetchPropertyListings(pageParam, itemsPerPage, filters),
-    getNextPageParam: (lastPage) => {
-      return lastPage?.currentPage < lastPage?.totalPages
-        ? lastPage.currentPage + 1
-        : undefined;
-    },
+    getNextPageParam: (last) =>
+      last.currentPage < last.totalPages ? last.currentPage + 1 : undefined,
   });
 
   const { data: locationsData, isFetched: isLocationsFetched } = useQuery({
@@ -69,41 +68,49 @@ export default function ExploreProperties({ locale, slug }) {
   });
 
   const totalCount = data?.pages?.[0]?.totalCount || 0;
+  const properties = data?.pages?.flatMap((p) => p.properties) || [];
 
-  const properties = data?.pages?.flatMap((page) => page.properties) || [];
-
+  // Infinite-scroll observer
   useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        if (entries[0].isIntersecting && hasNextPage && !isFetchingNextPage) {
+    const obs = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting && hasNextPage && !isFetchingNextPage) {
           fetchNextPage();
         }
       },
       { threshold: 0.1 }
     );
-
-    if (loadMoreRef.current) {
-      observer.observe(loadMoreRef.current);
-    }
-
-    return () => observer.disconnect();
+    if (loadMoreRef.current) obs.observe(loadMoreRef.current);
+    return () => obs.disconnect();
   }, [hasNextPage, isFetchingNextPage, fetchNextPage]);
 
+  // === NEW: slug-parsing to auto-set status/type/location ===
   useEffect(() => {
-    if (slug && Array.isArray(slug) && isLocationsFetched) {
-      const [status, type, locationCity] =
-        locale === "ar" ? slug.slice(-3) : slug.slice(0, 3);
+    if (!slug || !Array.isArray(slug) || !isLocationsFetched) return;
 
-      methods.reset({
-        status: status || undefined,
-        type: type ? [type] : [],
-        location: locationCity ? [locationCity] : [],
-        locationDropdown: locationCity
-          ? locationsData?.find((el) => el?.city === locationCity)
-          : undefined,
-      });
-    }
-  }, [slug, methods, locationsData, isLocationsFetched]);
+    const locationSlugs = locationsData.map((c) => c.city.toLowerCase());
+
+    const statusSegment = slug.find((s) =>
+      PROPERTY_STATUS?.map((el) => el?.toLowerCase())?.includes(
+        s?.toLowerCase()
+      )
+    );
+    const typeSegment = slug.find((s) =>
+      PROPERTY_TYPES?.map((el) => el?.toLowerCase())?.includes(s?.toLowerCase())
+    );
+    const locationSegment = slug.find((s) =>
+      locationSlugs.includes(s?.toLowerCase())
+    );
+
+    methods.reset({
+      status: statusSegment || "",
+      type: typeSegment ? [typeSegment] : [],
+      location: locationSegment ? [locationSegment] : [],
+      locationDropdown: locationSegment
+        ? locationsData.find((c) => c.city === locationSegment)
+        : undefined,
+    });
+  }, [slug, isLocationsFetched, locationsData, methods]);
 
   return (
     <FormProvider {...methods}>
