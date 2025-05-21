@@ -164,12 +164,12 @@ export default function AddProperty() {
       }
 
       // —— SIZE ——
-      if (isArabicDigits(data.size)) {
-        dataToSend.sizeArabic = data.size;
-        dataToSend.size = convertArabicDigitsToLatin(data.size);
+      if (isArabicDigits(data.area)) {
+        dataToSend.sizeArabic = data.area;
+        dataToSend.size = convertArabicDigitsToLatin(data.area);
       } else {
-        dataToSend.size = data.size;
-        dataToSend.sizeArabic = convertLatinDigitsToArabic(data.size);
+        dataToSend.size = data.area;
+        dataToSend.sizeArabic = convertLatinDigitsToArabic(data.area);
       }
 
       // —— BEDROOMS ——
