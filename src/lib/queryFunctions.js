@@ -21,7 +21,7 @@ export const uploadImage = async (file) => {
 
   const signatureRes = await axiosInstance.post("/upload/generate-signature", {
     folder,
-    public_id: publicId,
+    public_id: publicId?.replace(" ", "_"),
   });
 
   const { signature, timestamp, apiKey, cloudName } = signatureRes.data;
