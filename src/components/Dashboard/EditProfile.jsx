@@ -2,6 +2,7 @@ import React from "react";
 import Image from "next/image";
 import { useFormContext } from "react-hook-form";
 import { useTranslations } from "next-intl";
+import { FaCamera, FaUser, FaEnvelope, FaPhone, FaSave } from "react-icons/fa";
 import PhoneNumberInput from "../Reusables/Inputs/PhoneNumberInput";
 
 const EditProfile = ({
@@ -17,13 +18,13 @@ const EditProfile = ({
 
   return (
     <div
-      className={`${isBigScreen ? "h-fit w-full p-8 bg-white rounded-xl shadow-lg relative border border-gray-200" : "p-4"}`}
+      className={`${isBigScreen ? "h-fit w-full p-8 bg-white shadow-lg relative border border-gray-200" : "p-4"}`}
     >
       <div
         className={`${!isBigScreen ? "h-fit w-full p-4 rounded-xl shadow-lg relative border border-gray-200 bg-white" : ""}`}
       >
         <h5 className="mb-6 text-gray-800">{translate("editYourInfo")}</h5>
-        <div className="min-h-24 max-h-24 rounded-full bg-green-600 flex items-center justify-center min-w-24 max-w-24 mb-6 overflow-hidden shadow-md">
+        <div className="min-h-24 max-h-24 rounded-full  flex items-center justify-center min-w-24 max-w-24 mb-6 overflow-hidden shadow-md">
           <input
             type="file"
             accept="image/*"

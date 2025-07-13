@@ -46,7 +46,7 @@ const Dashboard = ({
       case "my-listings":
         return (
           <ListingSection
-            listings={properties}
+            listings={properties || []}
             type="userListing"
             isBigScreen={isBigScreen}
           />
@@ -54,13 +54,13 @@ const Dashboard = ({
       case "saved-listings":
         return (
           <ListingSection
-            listings={savedListings}
+            listings={savedListings || []}
             type="savedListing"
             isBigScreen={isBigScreen}
           />
         );
       case "reset-password":
-        return <ResetPassword userData={userData} />;
+        return <ResetPassword userData={userData} isBigScreen={isBigScreen} />;
       default:
         return null;
     }
@@ -83,7 +83,7 @@ const Dashboard = ({
         />
       )}
 
-      <div className={`${isBigScreen ? "w-full grow" : ""} p-4`}>
+      <div className={`${isBigScreen ? "w-full grow" : ""}`}>
         {!isBigScreen && selectedTab !== null && (
           <MobileHeader
             userData={userData}

@@ -37,11 +37,11 @@ const PhoneNumberInput = ({ name, error, validation = {} }) => {
 
   return (
     <div className="w-full">
-      <div className="flex gap-2">
+      <div className="flex gap-2" dir="ltr">
         <select
           value={selectedCountryCode}
           onChange={handleCountryCodeChange}
-          className="px-2 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500 transition-all duration-300 text-xs md:text-sm"
+          className="px-2 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500 transition-all duration-300 text-xs md:text-sm shrink-0"
         >
           {countryCodes.map((country) => (
             <option key={country.code} value={country.code}>
@@ -59,7 +59,7 @@ const PhoneNumberInput = ({ name, error, validation = {} }) => {
             <input
               type="text" // Changed to text to avoid arrows
               placeholder="Enter phone number"
-              className={`w-full px-4 py-2 border rounded-md outline-none focus:outline-none focus:ring-2 focus:ring-green-500 transition-all duration-300 ${
+              className={`w-full px-4 py-2 border rounded-md outline-none focus:outline-none focus:ring-2 focus:ring-green-500 transition-all duration-300 text-left ${
                 error ? "border-red-500" : "border-gray-300"
               }`}
               {...field}

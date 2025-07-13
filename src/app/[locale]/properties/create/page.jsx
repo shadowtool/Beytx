@@ -112,7 +112,7 @@ export default function AddProperty() {
       const urls = await Promise.all(files.map((f) => uploadSingleImage(f)));
       return urls;
     } catch {
-      return [];
+      throw new Error();
     }
   };
 
@@ -227,6 +227,8 @@ export default function AddProperty() {
       toast.loading(translate("creatingProperty"));
       createProperty(dataToSend);
     } catch (err) {
+      toast.dismiss();
+      toast.error("Something went wrong");
       console.error(err);
     } finally {
       setIsLoading(false);
