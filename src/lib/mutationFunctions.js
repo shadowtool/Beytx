@@ -76,3 +76,7 @@ export async function markReportAsResolvedMutation(reportId) {
 
   return response.data;
 }
+
+export const createReportMutationFn = async (formData) => {
+  return axiosInstance.post("/reports", formData);
+};

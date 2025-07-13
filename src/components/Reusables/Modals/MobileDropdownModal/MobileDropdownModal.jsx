@@ -24,7 +24,11 @@ const MobileDropdownModal = ({
         >
           <div className="flex items-center justify-between h-14 border-b border-solid border-gray-200 px-6">
             <h5 className="">{filterTitle}</h5>
-            <CloseIcon size={28} color="#000" onClick={() => handleClose()} />
+            <CloseIcon
+              size={28}
+              color="#000000"
+              onClick={() => handleClose()}
+            />
           </div>
 
           {filterBody}

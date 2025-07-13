@@ -1,8 +1,7 @@
+import jwt from "jsonwebtoken";
 import { NextResponse } from "next/server";
 import dbConnect from "@/lib/mongodb";
 import User from "@/models/User";
-import { authOptions } from "@/lib/authOptions";
-import { getServerSession } from "next-auth";
 import Property from "@/models/Property";
 
 export async function GET(req, { params }) {
@@ -53,7 +52,21 @@ export async function PUT(req, { params }) {
     const { email, phoneNumber, image, name, isVerified, role } =
       await req.json();
 
-    const session = await getServerSession(authOptions);
+    const authHeader = req.headers.get("Authorization");
+
+    let userId = null;
+
+    if (authHeader && authHeader.startsWith("Bearer ")) {
+      const token = authHeader.slice(7);
+      const payload = jwt.verify(token, process.env.JWT_SECRET);
+      userId = payload.id;
+    }
+
+    if (!userId) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 403 });
+    }
+
+    const user = await User.findById(userId);
 
     if (!id) {
       return NextResponse.json(
@@ -62,17 +75,10 @@ export async function PUT(req, { params }) {
       );
     }
 
-    if (session?.user?.role !== "admin" && id !== session?.user?.id) {
+    if (user?.role !== "admin" && id !== user?.id) {
       return NextResponse.json({ error: "Unauthorised" }, { status: 400 });
     }
 
-    const user = await User.findById(id);
-
-    if (!user) {
-      return NextResponse.json({ error: "User not found" }, { status: 404 });
-    }
-
-    // Check for email uniqueness before updating
     if (email && email !== user.email) {
       const existingUser = await User.findOne({ email });
       if (existingUser) {
@@ -110,11 +116,11 @@ export async function PUT(req, { params }) {
       user.name = name;
     }
 
-    if (isVerified && session?.user?.role === "admin") {
+    if (isVerified && user?.role === "admin") {
       user.isVerified = isVerified;
     }
 
-    if (role && session?.user?.role === "admin") {
+    if (role && user?.role === "admin") {
       user.role = role;
     }
 
@@ -133,9 +139,23 @@ export async function PUT(req, { params }) {
 
 export async function DELETE(req, { params }) {
   try {
-    const session = await getServerSession(authOptions);
+    const authHeader = req.headers.get("Authorization");
 
-    if (!session || session.user?.role !== "admin") {
+    let loggedUserId = null;
+
+    if (authHeader && authHeader.startsWith("Bearer ")) {
+      const token = authHeader.slice(7);
+      const payload = jwt.verify(token, process.env.JWT_SECRET);
+      loggedUserId = payload.id;
+    }
+
+    if (!loggedUserId) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 403 });
+    }
+
+    const user = await User.findById(loggedUserId);
+
+    if (!user || user?.role !== "admin") {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 

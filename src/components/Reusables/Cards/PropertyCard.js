@@ -15,7 +15,6 @@ import {
   archivePropertyMutation,
   toggleListingInSavedListings,
 } from "@/lib/mutationFunctions";
-import { useSession } from "next-auth/react";
 import Image from "next/image";
 import { AreaIcon, LocationIcon } from "@/imports/images";
 import LikeButton from "../Misc/LikeButton";
@@ -23,6 +22,7 @@ import { toast } from "react-toastify";
 import { useModal } from "@/context/ModalContext";
 import { CldImage } from "next-cloudinary";
 import { DEFAULT_IMAGES_FOR_TYPES } from "@/constants/constants";
+import { useUserContext } from "@/context/UserContext";
 
 const PropertyCard = ({ property, cardType }) => {
   const [showUserPhoneNumber, setShowUserPhoneNumber] = useState(false);
@@ -39,7 +39,7 @@ const PropertyCard = ({ property, cardType }) => {
 
   const translatePropertyTypes = useTranslations("propertyTypes");
 
-  const { data: session } = useSession();
+  const { userData } = useUserContext();
 
   const { openModal } = useModal();
 
@@ -66,8 +66,7 @@ const PropertyCard = ({ property, cardType }) => {
   };
 
   const { mutateAsync: toggleSaveListing } = useMutation({
-    mutationFn: () =>
-      toggleListingInSavedListings(session?.user?.id, property?._id),
+    mutationFn: () => toggleListingInSavedListings(userData?.id, property?._id),
     onSuccess: () => {
       queryClient.invalidateQueries([
         ROUTES.GET_USER_SAVED_LISTINGS,
@@ -175,7 +174,8 @@ const PropertyCard = ({ property, cardType }) => {
                 alt="area-icon"
                 className="h-5 w-auto object-contain"
               />
-              {locationTranslations(property?.location?.city)}
+              {property?.location?.city &&
+                locationTranslations(property?.location?.city)}
             </p>
             <div className="text-gray-500 mt-2 flex items-center gap-2">
               <p className="flex items-center gap-1 ltr:flex-row rtl:flex-row-reverse">
@@ -269,7 +269,7 @@ const PropertyCard = ({ property, cardType }) => {
                   onClick={(e) => {
                     e.stopPropagation();
                     openModal("agentInfo", {
-                      userInfo: property?.userId,
+                      userData: property?.userId,
                     });
                     setShowUserPhoneNumber(true);
                   }}

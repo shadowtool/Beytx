@@ -1,7 +1,6 @@
 "use client";
 
-import { useState, useRef, useEffect } from "react";
-import { useSession, signIn } from "next-auth/react";
+import { useState, useEffect } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import MultiTagInput from "@/components/Reusables/Inputs/TagInput";
 import { toast } from "react-toastify";
@@ -19,15 +18,16 @@ import { PROPERTY_TYPES } from "@/constants/propertyTypes";
 import FileUpload from "@/components/Reusables/Misc/FileUpload";
 import Loader from "@/components/Reusables/Misc/Loader";
 import { detectLanguage, translateText } from "@/lib/translation";
+import { useUserContext } from "@/context/UserContext";
+import { useModal } from "@/context/ModalContext";
 
 export default function index() {
   const translate = useTranslations("createPropertyPage");
   const propertyTypeTranslations = useTranslations("propertyTypes");
-  const { data: session } = useSession();
+  const { isLoggedIn } = useUserContext();
+  const { openModal } = useModal();
   const methods = useForm({ defaultValues: { status: "sale" } });
-  const [images, setImages] = useState([]);
   const [status, setStatus] = useState("sale");
-  const fileInputRef = useRef(null);
 
   const queryClient = useQueryClient();
 
@@ -241,12 +241,12 @@ export default function index() {
     }
   }, [isFetched, propertyData]);
 
-  if (!session) {
+  if (!isLoggedIn) {
     return (
       <div className="flex flex-col items-center justify-center min-h-screen">
         <p>{translate("loginMessageText")}</p>
         <button
-          onClick={() => signIn("google")}
+          onClick={() => openModal("login")}
           className="bg-blue-500 text-white px-4 py-2 rounded"
         >
           {translate("login")}

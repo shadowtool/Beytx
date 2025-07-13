@@ -1,25 +1,23 @@
-"use client"
+"use client";
 import React from "react";
 import Image from "next/image";
 import { useTranslations } from "next-intl";
 
-const DashboardSidebar = ({ userInfo, TABS, selectedTab, setSelectedTab }) => {
+const DashboardSidebar = ({ userData, TABS, selectedTab, setSelectedTab }) => {
   const translate = useTranslations("dashboard");
-
-
 
   return (
     <div className="min-w-64 max-w-64 border border-solid bg-white border-gray-200 shadow-lg p-6 flex flex-col items-center gap-6">
       <div className="w-28 h-28 rounded-full overflow-hidden border-4 border-green-600">
         <Image
-          src={userInfo?.image || "/images/user-default.png"}
+          src={userData?.image || "/images/user-default.png"}
           alt={translate("profileImageAlt")}
           width={144}
           height={144}
           className="object-cover w-full h-full"
         />
       </div>
-      <h4>{userInfo?.name}</h4>
+      <h4>{userData?.name}</h4>
       <div className="w-full flex flex-col gap-2">
         {TABS?.map((el) => (
           <button

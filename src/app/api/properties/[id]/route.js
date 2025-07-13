@@ -1,8 +1,8 @@
 import { NextResponse } from "next/server";
 import dbConnect from "@/lib/mongodb";
 import Property from "@/models/Property";
-import { getServerSession } from "next-auth";
-import { authOptions } from "@/lib/authOptions";
+import User from "@/models/User";
+import jwt from "jsonwebtoken";
 
 export async function GET(req, { params }) {
   try {
@@ -17,7 +17,6 @@ export async function GET(req, { params }) {
       );
     }
 
-    // Fetch the property and populate complete user data
     const property = await Property.findById(id).populate("userId");
 
     if (!property) {
@@ -58,9 +57,23 @@ export async function PUT(req, { params }) {
   try {
     await dbConnect();
 
-    const session = await getServerSession(authOptions);
+    const authHeader = req.headers.get("Authorization");
 
-    if (!session) {
+    let userId = null;
+
+    if (authHeader && authHeader.startsWith("Bearer ")) {
+      const token = authHeader.slice(7);
+      const payload = jwt.verify(token, process.env.JWT_SECRET);
+      userId = payload.id;
+    }
+
+    if (!userId) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 403 });
+    }
+
+    const user = await User.findById(userId);
+
+    if (!user) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
@@ -84,8 +97,8 @@ export async function PUT(req, { params }) {
       );
     }
 
-    const isOwner = property.userId?.toString() === session.user.id;
-    const isAdmin = session.user.role === "admin";
+    const isOwner = property.userId?.toString() === user.id;
+    const isAdmin = user.role === "admin";
 
     if (!isAdmin && !isOwner) {
       return NextResponse.json(

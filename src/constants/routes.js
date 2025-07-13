@@ -15,4 +15,5 @@ export const ROUTES = {
   GET_ALL_REPORTS: "/reports",
   CREATE_REPORT: "/reports",
   UPDATE_REPORT: "/reports",
+  GET_LOGGED_USER_INFO: "/users/get-logged-user",
 };

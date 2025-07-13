@@ -3,6 +3,8 @@ import { createContext, useContext, useState, useCallback } from "react";
 import ConfirmDeletePropertyModal from "@/components/Reusables/Modals/ConfirmDeletePropertyModal";
 import AgentInfoModal from "@/components/Reusables/Modals/AgentInfoModal";
 import UpdatePhoneNumberModal from "@/components/Reusables/Modals/UpdatePhoneNumberModal";
+import EditProfileModal from "@/components/Reusables/Modals/EditProfile";
+import AuthModal from "@/components/Reusables/Modals/AuthModals/AuthModal";
 
 const ModalContext = createContext();
 
@@ -30,6 +32,11 @@ export const ModalProvider = ({ children }) => {
       <AgentInfoModal open={modal === "agentInfo"} handleClose={closeModal} />
       <UpdatePhoneNumberModal
         open={modal === "updatePhoneNumber"}
+        handleClose={closeModal}
+      />
+      <AuthModal open={modal === "login"} handleClose={closeModal} />
+      <EditProfileModal
+        open={modal === "editProfile"}
         handleClose={closeModal}
       />
     </ModalContext.Provider>

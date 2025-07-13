@@ -9,9 +9,9 @@ import { uploadImage } from "@/lib/queryFunctions";
 import PhoneNumberInput from "../Inputs/PhoneNumberInput";
 import { CloseIcon } from "@/imports/icons";
 import { ROUTES } from "@/constants/routes";
-import { useSession } from "next-auth/react";
+import { useUserContext } from "@/context/UserContext";
 
-const EditProfile = ({ open, handleClose, userData }) => {
+const EditProfileModal = ({ open, handleClose }) => {
   const [selectedImage, setSelectedImage] = useState(null);
 
   const fileInputRef = useRef(null);
@@ -22,7 +22,7 @@ const EditProfile = ({ open, handleClose, userData }) => {
 
   const queryClient = useQueryClient();
 
-  const { data: session } = useSession();
+  const { userData } = useUserContext();
 
   const { mutate } = useMutation({
     mutationFn: (variables) => updateUserMutation(variables),
@@ -151,7 +151,7 @@ const EditProfile = ({ open, handleClose, userData }) => {
                     Is user verified ?
                   </label>
                 </div>
-                {session?.user?.role === "admin" && (
+                {userData?.role === "admin" && (
                   <div className="flex items-center">
                     <input
                       type="checkbox"
@@ -203,4 +203,4 @@ const EditProfile = ({ open, handleClose, userData }) => {
   );
 };
 
-export default EditProfile;
+export default EditProfileModal;

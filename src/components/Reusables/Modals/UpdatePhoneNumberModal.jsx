@@ -6,10 +6,9 @@ import { toast } from "react-toastify";
 import { updateUserMutation } from "@/lib/mutationFunctions";
 import { CloseIcon } from "@/imports/icons";
 import { ROUTES } from "@/constants/routes";
-import { useSession } from "next-auth/react";
-import GeneralInput from "../Inputs/GeneralInput";
 import PhoneNumberInput from "../Inputs/PhoneNumberInput";
 import { useTranslations } from "next-intl";
+import { useUserContext } from "@/context/UserContext";
 
 const UpdatePhoneNumberModal = ({ open, handleClose }) => {
   const translate = useTranslations("updatePhoneNumber");
@@ -20,14 +19,14 @@ const UpdatePhoneNumberModal = ({ open, handleClose }) => {
 
   const queryClient = useQueryClient();
 
-  const { data: session, update } = useSession();
+  const { userData, refreshUserData } = useUserContext();
 
   const { mutate } = useMutation({
     mutationFn: (variables) => updateUserMutation(variables),
     onSuccess: () => {
       toast.success("Profile Updated successfully");
       queryClient.invalidateQueries([ROUTES.GET_ALL_USERS]);
-      update();
+      refreshUserData();
       handleClose();
     },
     onError: (e) => {
@@ -37,7 +36,7 @@ const UpdatePhoneNumberModal = ({ open, handleClose }) => {
 
   const handleUpdate = async () => {
     mutate({
-      userId: session?.user?.id,
+      userId: userData?.id,
       phoneNumber: formValues?.phoneNumber,
     });
   };

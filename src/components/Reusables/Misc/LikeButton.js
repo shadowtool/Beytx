@@ -24,7 +24,7 @@ const LikeButton = ({ isLiked, onClick }) => {
             exit={{ scale: 0, opacity: 0 }}
             transition={{ duration: 0.1 }}
           >
-            <HeartEmptyIcon size={18} color="#000" />
+            <HeartEmptyIcon size={18} color="#000000" />
           </motion.div>
         )}
       </AnimatePresence>

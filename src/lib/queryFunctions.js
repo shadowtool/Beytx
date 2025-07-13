@@ -153,3 +153,8 @@ export const fetchAllReports = async (pageParam = 1, itemsPerPage) => {
   });
   return data;
 };
+
+export const fetchUser = async () => {
+  const { data } = await axiosInstance.get(ROUTES.GET_LOGGED_USER_INFO);
+  return data;
+};

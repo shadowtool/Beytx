@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { toast } from "react-toastify";
 
-const ResetPassword = ({ userInfo }) => {
+const ResetPassword = ({ userData }) => {
   const [step, setStep] = useState(1);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
@@ -17,7 +17,7 @@ const ResetPassword = ({ userInfo }) => {
       const res = await fetch("/api/auth/send-otp", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email: userInfo.email }),
+        body: JSON.stringify({ email: userData.email }),
       });
 
       const data = await res.json();
@@ -43,7 +43,7 @@ const ResetPassword = ({ userInfo }) => {
       const res = await fetch("/api/auth/verify-otp", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email: userInfo.email, otp }),
+        body: JSON.stringify({ email: userData.email, otp }),
       });
 
       const data = await res.json();
@@ -74,7 +74,7 @@ const ResetPassword = ({ userInfo }) => {
       const res = await fetch("/api/auth/reset-password", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email: userInfo.email, password, otp }),
+        body: JSON.stringify({ email: userData.email, password, otp }),
       });
 
       const data = await res.json();

@@ -1,12 +1,22 @@
-import { getServerSession } from "next-auth/next";
 import dbConnect from "@/lib/mongodb";
 import User from "@/models/User";
-import { authOptions } from "@/lib/authOptions";
 
 export async function GET(req) {
-  const session = await getServerSession(authOptions);
+  const authHeader = req.headers.get("Authorization");
 
-  if (!session || session?.user?.role !== "admin") {
+  let userId = null;
+
+  if (authHeader && authHeader.startsWith("Bearer ")) {
+    userId = authHeader.split(" ")[1];
+  }
+
+  if (!userId) {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 403 });
+  }
+
+  const user = await User.findById(userId);
+
+  if (!user || user?.role !== "admin") {
     return new Response(JSON.stringify({ message: "Unauthorized" }), {
       status: 401,
     });

@@ -88,7 +88,7 @@ const FeaturedListings = () => {
                     setSelectedView(selectedView === "list" ? "grid" : "list");
                   }}
                 >
-                  <ListIcon size={21} color="#000" />
+                  <ListIcon size={21} color="#000000" />
                 </div>
               </div>
             </div>

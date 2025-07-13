@@ -1,13 +1,28 @@
-import { getServerSession } from "next-auth";
 import dbConnect from "@/lib/mongodb";
 import Report from "@/models/Report";
 import { NextResponse } from "next/server";
-import { authOptions } from "@/lib/authOptions";
+import User from "@/models/User";
+import jwt from "jsonwebtoken";
 
 export async function GET(req) {
-  const session = await getServerSession(authOptions);
+  const authHeader = req.headers.get("Authorization");
 
-  if (!session || session.user.role !== "admin") {
+  let userId = null;
+
+  if (authHeader && authHeader.startsWith("Bearer ")) {
+    const token = authHeader.slice(7);
+
+    const payload = jwt.verify(token, process.env.JWT_SECRET);
+    userId = payload.id;
+  }
+
+  if (!userId) {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 403 });
+  }
+
+  const user = await User.findById(userId);
+
+  if (!user || user.role !== "admin") {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 

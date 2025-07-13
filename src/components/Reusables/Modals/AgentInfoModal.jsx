@@ -6,9 +6,9 @@ import Image from "next/image";
 import { CloseIcon } from "@/imports/icons";
 
 const AgentInfoModal = ({ open, handleClose }) => {
-  const { modalProps, closeModal } = useModal();
+  const { modalProps } = useModal();
 
-  const userInfo = modalProps.userInfo;
+  const userData = modalProps.userData;
 
   return (
     <ModalWrapper open={open} handleClose={handleClose}>
@@ -28,16 +28,16 @@ const AgentInfoModal = ({ open, handleClose }) => {
           <h5 className="mb-4">You are calling</h5>
           <div className="flex items-start gap-4">
             <Image
-              src={userInfo?.image || FALLBACK_IMAGE_URL}
+              src={userData?.image || FALLBACK_IMAGE_URL}
               height={144}
               width={144}
               className="min-h-14 max-h-14 min-w-14 max-w-14 object-cover rounded-full"
             />
             <div className="flex flex-col gap-0">
-              <h5 className="text-sm mb-2">{userInfo?.name}</h5>
-              <p className="text-[10px]">Email : {userInfo?.email}</p>
+              <h5 className="text-sm mb-2">{userData?.name}</h5>
+              <p className="text-[10px]">Email : {userData?.email}</p>
               <p className="text-[10px]">
-                Phone number : {userInfo?.phoneNumber}
+                Phone number : {userData?.phoneNumber}
               </p>
             </div>
           </div>

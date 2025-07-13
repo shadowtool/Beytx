@@ -17,7 +17,7 @@ const DescriptionModal = ({ open, handleClose, propertyData }) => {
           onClick={(e) => e.stopPropagation()}
         >
           <CloseIcon
-            color="#000"
+            color="#000000"
             size={28}
             onClick={handleClose}
             className="absolute top-6 right-6 cursor-pointer"

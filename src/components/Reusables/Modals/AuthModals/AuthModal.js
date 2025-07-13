@@ -10,13 +10,12 @@ import { toast } from "react-toastify";
 import PasswordInput from "../../Inputs/PasswordInput";
 import GeneralInput from "../../Inputs/GeneralInput";
 import { CgArrowLeft } from "react-icons/cg";
-import { signIn } from "next-auth/react";
 import { useParams } from "next/navigation";
 import axios from "axios";
 import { useTranslations } from "next-intl";
 import PhoneNumberInput from "../../Inputs/PhoneNumberInput";
 import { useRouter } from "next/navigation";
-``;
+
 const AuthModal = ({ open, handleClose }) => {
   const [userExist, setUserExist] = useState(false);
   const [hasUserProceeded, setHasUserProceeded] = useState(false);
@@ -54,19 +53,15 @@ const AuthModal = ({ open, handleClose }) => {
 
   const handleLogin = async (data) => {
     try {
-      const result = await signIn("credentials", {
-        identifier: data.loginEmail,
+      const res = await axios.post("/api/auth/login", {
+        email: data.loginEmail,
         password: data.loginPassword,
-        redirect: false,
       });
-      if (result.error) {
-        toast.error(result.error);
-      } else {
-        toast.success(translate("loginSuccess"));
-        handleClose();
-      }
+      localStorage.setItem("token", res.data.token);
+      toast.success(translate("loginSuccess"));
+      handleClose();
     } catch (error) {
-      toast.error(translate("loginError"));
+      toast.error(error.response?.data?.error || translate("loginError"));
     }
   };
 
@@ -74,26 +69,23 @@ const AuthModal = ({ open, handleClose }) => {
     toast.loading(translate("signingUp"));
 
     try {
-      await axios.post("/api/auth/signup", {
+      const { data: result } = await axios.post("/api/auth/signup", {
         name: data.signinName,
         email: data.signinEmail,
         phoneNumber: data.phoneNumber,
         password: data.signinPassword,
       });
+
       toast.dismiss();
       toast.success(translate("signupSuccess"));
 
-      const result = await signIn("credentials", {
-        identifier: data.signinEmail,
-        password: data.signinPassword,
-        redirect: false,
-      });
-
-      if (!result.error) {
+      if (result?.token) {
+        localStorage.setItem("token", result?.token);
         handleClose();
       }
     } catch (error) {
       toast.dismiss();
+      console.log({ error });
       toast.error(error.response?.data?.message || translate("signupFailed"));
     }
   };

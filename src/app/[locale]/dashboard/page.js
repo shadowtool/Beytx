@@ -8,7 +8,6 @@ import {
   ResetPasswordIcon,
 } from "@/imports/icons";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { useSession } from "next-auth/react";
 import React, { useEffect, useRef, useState } from "react";
 import {
   fetchFavorites,
@@ -21,6 +20,7 @@ import { toast } from "react-toastify";
 import useMediaQuery from "@/hooks/useMediaQuery";
 import { useRouter } from "next/navigation";
 import Dashboard from "@/components/Dashboard/Dashboard";
+import { useUserContext } from "@/context/UserContext";
 
 const TABS = [
   { label: "editProfile", value: "editProfile", icon: <EditIcon size={18} /> },
@@ -47,35 +47,34 @@ const index = () => {
   const fileInputRef = useRef(null);
   const methods = useForm();
   const formValues = useWatch({ control: methods.control });
-  const { data, status, update } = useSession();
-  const userInfo = data?.user ?? {};
+  const { userData, isLoggedIn, refreshUserData } = useUserContext();
   const queryClient = useQueryClient();
   const router = useRouter();
   const { isBigScreen } = useMediaQuery();
 
   useEffect(() => {
-    if (status === "unauthenticated") {
+    if (!isLoggedIn) {
       router.push("/");
     }
-  }, [userInfo]);
+  }, [isLoggedIn]);
 
   const { data: properties, refetch: refetchProperties } = useQuery({
-    queryKey: [ROUTES.GET_PROPERTIES, userInfo?.id],
-    queryFn: () => fetchPropertiesOfLoggedUser(userInfo?.id),
-    enabled: !!userInfo?.id,
+    queryKey: [ROUTES.GET_PROPERTIES, userData?.id],
+    queryFn: () => fetchPropertiesOfLoggedUser(userData?.id),
+    enabled: !!userData?.id,
   });
 
   const { data: savedListings } = useQuery({
     queryKey: [ROUTES.GET_USER_SAVED_LISTINGS],
-    queryFn: () => fetchFavorites(userInfo?.id),
-    enabled: !!userInfo?.id,
+    queryFn: () => fetchFavorites(userData?.id),
+    enabled: !!userData?.id,
     refetchOnWindowFocus: false,
   });
 
   const { mutateAsync: updateUserData } = useMutation({
     mutationFn: (variables) => updateUserMutation(variables),
     onSuccess: async () => {
-      await update();
+      refreshUserData();
       queryClient.invalidateQueries([ROUTES.GET_USER_INFO]);
       toast.success("Profile Updated successfully");
     },
@@ -89,11 +88,11 @@ const index = () => {
   });
 
   useEffect(() => {
-    if (userInfo && Object.keys(userInfo).length > 0) {
-      setSelectedImage(userInfo?.image);
-      methods.reset(userInfo);
+    if (userData && Object.keys(userData).length > 0) {
+      setSelectedImage(userData?.image);
+      methods.reset(userData);
     }
-  }, [userInfo]);
+  }, [userData]);
 
   const handleFileChange = (event) => {
     const file = event.target.files[0];
@@ -128,7 +127,7 @@ const index = () => {
     }
 
     await updateUserData({
-      userId: userInfo.id,
+      userId: userData.id,
       name: formValues?.name,
       email: formValues?.email,
       phoneNumber: formValues?.phoneNumber,
@@ -137,7 +136,7 @@ const index = () => {
   };
 
   const props = {
-    userInfo,
+    userData,
     TABS,
     selectedTab,
     setSelectedTab,

@@ -6,7 +6,7 @@ import ListingSection from "./ListingSection";
 import ResetPassword from "./ResetPassword";
 
 const Dashboard = ({
-  userInfo,
+  userData,
   TABS,
   selectedTab,
   setSelectedTab,
@@ -23,7 +23,7 @@ const Dashboard = ({
     if (!isBigScreen && !selectedTab) {
       return (
         <MobileHeader
-          userInfo={userInfo}
+          userData={userData}
           TABS={TABS}
           selectedTab={selectedTab}
           setSelectedTab={setSelectedTab}
@@ -60,7 +60,7 @@ const Dashboard = ({
           />
         );
       case "reset-password":
-        return <ResetPassword userInfo={userInfo} />;
+        return <ResetPassword userData={userData} />;
       default:
         return null;
     }
@@ -76,7 +76,7 @@ const Dashboard = ({
     >
       {isBigScreen && (
         <DashboardSidebar
-          userInfo={userInfo}
+          userData={userData}
           TABS={TABS}
           selectedTab={selectedTab}
           setSelectedTab={setSelectedTab}
@@ -86,7 +86,7 @@ const Dashboard = ({
       <div className={`${isBigScreen ? "w-full grow" : ""} p-4`}>
         {!isBigScreen && selectedTab !== null && (
           <MobileHeader
-            userInfo={userInfo}
+            userData={userData}
             TABS={TABS}
             selectedTab={selectedTab}
             setSelectedTab={setSelectedTab}

@@ -3,7 +3,7 @@ import Image from "next/image";
 import { useTranslations } from "next-intl";
 import { LeftArrowIcon } from "@/imports/icons";
 
-const MobileHeader = ({ userInfo, TABS, selectedTab, setSelectedTab }) => {
+const MobileHeader = ({ userData, TABS, selectedTab, setSelectedTab }) => {
   const translate = useTranslations("dashboard");
 
   if (!selectedTab) {
@@ -11,14 +11,14 @@ const MobileHeader = ({ userInfo, TABS, selectedTab, setSelectedTab }) => {
       <div className="p-6 flex flex-col items-center gap-6">
         <div className="w-28 h-28 rounded-full overflow-hidden border-4 border-green-600">
           <Image
-            src={userInfo?.image || "/images/user-default.png"}
+            src={userData?.image || "/images/user-default.png"}
             alt={translate("profileImageAlt")}
             width={144}
             height={144}
             className="object-cover w-full h-full"
           />
         </div>
-        <h4>{userInfo?.name}</h4>
+        <h4>{userData?.name}</h4>
         <div className="w-full flex flex-col gap-2">
           {TABS?.map((el) => (
             <button

@@ -18,7 +18,6 @@ import {
   deletePropertyMutation,
   toggleListingInSavedListings,
 } from "@/lib/mutationFunctions";
-import { useSession } from "next-auth/react";
 import { AreaIcon, LocationIcon } from "@/imports/images";
 import Image from "next/image";
 import { toast } from "react-toastify";
@@ -28,6 +27,7 @@ import {
   DEFAULT_IMAGES_FOR_TYPES,
   FALLBACK_IMAGE_URL,
 } from "@/constants/constants";
+import { useUserContext } from "@/context/UserContext";
 
 const MotionImage = motion(CldImage);
 
@@ -41,7 +41,7 @@ const MobilePropertyCard = ({ property, cardType }) => {
   const translateCards = useTranslations("cards");
   const translatePropertyTypes = useTranslations("propertyTypes");
   const locationTranslations = useTranslations("locations");
-  const { data: session } = useSession();
+  const { userData } = useUserContext();
   const { openModal } = useModal();
 
   const { mutate } = useMutation({
@@ -83,8 +83,7 @@ const MobilePropertyCard = ({ property, cardType }) => {
   };
 
   const { mutateAsync: toggleSaveListing } = useMutation({
-    mutationFn: () =>
-      toggleListingInSavedListings(session?.user?.id, property?._id),
+    mutationFn: () => toggleListingInSavedListings(userData?.id, property?._id),
     onSuccess: () => {
       queryClient.refetchQueries({
         queryKey: [ROUTES.GET_USER_SAVED_LISTINGS],
@@ -231,7 +230,8 @@ const MobilePropertyCard = ({ property, cardType }) => {
                 alt={"location-icon"}
                 className="h-5 w-auto object-contain"
               />
-              {locationTranslations(property?.location?.city)}
+              {property?.location?.city &&
+                locationTranslations(property?.location?.city)}
             </p>
             <div className="text-gray-500 mt-2 flex items-center gap-2">
               <p className="flex items-center  ">
@@ -313,7 +313,7 @@ const MobilePropertyCard = ({ property, cardType }) => {
                   onClick={(e) => {
                     e.stopPropagation();
                     openModal("agentInfo", {
-                      userInfo: property?.userId,
+                      userData: property?.userId,
                     });
                     setShowUserPhoneNumber(true);
                   }}

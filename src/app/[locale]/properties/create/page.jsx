@@ -1,7 +1,6 @@
 "use client";
 
-import { useState, useRef, useEffect } from "react";
-import { useSession, signIn } from "next-auth/react";
+import { useState } from "react";
 import { FormProvider, useForm, useWatch } from "react-hook-form";
 import MultiTagInput from "@/components/Reusables/Inputs/TagInput";
 import { toast } from "react-toastify";
@@ -19,6 +18,8 @@ import arValues from "../../../../messages/ar.json";
 import enValues from "../../../../messages/en.json";
 import FileUpload from "@/components/Reusables/Misc/FileUpload";
 import { translateText, detectLanguage } from "@/lib/translation";
+import { useUserContext } from "@/context/UserContext";
+import { useModal } from "@/context/ModalContext";
 
 // —— DIGIT CONVERSION UTILS ——
 const ARABIC_TO_LATIN = {
@@ -66,7 +67,8 @@ export default function AddProperty() {
   const [isLoading, setIsLoading] = useState(false);
   const translate = useTranslations("createPropertyPage");
   const propertyTypeTranslations = useTranslations("propertyTypes");
-  const { data: session } = useSession();
+  const { userData } = useUserContext();
+  const { openModal } = useModal();
   const router = useRouter();
   const { locale } = useParams();
 
@@ -146,7 +148,7 @@ export default function AddProperty() {
         sizeArabic: "",
         type: data.type,
         amenities: data.amenities,
-        userId: session?.user?.id,
+        userId: userData?.id,
         title: "",
         titleArabic: "",
         description: "",
@@ -231,19 +233,19 @@ export default function AddProperty() {
     }
   };
 
-  if (!session) {
+  if (!userData) {
     return (
       <div className="flex flex-col items-center justify-center min-h-[75vh] gap-8">
         <h2 className="text-center">{translate("loginMessageText")}</h2>
         <button
-          onClick={() => signIn("google")}
+          onClick={() => openModal("login")}
           className="bg-emerald-500 text-white text-lg px-4 py-2 rounded"
         >
           {translate("login")}
         </button>
       </div>
     );
-  } else if (!session.user?.phoneNumber) {
+  } else if (!userData?.phoneNumber) {
     return (
       <div className="flex flex-col items-center justify-center min-h-[75vh] gap-8">
         <h2 className="text-center">{translate("incompleteProfileError")}</h2>

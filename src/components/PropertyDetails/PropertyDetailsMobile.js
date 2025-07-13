@@ -147,7 +147,8 @@ const PropertyDetailsMobile = ({ loading, propertyData }) => {
                       alt={t("locationIconAlt")}
                       className="h-5 w-auto object-contain"
                     />
-                    {locationsTranslations(propertyData?.location?.city)}
+                    {propertyData?.location?.city &&
+                      locationsTranslations(propertyData?.location?.city)}
                   </p>
                   <div className="flex gap-6 w-full items-center text-gray-600 my-8">
                     <div className="flex flex-col w-full grow xs:max-w-fit gap-2 items-center">
@@ -227,7 +228,7 @@ const PropertyDetailsMobile = ({ loading, propertyData }) => {
                       {isDescriptionExpanded
                         ? t("seeLessDetails")
                         : t("seeMoreDetails")}
-                      <DownIcon size={21} color="#000" />
+                      <DownIcon size={21} color="#000000" />
                     </button>
                   </div>
                 </div>

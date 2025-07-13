@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import bcrypt from "bcryptjs";
 import dbConnect from "@/lib/mongodb";
 import User from "@/models/User";
+import jwt from "jsonwebtoken";
 
 export async function POST(req) {
   await dbConnect();
@@ -37,8 +38,15 @@ export async function POST(req) {
     password: hashedPassword,
   });
 
+  // Generate JWT token
+  const token = jwt.sign(
+    { id: newUser._id, email: newUser.email },
+    process.env.JWT_SECRET,
+    { expiresIn: "7d" }
+  );
+
   return NextResponse.json(
-    { message: "User created successfully", user: newUser },
+    { message: "User created successfully", user: newUser, token },
     { status: 201 }
   );
 }

@@ -94,7 +94,7 @@ const PlacesSearchDropdown = ({ name, classes = {}, customOnChange }) => {
                 }`}
                 onClick={() => handleSelect(loc)}
               >
-                {translate(loc.city)}
+                {loc?.city && translate(loc.city)}
               </li>
             ))}
           </ul>
