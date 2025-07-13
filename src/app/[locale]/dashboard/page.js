@@ -115,7 +115,7 @@ const index = () => {
         const file = fileInputRef.current.files[0];
         if (file) {
           const uploadedImage = await uploadImageMutation(file);
-          imageUrl = uploadedImage?.url || imageUrl;
+          imageUrl = uploadedImage || imageUrl;
         }
       } catch (error) {
         console.error("Image upload failed:", error);

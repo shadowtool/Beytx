@@ -31,7 +31,7 @@ export const uploadImage = async (file) => {
   formData.append("api_key", apiKey);
   formData.append("timestamp", timestamp.toString());
   formData.append("folder", folder);
-  formData.append("public_id", publicId);
+  formData.append("public_id", publicId?.replace(" ", "_"));
   formData.append("signature", signature);
 
   const cloudinaryUploadUrl = `https://api.cloudinary.com/v1_1/${cloudName}/auto/upload`;
