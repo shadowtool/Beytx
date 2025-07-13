@@ -7,27 +7,27 @@ import { useParams, usePathname, useRouter } from "next/navigation";
 import { useState } from "react";
 import Image from "next/image";
 import { LogoImage } from "@/imports/images";
-import { useSession } from "next-auth/react";
 import GeneralButton from "../Reusables/Buttons/GeneralButton";
 import { useModal } from "@/context/ModalContext";
 import { toast } from "react-toastify";
+import { useUserContext } from "@/context/UserContext";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const { locale } = useParams();
   const translate = useTranslations("header");
   const router = useRouter();
-  const { data: session, status } = useSession();
+  const { userData, isLoggedIn } = useUserContext();
   const { openModal } = useModal();
   const pathname = usePathname();
 
   const handleAddProperty = () => {
-    if (!(status === "authenticated")) {
+    if (!isLoggedIn) {
       toast.dismiss();
       toast.error(translate("loginBeforeAddProperty"));
       document.getElementById("login-button")?.click();
     } else {
-      if (!!session?.user?.phoneNumber) {
+      if (!!userData?.phoneNumber) {
         router.push(`/${locale}/properties/create`);
       } else {
         openModal("updatePhoneNumber", {});
@@ -46,7 +46,7 @@ const Navbar = () => {
       >
         {translate("home")}
       </Link>
-      {session?.user?.role === "admin" && (
+      {userData?.role === "admin" && (
         <Link
           href={`/${locale}/admin`}
           className="text-black md:text-white"

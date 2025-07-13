@@ -2,22 +2,34 @@ import { NextResponse } from "next/server";
 import dbConnect from "@/lib/mongodb";
 import Property from "@/models/Property";
 import User from "@/models/User";
-import { getServerSession } from "next-auth";
-import { authOptions } from "@/lib/authOptions";
+import jwt from "jsonwebtoken";
 
 export async function GET(req) {
   try {
     await dbConnect();
 
-    const session = await getServerSession(authOptions);
+    const authHeader = req.headers.get("Authorization");
 
-    const userId = session?.user?.id || null;
+    let userId = null;
 
-    if (!(session?.user?.role === "admin")) {
-      return NextResponse.json(
-        { error: "Unauthorized: User is not an admin." },
-        { status: 403 }
-      );
+    if (authHeader && authHeader.startsWith("Bearer ")) {
+      const token = authHeader.slice(7);
+      const payload = jwt.verify(token, process.env.JWT_SECRET);
+      userId = payload.id;
+    }
+
+    if (!userId) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 403 });
+    }
+
+    const user = await User.findById(userId);
+
+    if (!user) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 403 });
+    }
+
+    if (user.role !== "admin") {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 403 });
     }
 
     const { searchParams } = new URL(req.url);
@@ -156,11 +168,8 @@ export async function GET(req) {
     const totalCount = await Property.countDocuments(query);
 
     let likedPropertyIds = new Set();
-    if (userId) {
-      const user = await User.findById(userId).select("favorites");
-      if (user) {
-        likedPropertyIds = new Set(user.favorites.map((fav) => fav.toString()));
-      }
+    if (user) {
+      likedPropertyIds = new Set(user.favorites.map((fav) => fav.toString()));
     }
 
     const propertiesWithLikeStatus = properties.map((property) => ({

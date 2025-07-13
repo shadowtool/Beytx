@@ -1,4 +1,3 @@
-import { axiosInstance } from "@/lib/axios";
 import { ROUTES } from "@/constants/routes";
 import {
   BathroomIcon,
@@ -144,7 +143,8 @@ const PropertyListCard = ({ property, cardType }) => {
                 alt="area-icon"
                 className="h-5 w-auto object-contain"
               />
-              {locationTranslations(property?.location?.city)}
+              {property?.location?.city &&
+                locationTranslations(property?.location?.city)}
             </p>
             <div className="text-gray-500 mt-2 flex items-center gap-2">
               <p className="flex items-center ltr:flex-row rtl:flex-row-reverse">
@@ -220,7 +220,7 @@ const PropertyListCard = ({ property, cardType }) => {
                   onClick={(e) => {
                     e.stopPropagation();
                     openModal("agentInfo", {
-                      userInfo: property?.userId,
+                      userData: property?.userId,
                     });
                     setShowUserPhoneNumber(true);
                   }}

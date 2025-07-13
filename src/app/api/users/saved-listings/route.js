@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import dbConnect from "@/lib/mongodb";
+import Property from "@/models/Property"; // Ensure Property model is registered
 import User from "@/models/User";
 
 export async function GET(req) {
@@ -17,6 +18,7 @@ export async function GET(req) {
     }
 
     const user = await User.findById(userId).populate("favorites");
+
     if (!user) {
       return NextResponse.json({ error: "User not found" }, { status: 404 });
     }

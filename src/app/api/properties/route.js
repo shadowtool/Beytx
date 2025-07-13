@@ -2,16 +2,21 @@ import { NextResponse } from "next/server";
 import dbConnect from "@/lib/mongodb";
 import Property from "@/models/Property";
 import User from "@/models/User";
-import { getServerSession } from "next-auth";
-import { authOptions } from "@/lib/authOptions";
+import jwt from "jsonwebtoken";
 
 export async function GET(req) {
   try {
     await dbConnect();
 
-    const session = await getServerSession(authOptions);
+    const authHeader = req.headers.get("Authorization");
 
-    const userId = session?.user?.id || null;
+    let userId = null;
+
+    if (authHeader && authHeader.startsWith("Bearer ")) {
+      const token = authHeader.slice(7);
+      const payload = jwt.decode(token);
+      userId = payload?.id;
+    }
 
     const { searchParams } = new URL(req.url);
     const featured = searchParams.get("featured");
@@ -123,6 +128,7 @@ export async function GET(req) {
     const totalCount = await Property.countDocuments(query);
 
     let likedPropertyIds = new Set();
+
     if (userId) {
       const user = await User.findById(userId).select("favorites");
       if (user) {

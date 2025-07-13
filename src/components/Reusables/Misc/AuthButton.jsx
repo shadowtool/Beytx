@@ -1,25 +1,22 @@
 "use client";
 
 import { LoginIcon, LogoutIcon, UserIcon } from "@/imports/icons";
-import { useSession, signIn, signOut } from "next-auth/react";
 import ClickAwayListener from "./ClickAwayListener";
 import { useState } from "react";
-import EditProfile from "../Modals/EditProfile";
 import { useParams, useRouter } from "next/navigation";
 import { useTranslations } from "next-intl";
-import AuthModal from "../Modals/AuthModals/AuthModal";
 import GeneralButton from "../Buttons/GeneralButton";
+import { useUserContext } from "@/context/UserContext";
+import { useModal } from "@/context/ModalContext";
 
 export default function AuthButton() {
   const translate = useTranslations("userOptions");
 
-  const [showEditProfileModal, setShowEditProfileModal] = useState(false);
-
-  const [showAuthModal, setShowAuthModal] = useState(false);
+  const { openModal } = useModal();
 
   const [showProfileOptions, setShowProfileOptions] = useState(false);
 
-  const { data: session } = useSession();
+  const { userData, isLoggedIn, refreshUserData } = useUserContext();
 
   const router = useRouter();
 
@@ -27,7 +24,7 @@ export default function AuthButton() {
 
   return (
     <>
-      {session ? (
+      {isLoggedIn ? (
         <ClickAwayListener
           onClickAway={() => setShowProfileOptions(false)}
           containerClasses={"!w-fit"}
@@ -41,7 +38,7 @@ export default function AuthButton() {
               }}
             >
               <p className="hidden md:block whitespace-nowrap">
-                {session?.user?.name}
+                {userData?.name}
               </p>
               <UserIcon size={21} color="#fff" />
             </GeneralButton>
@@ -60,7 +57,8 @@ export default function AuthButton() {
                   className="py-3 px-6 flex items-center text-black cursor-pointer hover:bg-gray-200 transition-all duration-300  "
                   onClick={(e) => {
                     e.stopPropagation();
-                    signOut();
+                    localStorage.clear();
+                    refreshUserData();
                   }}
                 >
                   {translate("logout")}
@@ -75,7 +73,7 @@ export default function AuthButton() {
           type="outlined"
           className="text-white border-white flex items-center gap-2 !p-2 md:!py-3 md:!px-4 hover:bg-transparent max-w-fit"
           onClick={() => {
-            setShowAuthModal(true);
+            openModal("login");
           }}
         >
           <p className="text-xs md:text-sm whitespace-nowrap">
@@ -84,19 +82,6 @@ export default function AuthButton() {
           <LoginIcon size={21} color="#fff" />
         </GeneralButton>
       )}
-
-      <EditProfile
-        open={showEditProfileModal}
-        handleClose={() => {
-          setShowEditProfileModal(false);
-        }}
-      />
-      <AuthModal
-        open={showAuthModal}
-        handleClose={() => {
-          setShowAuthModal(false);
-        }}
-      />
     </>
   );
 }

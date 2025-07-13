@@ -89,7 +89,7 @@ const PropertyImagesModal = ({ open, handleClose, images }) => {
                 className="bg-white p-3 rounded-md cursor-pointer"
                 onClick={handlePreviousImage}
               >
-                <PreviousIcon size={21} color="#000" />
+                <PreviousIcon size={21} color="#000000" />
               </button>
               <div
                 className="flex overflow-x-auto md:overflow-x-hidden hide-scrollbar gap-2 px-4"
@@ -113,7 +113,7 @@ const PropertyImagesModal = ({ open, handleClose, images }) => {
                 className="bg-white p-3 rounded-md cursor-pointer"
                 onClick={handleNextImage}
               >
-                <NextIcon size={21} color="#000" />
+                <NextIcon size={21} color="#000000" />
               </button>
             </div>
           </div>

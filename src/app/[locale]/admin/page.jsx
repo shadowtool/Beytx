@@ -1,5 +1,4 @@
 "use client";
-import { useSession } from "next-auth/react";
 import { useEffect, useMemo, useState } from "react";
 import React from "react";
 import { useParams, useRouter } from "next/navigation";
@@ -24,6 +23,7 @@ import TablePagination from "@/components/Tables/TablePagination";
 import EditProfile from "@/components/Reusables/Modals/EditProfile";
 import GeneralInput from "@/components/Reusables/Inputs/GeneralInput";
 import { FormProvider, useForm, useWatch } from "react-hook-form";
+import { useUserContext } from "@/context/UserContext";
 
 const index = () => {
   const { locale } = useParams();
@@ -38,17 +38,17 @@ const index = () => {
 
   const [currentPage, setCurrentPage] = useState(1);
 
-  const { data: session, status } = useSession();
+  const { isLoggedIn } = useUserContext();
 
   const router = useRouter();
 
   const formValues = useWatch({ control: methods.control });
 
   useEffect(() => {
-    if (status === "unauthenticated") {
+    if (!isLoggedIn) {
       router.replace("/");
     }
-  }, [session]);
+  }, [isLoggedIn]);
 
   const {
     data: propertyData,

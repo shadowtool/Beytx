@@ -6,7 +6,7 @@ import ListingSection from "./ListingSection";
 import ResetPassword from "./ResetPassword";
 
 const Dashboard = ({
-  userInfo,
+  userData,
   TABS,
   selectedTab,
   setSelectedTab,
@@ -23,7 +23,7 @@ const Dashboard = ({
     if (!isBigScreen && !selectedTab) {
       return (
         <MobileHeader
-          userInfo={userInfo}
+          userData={userData}
           TABS={TABS}
           selectedTab={selectedTab}
           setSelectedTab={setSelectedTab}
@@ -46,7 +46,7 @@ const Dashboard = ({
       case "my-listings":
         return (
           <ListingSection
-            listings={properties}
+            listings={properties || []}
             type="userListing"
             isBigScreen={isBigScreen}
           />
@@ -54,13 +54,13 @@ const Dashboard = ({
       case "saved-listings":
         return (
           <ListingSection
-            listings={savedListings}
+            listings={savedListings || []}
             type="savedListing"
             isBigScreen={isBigScreen}
           />
         );
       case "reset-password":
-        return <ResetPassword userInfo={userInfo} />;
+        return <ResetPassword userData={userData} isBigScreen={isBigScreen} />;
       default:
         return null;
     }
@@ -76,17 +76,17 @@ const Dashboard = ({
     >
       {isBigScreen && (
         <DashboardSidebar
-          userInfo={userInfo}
+          userData={userData}
           TABS={TABS}
           selectedTab={selectedTab}
           setSelectedTab={setSelectedTab}
         />
       )}
 
-      <div className={`${isBigScreen ? "w-full grow" : ""} p-4`}>
+      <div className={`${isBigScreen ? "w-full grow" : ""}`}>
         {!isBigScreen && selectedTab !== null && (
           <MobileHeader
-            userInfo={userInfo}
+            userData={userData}
             TABS={TABS}
             selectedTab={selectedTab}
             setSelectedTab={setSelectedTab}

@@ -1,11 +1,12 @@
 "use client";
-import { FormProvider, useForm, useWatch } from "react-hook-form";
+import { FormProvider, useForm } from "react-hook-form";
 import { useTranslations } from "next-intl";
 import { useEffect } from "react";
-import { useSession } from "next-auth/react";
 import PhoneNumberInput from "@/components/Reusables/Inputs/PhoneNumberInput";
 import { toast } from "react-toastify";
 import { axiosInstance } from "@/lib/axios";
+import { useUserContext } from "@/context/UserContext";
+import { useMutation } from "@tanstack/react-query";
 
 const Contact = () => {
   const translate = useTranslations("contactUs");
@@ -15,30 +16,36 @@ const Contact = () => {
     handleSubmit,
     formState: { errors },
     reset,
-    control,
   } = methods;
 
-  const { data: session } = useSession();
+  const { userData } = useUserContext();
 
   useEffect(() => {
-    if (session?.user) {
+    if (userData) {
       reset({
-        name: session.user.name || "",
-        email: session.user.email || "",
-        phone: session.user.phoneNumber || "",
+        name: userData.name || "",
+        email: userData.email || "",
+        phone: userData.phoneNumber || "",
       });
     }
-  }, [session, reset]);
+  }, [userData, reset]);
 
-  const onSubmit = async (data) => {
-    try {
-      await axiosInstance.post("/reports", data);
+  const mutation = useMutation({
+    mutationFn: async (formData) => {
+      return axiosInstance.post("/reports", formData);
+    },
+    onSuccess: () => {
       reset();
       toast.success(translate("successMessage"));
-    } catch (error) {
+    },
+    onError: (error) => {
       console.error(error);
       toast.error(translate("errorMessage"));
-    }
+    },
+  });
+
+  const onSubmit = (data) => {
+    mutation.mutate(data);
   };
 
   return (
@@ -133,9 +140,12 @@ const Contact = () => {
 
               <button
                 type="submit"
-                className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-white bg-green-500 hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 transition-colors duration-300 active:scale-95"
+                disabled={mutation.isLoading}
+                className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-white bg-green-500 hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 transition-colors duration-300 active:scale-95 disabled:opacity-50"
               >
-                {translate("sendMessage")}
+                {mutation.isLoading
+                  ? translate("sending")
+                  : translate("sendMessage")}
               </button>
             </form>
           </div>

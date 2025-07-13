@@ -125,7 +125,8 @@ const PropertyDetailsDesktop = ({ loading, propertyData }) => {
                         alt={t("locationIconAlt")}
                         className="h-5 w-auto object-contain"
                       />
-                      {locationsTranslations(propertyData?.location?.city)}
+                      {propertyData?.location?.city &&
+                        locationsTranslations(propertyData?.location?.city)}
                     </p>
                   </div>
                   <div className="flex gap-6 items-end mt-4 text-gray-600">
@@ -200,7 +201,7 @@ const PropertyDetailsDesktop = ({ loading, propertyData }) => {
                       {isDescriptionExpanded
                         ? t("seeLessDetails")
                         : t("seeMoreDetails")}
-                      <DownIcon size={21} color="#000" />
+                      <DownIcon size={21} color="#000000" />
                     </button>
                   </div>
                 </div>

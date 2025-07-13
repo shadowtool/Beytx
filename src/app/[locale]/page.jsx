@@ -2,6 +2,7 @@ import Hero from "@/components/Landing/Hero";
 import FeaturedListings from "@/components/Landing/FeaturedListings";
 import ExploreSection from "@/components/Landing/ExploreSection";
 import seoData from "@/constants/seoData";
+import TokenHandler from "@/components/Reusables/Misc/TokenHandler";
 
 export async function generateMetadata({ params }) {
   const locale = params?.locale || "en";
@@ -30,6 +31,7 @@ export default function Home() {
         <Hero />
         <FeaturedListings />
         <ExploreSection />
+        <TokenHandler />
       </main>
     </>
   );

@@ -90,6 +90,30 @@
     "editProfile": "Edit Profile",
     "resetPassword": "Reset Password"
   },
+  "resetPassword": {
+    "resetPassword": "Reset Password",
+    "resetPasswordDescription": "Follow the steps below to securely reset your password",
+    "emailAddress": "Email Address",
+    "sendVerificationCodeDescription": "We'll send a verification code to your email address to verify your identity",
+    "sendVerificationCode": "Send Verification Code",
+    "sending": "Sending...",
+    "verificationCodeSent": "Verification code sent to your email",
+    "verificationCodeSentToEmail": "A verification code has been sent to your email address",
+    "enterVerificationCode": "Enter verification code",
+    "verificationCodePlaceholder": "Enter the 6-digit code",
+    "verifyCode": "Verify Code",
+    "verifying": "Verifying...",
+    "codeVerifiedSuccessfully": "Code verified successfully",
+    "createNewPasswordDescription": "Create a strong new password for your account",
+    "newPassword": "New Password",
+    "enterNewPassword": "Enter your new password",
+    "confirmNewPassword": "Confirm New Password",
+    "confirmPasswordPlaceholder": "Re-enter your new password",
+    "resetting": "Resetting...",
+    "passwordResetSuccessfully": "Password reset successfully",
+    "passwordsDoNotMatch": "Passwords do not match",
+    "somethingWentWrong": "Something went wrong. Please try again."
+  },
   "cards": {
     "beds": "Beds",
     "baths": "Baths",
@@ -624,7 +648,8 @@
     "sale": "Sale",
     "rent": "Rent",
     "in": "In",
-    "properties": "Properties"
+    "properties": "Properties",
+    "exploreMoreProperties": "Explore more properties"
   },
   "propertyStatus": {
     "sale": "Sale",
