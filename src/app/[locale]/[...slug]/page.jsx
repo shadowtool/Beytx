@@ -124,8 +124,6 @@ export default async function Page({ params }) {
     }
     const finalPropertyData = await fetchPropertyFromDB(id);
 
-    console.log({ finalPropertyData });
-
     if (!finalPropertyData) return notFound();
 
     const jsonLdData = getJSONLDForPropertyDetails(
