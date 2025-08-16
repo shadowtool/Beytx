@@ -101,16 +101,6 @@ export default function index() {
     "٧": "7",
     "٨": "8",
     "٩": "9",
-    "۰": "0",
-    "۱": "1",
-    "۲": "2",
-    "۳": "3",
-    "۴": "4",
-    "۵": "5",
-    "۶": "6",
-    "۷": "7",
-    "۸": "8",
-    "۹": "9",
   };
   const LATIN_TO_ARABIC = Object.entries(ARABIC_TO_LATIN).reduce(
     (acc, [arabic, latin]) => ((acc[latin] = arabic), acc),

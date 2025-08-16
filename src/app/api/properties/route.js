@@ -24,6 +24,7 @@ export async function GET(req) {
     const type = JSON.parse(searchParams.get("type"));
     const status = searchParams.get("status");
     const locationParam = searchParams.get("location");
+    const country = searchParams.get("country");
     const bedrooms = searchParams.get("bedrooms");
     const bathrooms = searchParams.get("bathrooms");
     const minPrice = searchParams.get("minPrice");
@@ -59,6 +60,10 @@ export async function GET(req) {
     // Filter by User ID
     if (userIdParam) {
       query.userId = userIdParam;
+    }
+
+    if (country) {
+      query["location.country"] = new RegExp(country, "i");
     }
 
     let locationsArray = [];

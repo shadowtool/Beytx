@@ -1,4 +1,4 @@
-export const LOCATIONS_DATA = [
+export const KW_LOCATIONS_DATA = [
   {
     city: "Abu Halifa",
     country: "Kuwait",
@@ -1122,3 +1122,101 @@ export const LOCATIONS_DATA = [
     lng: 48.083333,
   },
 ];
+
+export const SA_LOCATIONS_DATA = [
+  { city: "Riyadh", country: "Saudi Arabia", lat: 24.774265, lng: 46.738586 },
+  { city: "Jeddah", country: "Saudi Arabia", lat: 21.4925, lng: 39.17757 },
+  { city: "Mecca", country: "Saudi Arabia", lat: 21.42251, lng: 39.826168 },
+  { city: "Medina", country: "Saudi Arabia", lat: 24.470901, lng: 39.612236 },
+  { city: "Dammam", country: "Saudi Arabia", lat: 26.425699, lng: 50.055164 },
+  { city: "Al-Hufuf", country: "Saudi Arabia", lat: 25.36467, lng: 49.58764 },
+  { city: "Tabuk", country: "Saudi Arabia", lat: 28.3998, lng: 36.5715 },
+  { city: "Buraydah", country: "Saudi Arabia", lat: 26.32599, lng: 43.97497 },
+  { city: "Taif", country: "Saudi Arabia", lat: 21.27028, lng: 40.41583 },
+  { city: "Khamis Mushayt", country: "Saudi Arabia", lat: 18.3, lng: 42.73333 },
+];
+
+export const UAE_LOCATIONS_DATA = [
+  { city: "Dubai", country: "UAE", lat: 25.276987, lng: 55.296249 },
+  { city: "Abu Dhabi", country: "UAE", lat: 24.466667, lng: 54.366669 },
+  { city: "Sharjah", country: "UAE", lat: 25.33737, lng: 55.41206 },
+  { city: "Al Ain", country: "UAE", lat: 24.19167, lng: 55.76056 },
+  { city: "Ajman", country: "UAE", lat: 25.40522, lng: 55.51364 },
+  { city: "Ras Al Khaimah", country: "UAE", lat: 25.78953, lng: 55.9432 },
+  { city: "Fujairah", country: "UAE", lat: 25.11641, lng: 56.34141 },
+  { city: "Umm Al Quwain", country: "UAE", lat: 25.56473, lng: 55.55517 },
+  { city: "Khor Fakkan", country: "UAE", lat: 25.33657, lng: 56.34326 },
+  { city: "Kalba", country: "UAE", lat: 25.08361, lng: 56.3625 },
+];
+
+export const EG_LOCATIONS_DATA = [
+  { city: "Cairo", country: "Egypt", lat: 30.04442, lng: 31.235712 },
+  { city: "Alexandria", country: "Egypt", lat: 31.200092, lng: 29.918739 },
+  { city: "Giza", country: "Egypt", lat: 30.013056, lng: 31.208853 },
+  {
+    city: "Shubra El Kheima",
+    country: "Egypt",
+    lat: 30.128611,
+    lng: 31.242222,
+  },
+  { city: "Port Said", country: "Egypt", lat: 31.265289, lng: 32.301865 },
+  { city: "Suez", country: "Egypt", lat: 29.966834, lng: 32.549807 },
+  { city: "Mansoura", country: "Egypt", lat: 31.03637, lng: 31.38069 },
+  {
+    city: "El Mahalla El Kubra",
+    country: "Egypt",
+    lat: 30.974421,
+    lng: 31.164822,
+  },
+  { city: "Tanta", country: "Egypt", lat: 30.788471, lng: 31.00192 },
+  { city: "Asyut", country: "Egypt", lat: 27.180134, lng: 31.189283 },
+];
+
+export const IQ_LOCATIONS_DATA = [
+  { city: "Baghdad", country: "Iraq", lat: 33.315241, lng: 44.366067 },
+  { city: "Mosul", country: "Iraq", lat: 36.335, lng: 43.118889 },
+  { city: "Basra", country: "Iraq", lat: 30.5081, lng: 47.7835 },
+  { city: "Kirkuk", country: "Iraq", lat: 35.466667, lng: 44.316667 },
+  { city: "Najaf", country: "Iraq", lat: 32.0259, lng: 44.3463 },
+  { city: "Erbil", country: "Iraq", lat: 36.191113, lng: 44.009167 },
+  { city: "Sulaimaniya", country: "Iraq", lat: 35.561667, lng: 45.433333 },
+  { city: "Amara", country: "Iraq", lat: 31.841667, lng: 47.145 },
+  { city: "Nasiriyah", country: "Iraq", lat: 31.047, lng: 46.267 },
+  { city: "Hillah", country: "Iraq", lat: 32.4721, lng: 44.4216 },
+];
+
+export const SY_LOCATIONS_DATA = [
+  { city: "Damascus", country: "Syria", lat: 33.513807, lng: 36.276528 },
+  { city: "Aleppo", country: "Syria", lat: 36.202105, lng: 37.13426 },
+  { city: "Homs", country: "Syria", lat: 34.73083, lng: 36.70944 },
+  { city: "Latakia", country: "Syria", lat: 35.51667, lng: 35.78333 },
+  { city: "Hama", country: "Syria", lat: 35.13179, lng: 36.75783 },
+  { city: "Raqqa", country: "Syria", lat: 35.95992, lng: 39.00788 },
+  { city: "Deir ez-Zor", country: "Syria", lat: 35.33333, lng: 40.15 },
+  { city: "Al-Hasakah", country: "Syria", lat: 36.50237, lng: 40.74772 },
+  { city: "Qamishli", country: "Syria", lat: 37.05222, lng: 41.2225 },
+  { city: "Tartus", country: "Syria", lat: 34.88361, lng: 35.88667 },
+];
+
+import { COUNTRY } from "@/constants/constants";
+
+const countryLocationMap = {
+  kuwait: KW_LOCATIONS_DATA,
+  saudi: SA_LOCATIONS_DATA,
+  uae: UAE_LOCATIONS_DATA,
+  egypt: EG_LOCATIONS_DATA,
+  iraq: IQ_LOCATIONS_DATA,
+  syria: SY_LOCATIONS_DATA,
+};
+
+export const COMPLETE_LOCATION_DATA = [
+  ...KW_LOCATIONS_DATA,
+  ...SA_LOCATIONS_DATA,
+  ...UAE_LOCATIONS_DATA,
+  ...EG_LOCATIONS_DATA,
+  ...IQ_LOCATIONS_DATA,
+  ...SY_LOCATIONS_DATA,
+];
+
+export const LOCATIONS_DATA =
+  countryLocationMap[COUNTRY.name] || KW_LOCATIONS_DATA;

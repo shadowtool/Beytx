@@ -1,19 +1,20 @@
 import React, { useEffect } from "react";
 import { Controller, useFormContext } from "react-hook-form";
+import { COUNTRY } from "@/constants/constants";
 
 const PhoneNumberInput = ({ name, error, validation = {} }) => {
   const { control, setValue, watch } = useFormContext();
 
-  const selectedCountryCode = watch("selectedCountryCode", "+965"); // Default to KW
+  const selectedCountryCode = watch("selectedCountryCode", COUNTRY.countryCode); // Use configured country
   const phoneNumber = watch(name, "");
 
+  // Use only the configured country
   const countryCodes = [
-    { code: "+973", country: "BH" }, // Bahrain
-    { code: "+965", country: "KW" }, // Kuwait
-    { code: "+971", country: "AE" }, // UAE
-    { code: "+962", country: "JO" }, // Jordan
-    { code: "+968", country: "OM" }, // Oman
-    { code: "+974", country: "QA" }, // Qatar
+    {
+      code: COUNTRY.countryCode,
+      country: COUNTRY.name.toUpperCase(),
+      name: COUNTRY.english,
+    },
   ];
 
   const handleCountryCodeChange = (e) => {
@@ -37,15 +38,15 @@ const PhoneNumberInput = ({ name, error, validation = {} }) => {
 
   return (
     <div className="w-full">
-      <div className="flex gap-2" dir="ltr">
+      <div className="flex gap-2">
         <select
           value={selectedCountryCode}
           onChange={handleCountryCodeChange}
-          className="px-2 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500 transition-all duration-300 text-xs md:text-sm shrink-0"
+          className="px-2 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500 transition-all duration-300 text-xs md:text-sm"
         >
           {countryCodes.map((country) => (
             <option key={country.code} value={country.code}>
-              {country.code} ({country.country})
+              {country.code} ({country.name})
             </option>
           ))}
         </select>
@@ -59,7 +60,7 @@ const PhoneNumberInput = ({ name, error, validation = {} }) => {
             <input
               type="text" // Changed to text to avoid arrows
               placeholder="Enter phone number"
-              className={`w-full px-4 py-2 border rounded-md outline-none focus:outline-none focus:ring-2 focus:ring-green-500 transition-all duration-300 text-left ${
+              className={`w-full px-4 py-2 border rounded-md outline-none focus:outline-none focus:ring-2 focus:ring-green-500 transition-all duration-300 ${
                 error ? "border-red-500" : "border-gray-300"
               }`}
               {...field}

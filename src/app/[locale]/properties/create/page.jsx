@@ -34,15 +34,6 @@ const ARABIC_TO_LATIN = {
   "٨": "8",
   "٩": "9",
   "۰": "0",
-  "۱": "1",
-  "۲": "2",
-  "۳": "3",
-  "۴": "4",
-  "۵": "5",
-  "۶": "6",
-  "۷": "7",
-  "۸": "8",
-  "۹": "9",
 };
 const LATIN_TO_ARABIC = Object.entries(ARABIC_TO_LATIN).reduce(
   (acc, [arabic, latin]) => ((acc[latin] = arabic), acc),
@@ -112,7 +103,7 @@ export default function AddProperty() {
       const urls = await Promise.all(files.map((f) => uploadSingleImage(f)));
       return urls;
     } catch {
-      throw new Error();
+      return [];
     }
   };
 
@@ -227,8 +218,6 @@ export default function AddProperty() {
       toast.loading(translate("creatingProperty"));
       createProperty(dataToSend);
     } catch (err) {
-      toast.dismiss();
-      toast.error("Something went wrong");
       console.error(err);
     } finally {
       setIsLoading(false);

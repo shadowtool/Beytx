@@ -1,24 +1,9 @@
-import seoData from "@/constants/seoData";
 import Contact from "@/components/Contact/contact";
+import { generateCountryMetadata } from "@/lib/seoUtils";
 
 export async function generateMetadata({ params }) {
   const locale = params?.locale || "en";
-
-  const dataToAdd = seoData?.contact?.[locale || "en"];
-
-  return {
-    title: dataToAdd?.title,
-    description: dataToAdd?.metaDescription,
-    keywords: dataToAdd?.metaKeywords,
-    alternates: {
-      canonical: dataToAdd?.canonical,
-      languages: {
-        en: dataToAdd?.hrefEn,
-        ar: dataToAdd?.hrefAr,
-        "x-default": dataToAdd?.hrefDefault,
-      },
-    },
-  };
+  return generateCountryMetadata("contact", locale);
 }
 
 export default function Page() {

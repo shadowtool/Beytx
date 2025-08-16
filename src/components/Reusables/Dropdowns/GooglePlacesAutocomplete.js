@@ -3,6 +3,7 @@
 import { useState, useRef } from "react";
 import { useForm, useFormContext } from "react-hook-form";
 import Script from "next/script";
+import { COUNTRY } from "@/constants/constants";
 
 const GooglePlacesAutocomplete = ({ name }) => {
   const { setValue } = useFormContext();
@@ -24,12 +25,14 @@ const GooglePlacesAutocomplete = ({ name }) => {
           return;
         }
 
-        // Fetch place predictions
+        // Fetch place predictions - use single COUNTRY configuration
         service.getPlacePredictions(
           {
             input: searchText,
             types: ["(regions)"], // Establishments only
-            componentRestrictions: { country: "KW" }, // Kuwait only
+            componentRestrictions: {
+              country: COUNTRY.googleMapsCode,
+            }, // Use configured country
           },
           (predictions, status) => {
             if (
@@ -60,7 +63,8 @@ const GooglePlacesAutocomplete = ({ name }) => {
             lat: place.geometry.location.lat(),
             lng: place.geometry.location.lng(),
             city: place?.vicinity,
-            country: place.address_components[2].long_name ?? "Kuwait",
+            country: COUNTRY.english,
+            selectedCountry: COUNTRY, // Include the configured country object
           };
 
           setSelectedCity(cityData);

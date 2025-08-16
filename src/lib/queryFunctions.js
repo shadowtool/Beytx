@@ -1,5 +1,6 @@
 import { axiosInstance } from "./axios";
 import { ROUTES } from "../constants/routes";
+import { COUNTRY } from "../constants/constants";
 import imageCompression from "browser-image-compression";
 
 export const uploadImage = async (file) => {
@@ -21,7 +22,7 @@ export const uploadImage = async (file) => {
 
   const signatureRes = await axiosInstance.post("/upload/generate-signature", {
     folder,
-    public_id: publicId?.replace(" ", "_"),
+    public_id: publicId,
   });
 
   const { signature, timestamp, apiKey, cloudName } = signatureRes.data;
@@ -31,7 +32,7 @@ export const uploadImage = async (file) => {
   formData.append("api_key", apiKey);
   formData.append("timestamp", timestamp.toString());
   formData.append("folder", folder);
-  formData.append("public_id", publicId?.replace(" ", "_"));
+  formData.append("public_id", publicId);
   formData.append("signature", signature);
 
   const cloudinaryUploadUrl = `https://api.cloudinary.com/v1_1/${cloudName}/auto/upload`;
@@ -52,7 +53,12 @@ export const fetchPropertyListings = async (
 ) => {
   try {
     const response = await axiosInstance.get(`${ROUTES.GET_PROPERTIES}`, {
-      params: { page: pageParam, limit: itemsPerPage, ...filters },
+      params: {
+        page: pageParam,
+        limit: itemsPerPage,
+        country: COUNTRY.name,
+        ...filters,
+      },
     });
     return response?.data;
   } catch (error) {
@@ -70,7 +76,12 @@ export const fetchPropertyListingsAdmin = async (
     const response = await axiosInstance.get(
       `${ROUTES.GET_ALL_PROPERTIES_ADMIN}`,
       {
-        params: { page: pageParam, limit: itemsPerPage, ...filters },
+        params: {
+          page: pageParam,
+          limit: itemsPerPage,
+          country: COUNTRY.name,
+          ...filters,
+        },
       }
     );
     return response?.data;
@@ -83,7 +94,7 @@ export const fetchPropertyListingsAdmin = async (
 export const fetchPropertiesOfLoggedUser = async (userId) => {
   try {
     const response = await axiosInstance.get(
-      `${ROUTES.GET_PROPERTIES}?userId=${userId ?? ""}`
+      `${ROUTES.GET_PROPERTIES}?userId=${userId ?? ""}&country=${COUNTRY.name}`
     );
     return response?.data?.properties;
   } catch (error) {
@@ -94,13 +105,15 @@ export const fetchPropertiesOfLoggedUser = async (userId) => {
 
 export const fetchPropertyDetails = async (propertyName) => {
   const response = await axiosInstance.get(
-    `${ROUTES.GET_PROPERTIES}/${propertyName ?? ""}`
+    `${ROUTES.GET_PROPERTIES}/${propertyName ?? ""}?country=${COUNTRY.name}`
   );
   return response?.data;
 };
 
 export const fetchFeaturedListings = async () => {
-  const response = await axiosInstance.get(`${ROUTES.GET_FEATURED_PROPERTIES}`);
+  const response = await axiosInstance.get(
+    `${ROUTES.GET_FEATURED_PROPERTIES}?country=${COUNTRY.name}`
+  );
   return response?.data?.properties;
 };
 
@@ -137,7 +150,7 @@ export const fetchAllUsers = async (pageParam = 1, itemsPerPage) => {
 
 export const fetchAgentListings = async (agentId) => {
   const { data } = await axiosInstance.get(
-    `${ROUTES.GET_USER_LISTINGS}/${agentId}`
+    `${ROUTES.GET_USER_LISTINGS}/${agentId}?country=${COUNTRY.name}`
   );
   return data;
 };

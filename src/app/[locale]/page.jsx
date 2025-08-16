@@ -1,27 +1,12 @@
 import Hero from "@/components/Landing/Hero";
 import FeaturedListings from "@/components/Landing/FeaturedListings";
 import ExploreSection from "@/components/Landing/ExploreSection";
-import seoData from "@/constants/seoData";
 import TokenHandler from "@/components/Reusables/Misc/TokenHandler";
+import { generateCountryMetadata } from "@/lib/seoUtils";
 
 export async function generateMetadata({ params }) {
   const locale = params?.locale || "en";
-
-  const dataToAdd = seoData?.home?.[locale || "en"];
-
-  return {
-    title: dataToAdd?.title,
-    description: dataToAdd?.metaDescription,
-    keywords: dataToAdd?.metaKeywords,
-    alternates: {
-      canonical: dataToAdd?.canonical,
-      languages: {
-        en: dataToAdd?.hrefEn,
-        ar: dataToAdd?.hrefAr,
-        "x-default": dataToAdd?.hrefDefault,
-      },
-    },
-  };
+  return generateCountryMetadata("home", locale);
 }
 
 export default function Home() {

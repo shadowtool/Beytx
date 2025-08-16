@@ -53,9 +53,7 @@ export default function ExploreSection() {
   if (isLoading) {
     return (
       <div className="p-6 md:p-16 pt-0">
-        <h2 className="text-4xl font-light mb-16">
-          {translate(`exploreSection.exploreMoreProperties`)}
-        </h2>
+        <h2 className="text-4xl font-light mb-16">Explore more properties</h2>
         <Loader />
       </div>
     );
@@ -63,9 +61,7 @@ export default function ExploreSection() {
 
   return (
     <div className="p-6 md:p-16 pt-0">
-      <h2 className="text-4xl font-light mb-16">
-        {translate(`exploreSection.exploreMoreProperties`)}
-      </h2>
+      <h2 className="text-4xl font-light mb-16">Explore more properties</h2>
       <div className="flex gap-6 border-b mb-4 text-lg font-medium">
         {["Sale", "Rent"].map((tab) => (
           <button

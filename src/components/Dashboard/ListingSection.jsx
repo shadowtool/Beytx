@@ -2,49 +2,16 @@ import React from "react";
 import { useTranslations } from "next-intl";
 import PropertyCard from "../Reusables/Cards/PropertyCard";
 import MobilePropertyCard from "../Reusables/Cards/MobilePropertyCard";
-import Image from "next/image";
-import noDataFoundSvg from "../../../public/images/noDataFound.png";
-import { useParams, useRouter } from "next/navigation";
 
 const ListingSection = ({ listings, type, isBigScreen }) => {
   const translate = useTranslations("dashboard");
 
-  const router = useRouter();
-
-  const { locale } = useParams();
-
   if (listings?.length <= 0) {
     return (
       <div
-        className={`h-full w-full flex flex-col items-center justify-center gap-4 bg-white rounded-xl border border-solid border-gray-200 shadow-lg`}
+        className={`h-fit w-full ${isBigScreen ? "flex items-center justify-center" : "p-6"}`}
       >
-        <Image
-          src={noDataFoundSvg}
-          alt="No data found"
-          width={320}
-          height={320}
-          className="mb-2 h-56 w-auto object-contain"
-        />
-        <h5 className="text-2xl font-semibold text-gray-700 mb-1">
-          {translate("noListings")}
-        </h5>
-        {type === "userListing" ? (
-          <button
-            className="h-fit w-fit bg-emerald-600 text-white text-sm rounded-md px-4 py-2"
-            onClick={() => router.push(`/${locale}/properties/create`)}
-          >
-            Add Property
-          </button>
-        ) : type === "savedListing" ? (
-          <button
-            className="h-fit w-fit bg-emerald-600 text-white text-sm rounded-md px-4 py-2"
-            onClick={() => router.push(`/${locale}/properties`)}
-          >
-            Explore Properties
-          </button>
-        ) : (
-          <></>
-        )}
+        <h5>{translate("noListings")}</h5>
       </div>
     );
   }

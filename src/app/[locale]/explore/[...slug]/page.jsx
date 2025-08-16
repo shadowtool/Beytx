@@ -5,6 +5,7 @@ import { LOCATIONS_DATA } from "@/lib/locationsData";
 import { PROPERTY_TYPES } from "@/constants/propertyTypes";
 import enTranslations from "../../../../messages/en.json";
 import arTranslations from "../../../../messages/ar.json";
+import { getCountryFromDomain, processSeoData } from "@/lib/seoUtils";
 import seoData from "@/constants/seoData";
 
 export async function generateStaticParams() {
@@ -63,6 +64,7 @@ export async function generateStaticParams() {
 
 export async function generateMetadata({ params }) {
   const { locale, slug } = params;
+  const countryData = getCountryFromDomain();
 
   let seoDataToAdd = {};
 
@@ -76,15 +78,17 @@ export async function generateMetadata({ params }) {
   }
 
   if (!!seoDataToAdd) {
+    const processedData = processSeoData(seoDataToAdd, locale, countryData);
+
     return {
-      title: seoDataToAdd?.[locale]?.title,
-      description: seoDataToAdd?.[locale]?.metaDescription,
+      title: processedData?.title,
+      description: processedData?.metaDescription,
       alternates: {
-        canonical: seoDataToAdd?.[locale]?.canonical,
+        canonical: processedData?.canonical,
         languages: {
-          en: seoDataToAdd?.[locale]?.hrefEn,
-          ar: seoDataToAdd?.[locale]?.hrefAr,
-          "x-default": seoDataToAdd?.[locale]?.hrefDefault,
+          en: processedData?.hrefEn,
+          ar: processedData?.hrefAr,
+          "x-default": processedData?.hrefDefault,
         },
       },
     };

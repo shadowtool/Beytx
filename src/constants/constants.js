@@ -97,6 +97,91 @@ export const DEFAULT_IMAGES_FOR_TYPES = {
   Stable: DefaultImageStable,
 };
 
+// Keep COUNTRIES array for configuration reference
+export const COUNTRIES = [
+  {
+    name: "kuwait",
+    english: "Kuwait",
+    arabic: "الكويت",
+    countryCode: "+965",
+    googleMapsCode: "KW",
+    baseurl: "https://kw-beyt-personal.vercel.app",
+    currencySymbolEnglish: "KWD",
+    currencySymbolArabic: "د.ك",
+  },
+  {
+    name: "saudi",
+    english: "Saudi Arabia",
+    arabic: "المملكة العربية السعودية",
+    countryCode: "+966",
+    googleMapsCode: "SA",
+    baseurl: "https://sa-beyt-personal.vercel.app",
+    currencySymbolEnglish: "SAR",
+    currencySymbolArabic: "ر.س",
+  },
+  {
+    name: "uae",
+    english: "UAE",
+    arabic: "الإمارات العربية المتحدة",
+    countryCode: "+971",
+    googleMapsCode: "AE",
+    baseurl: "https://ae-beyt-personal.vercel.app",
+    currencySymbolEnglish: "AED",
+    currencySymbolArabic: "د.إ",
+  },
+  {
+    name: "egypt",
+    english: "Egypt",
+    arabic: "مصر",
+    countryCode: "+20",
+    googleMapsCode: "EG",
+    baseurl: "https://eg-beyt-personal.vercel.app",
+    currencySymbolEnglish: "EGP",
+    currencySymbolArabic: "ج.م",
+  },
+  {
+    name: "iraq",
+    english: "Iraq",
+    arabic: "العراق",
+    countryCode: "+964",
+    googleMapsCode: "IQ",
+    baseurl: "https://iq-beyt-personal.vercel.app",
+    currencySymbolEnglish: "IQD",
+    currencySymbolArabic: "د.ع",
+  },
+  {
+    name: "syria",
+    english: "Syria",
+    arabic: "سوريا",
+    countryCode: "+963",
+    googleMapsCode: "SY",
+    baseurl: "https://sy-beyt-personal.vercel.app",
+    currencySymbolEnglish: "SYP",
+    currencySymbolArabic: "ل.س",
+  },
+];
+
+// Dynamic country configuration from environment variables
+function getCountryFromEnv() {
+  const countryName =
+    process.env.NEXT_PUBLIC_COUNTRY || process.env.COUNTRY || "kuwait";
+  const foundCountry = COUNTRIES.find(
+    (country) => country.name === countryName.toLowerCase()
+  );
+
+  if (!foundCountry) {
+    console.warn(
+      `Country "${countryName}" not found in COUNTRIES array. Falling back to Kuwait.`
+    );
+    return COUNTRIES.find((country) => country.name === "kuwait");
+  }
+
+  return foundCountry;
+}
+
+// Export the country configuration based on environment variable
+export const COUNTRY = getCountryFromEnv();
+
 export const DEFAULT_VALUES_PROPERTY_LISTINGS_FILTERS = {
   location: "",
   type: [],

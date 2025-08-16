@@ -1,10 +1,11 @@
 import { axiosInstance } from "@/lib/axios";
 import { ROUTES } from "@/constants/routes";
+import { COUNTRY } from "@/constants/constants";
 
 export const updatePropertyMutation = async (variables) => {
   const response = await axiosInstance.put(
     `${ROUTES.GET_PROPERTIES}/${variables?.propertyId}`,
-    { ...variables }
+    { ...variables, country: COUNTRY.name }
   );
   return response.data;
 };
@@ -12,7 +13,7 @@ export const updatePropertyMutation = async (variables) => {
 export const archivePropertyMutation = async (variables) => {
   const response = await axiosInstance.put(
     `${ROUTES.GET_PROPERTIES}/${variables?.propertyId}`,
-    { archived: true }
+    { archived: true, country: COUNTRY.name }
   );
   return response.data;
 };
@@ -20,13 +21,14 @@ export const archivePropertyMutation = async (variables) => {
 export const createPropertyMutation = async (variables) => {
   const response = await axiosInstance.post(`${ROUTES.ADD_PROPERTY}`, {
     ...variables,
+    country: COUNTRY.name,
   });
   return response.data;
 };
 
 export const deletePropertyMutation = async (variables) => {
   const response = await axiosInstance.delete(
-    `${ROUTES.DELETE_PROPERTY}/${variables?.propertyId ?? ""}`
+    `${ROUTES.DELETE_PROPERTY}/${variables?.propertyId ?? ""}?country=${COUNTRY.name}`
   );
   return response.data;
 };
@@ -60,7 +62,7 @@ export const toggleListingInSavedListings = async (userId, propertyId) => {
 export const updatePropertyStatusMutation = async (variables) => {
   const response = await axiosInstance.put(
     `${ROUTES.GET_PROPERTIES}/${variables?.propertyId}`,
-    { ...variables }
+    { ...variables, country: COUNTRY.name }
   );
   return response.data;
 };

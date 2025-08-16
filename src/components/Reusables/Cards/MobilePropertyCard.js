@@ -1,4 +1,5 @@
 import { ROUTES } from "@/constants/routes";
+import { COUNTRY } from "@/constants/constants";
 import {
   BathroomIcon,
   BedIcon,
@@ -218,10 +219,12 @@ const MobilePropertyCard = ({ property, cardType }) => {
           <h4 className="text-green-700 mt-1 mb-2 ">
             {Number(property?.price) === 0
               ? "N/A"
-              : `${new Intl.NumberFormat("en-US", {
-                  style: "decimal",
-                  maximumFractionDigits: 0,
-                }).format(property?.price)}  KWD`}
+              : locale === "ar"
+                ? `${property?.priceArabic} ${COUNTRY.currencySymbolArabic}`
+                : `${new Intl.NumberFormat("en-US", {
+                    style: "decimal",
+                    maximumFractionDigits: 0,
+                  }).format(property?.price)} ${COUNTRY.currencySymbolEnglish}`}
           </h4>
           <div className="mt-2 flex flex-col items-start text-balance">
             <p className="text-gray-500 flex items-center mb-2 mt-1 ">
