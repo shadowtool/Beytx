@@ -1,5 +1,5 @@
 // SEO and navigation data for Beyt
-// Transformed: English/Arabic pairs merged under named keys with 'en' and 'ar' subkeys
+// Updated with provided SEO entries including contact section
 
 const seoData = {
   home: {
@@ -68,7 +68,7 @@ const seoData = {
   },
   rent: {
     en: {
-      link: "{baseurl}/en/properties/?status=rent",
+      link: "{baseurl}/en/explore/rent",
       title:
         "Search | Filter Properties for Rent in {countryNameEnglish} | Beyt",
       metaDescription:
@@ -77,13 +77,13 @@ const seoData = {
         "properties for rent {countryNameEnglish}, rent property {countryNameEnglish}, rental listings {countryNameEnglish}, apartments for rent, villas for rent, free listing, Beyt",
       h1: "Search | Filter Properties for Rent in {countryNameEnglish}",
       h2: "Advertise Your Rental Property Free on Beyt and Find Your Ideal Home or Workspace",
-      hrefEn: "{baseurl}/en/properties/?status=rent",
+      hrefEn: "{baseurl}/en/explore/rent",
       hrefAr: "{baseurl}/ar/properties/?status=rent",
-      hrefDefault: "{baseurl}/en/properties/?status=rent",
-      canonical: "{baseurl}/en/properties/?status=rent",
+      hrefDefault: "{baseurl}/en/explore/rent",
+      canonical: "{baseurl}/en/explore/rent",
     },
     ar: {
-      link: "{baseurl}/ar/properties/?status=rent",
+      link: "{baseurl}/ar/explore/rent",
       title: "ابحث وصنف عقارات للإيجار في {countryNameArabic} | بيت",
       metaDescription:
         "استخدم البحث والفلاتر المتقدمة في بيت لتصفح العقارات للإيجار في {countryNameArabic}. أعلن عن عقارك للإيجار مجاناً اليوم",
@@ -91,15 +91,15 @@ const seoData = {
         "عقارات للإيجار في {countryNameArabic}, بحث عقارات للإيجار, شقق للإيجار, فلل للإيجار, مكاتب للإيجار, إعلان مجاني, بيت",
       h1: "ابحث وصنف عقارات للإيجار في {countryNameArabic}",
       h2: "أعلن عن عقارك للإيجار مجاناً مع بيت وابحث عن منزلك أو مكتبك المثالي",
-      hrefEn: "{baseurl}/en/properties/?status=rent",
-      hrefAr: "{baseurl}/ar/properties/?status=rent",
-      hrefDefault: "{baseurl}/ar/properties/?status=rent",
-      canonical: "{baseurl}/ar/properties/?status=rent",
+      hrefEn: "{baseurl}/en/explore/rent",
+      hrefAr: "{baseurl}/ar/explore/rent",
+      hrefDefault: "{baseurl}/ar/explore/rent",
+      canonical: "{baseurl}/ar/explore/rent",
     },
   },
   sale: {
     en: {
-      link: "{baseurl}/en/properties/?status=sale",
+      link: "{baseurl}/en/explore/sale",
       title:
         "Search | Filter Properties for Sale in {countryNameEnglish} | Beyt",
       metaDescription:
@@ -108,13 +108,13 @@ const seoData = {
         "properties for sale {countryNameEnglish}, buy property {countryNameEnglish}, sale listings {countryNameEnglish}, villas for sale, apartments for sale, free listing, Beyt",
       h1: "Search| Filter Properties for Sale in {countryNameEnglish}",
       h2: "Advertise Your Property for Sale Free on Beyt and Find Your Perfect Investment",
-      hrefEn: "{baseurl}/en/explore/rent",
-      hrefAr: "{baseurl}/ar/explore/rent",
-      hrefDefault: "{baseurl}/en/explore/rent",
-      canonical: "{baseurl}/en/explore/rent",
+      hrefEn: "{baseurl}/en/explore/sale",
+      hrefAr: "{baseurl}/ar/explore/sale",
+      hrefDefault: "{baseurl}/en/explore/sale",
+      canonical: "{baseurl}/en/explore/sale",
     },
     ar: {
-      link: "{baseurl}/ar/properties/?status=sale",
+      link: "{baseurl}/ar/explore/sale",
       title: "ابحث وصنف عقارات للبيع في {countryNameArabic} | بيت",
       metaDescription:
         "استخدم البحث والفلاتر المتقدمة في بيت لتصفح العقارات للبيع في {countryNameArabic}. أعلن عن عقارك للبيع مجاناً اليوم",
@@ -130,7 +130,7 @@ const seoData = {
   },
   villa: {
     en: {
-      link: "{baseurl}/en/properties/?type=Villa",
+      link: "{baseurl}/en/explore/Villa",
       title: "Search & Filter Villas in {countryNameEnglish} | Beyt",
       metaDescription:
         "Use Beyt’s powerful search and filters to browse villas for sale or rent in {countryNameEnglish}. Advertise your villa free today!",
@@ -138,13 +138,13 @@ const seoData = {
         "villas for rent in {countryNameEnglish}, villas for sale in {countryNameEnglish}, {countryNameEnglish} villas, villa listings, free villa listing, Beyt",
       h1: "Search | Filter Villas in {countryNameEnglish}",
       h2: "Advertise Your Villa Free on Beyt and Find Your Dream Home with Advanced Filters",
-      hrefEn: "{baseurl}/en/properties/?type=Villa",
-      hrefAr: "{baseurl}/ar/properties/?type=Villa",
-      hrefDefault: "{baseurl}/en/properties/?type=Villa",
-      canonical: "{baseurl}/en/properties/?type=Villa",
+      hrefEn: "{baseurl}/en/explore/Villa",
+      hrefAr: "{baseurl}/ar/explore/Villa",
+      hrefDefault: "{baseurl}/en/explore/Villa",
+      canonical: "{baseurl}/en/explore/Villa",
     },
     ar: {
-      link: "{baseurl}/ar/properties/?type=Villa",
+      link: "{baseurl}/ar/explore/Villa",
       title: "ابحث وصنف الفلل في {countryNameArabic} | بيت",
       metaDescription:
         "استخدم البحث والفلاتر المتقدمة في بيت لتصفح الفلل للبيع أو للإيجار في {countryNameArabic}. أعلن فيلتك مجاناً اليوم مع بيت",
@@ -152,15 +152,15 @@ const seoData = {
         "فلل للإيجار في {countryNameArabic}, فلل للبيع في {countryNameArabic}, سوق الفلل {countryNameArabic}, إعلان مجاني, بيت",
       h1: "ابحث وصنف الفلل في {countryNameArabic}",
       h2: "أعلن فيلتك مجاناً مع بيت وابحث عن فيلتك المثالية باستخدام الفلاتر المتقدمة",
-      hrefEn: "{baseurl}/en/properties/?type=Villa",
-      hrefAr: "{baseurl}/ar/properties/?type=Villa",
-      hrefDefault: "{baseurl}/ar/properties/?type=Villa",
-      canonical: "{baseurl}/ar/properties/?type=Villa",
+      hrefEn: "{baseurl}/en/explore/Villa",
+      hrefAr: "{baseurl}/ar/explore/Villa",
+      hrefDefault: "{baseurl}/ar/explore/Villa",
+      canonical: "{baseurl}/ar/explore/Villa",
     },
   },
   apartment: {
     en: {
-      link: "{baseurl}/en/properties/?type=Apartment",
+      link: "{baseurl}/en/explore/Apartment",
       title: "Search & Filter Apartments in {countryNameEnglish} | Beyt",
       metaDescription:
         "Use Beyt’s powerful search and filters to browse apartments for sale or rent in {countryNameEnglish}. Advertise your apartment free today!",
@@ -168,13 +168,13 @@ const seoData = {
         "apartments for rent in {countryNameEnglish}, apartments for sale in {countryNameEnglish}, {countryNameEnglish} apartments, apartment listings, free apartment listing, Beyt",
       h1: "Search | Filter Apartments in {countryNameEnglish}",
       h2: "Advertise Your Apartment Free on Beyt and Find Your Ideal Home with Advanced Filters",
-      hrefEn: "{baseurl}/en/properties/?type=Apartment",
-      hrefAr: "{baseurl}/ar/properties/?type=Apartment",
-      hrefDefault: "{baseurl}/en/properties/?type=Apartment",
-      canonical: "{baseurl}/en/properties/?type=Apartment",
+      hrefEn: "{baseurl}/en/explore/Apartment",
+      hrefAr: "{baseurl}/ar/explore/Apartment",
+      hrefDefault: "{baseurl}/en/explore/Apartment",
+      canonical: "{baseurl}/en/explore/Apartment",
     },
     ar: {
-      link: "{baseurl}/ar/properties/?type=Apartment",
+      link: "{baseurl}/ar/explore/Apartment",
       title: "ابحث وصنف الشقق في {countryNameArabic} | بيت",
       metaDescription:
         "استخدم البحث والفلاتر المتقدمة في بيت لتصفح الشقق للبيع أو للإيجار في {countryNameArabic}. أعلن شقتك مجاناً اليوم مع بيت",
@@ -182,10 +182,10 @@ const seoData = {
         "شقق للإيجار في {countryNameArabic}, شقق للبيع في {countryNameArabic}, سوق الشقق {countryNameArabic}, إعلان مجاني, بيت",
       h1: "ابحث وصنف الشقق في {countryNameArabic}",
       h2: "أعلن شقتك مجاناً مع بيت وابحث عن شقتك المثالية باستخدام الفلاتر المتقدمة",
-      hrefEn: "{baseurl}/en/properties/?type=Apartment",
-      hrefAr: "{baseurl}/ar/properties/?type=Apartment",
-      hrefDefault: "{baseurl}/ar/properties/?type=Apartment",
-      canonical: "{baseurl}/ar/properties/?type=Apartment",
+      hrefEn: "{baseurl}/en/explore/Apartment",
+      hrefAr: "{baseurl}/ar/explore/Apartment",
+      hrefDefault: "{baseurl}/ar/explore/Apartment",
+      canonical: "{baseurl}/ar/explore/Apartment",
     },
   },
   about: {
