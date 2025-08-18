@@ -81,7 +81,7 @@ export const PRICE_OPTIONS_RENT = [
 export const USER_ROLES = ["user", "admin"];
 
 export const FALLBACK_IMAGE_URL =
-  "https://images.pexels.com/photos/28216688/pexels-photo-28216688/free-photo-of-autumn-camping.png";
+  "https://www.images.pexels.com/photos/28216688/pexels-photo-28216688/free-photo-of-autumn-camping.png";
 
 export const DEFAULT_IMAGES_FOR_TYPES = {
   Villa: DefaultImageVilla,
@@ -105,7 +105,7 @@ export const COUNTRIES = [
     arabic: "الكويت",
     countryCode: "+965",
     googleMapsCode: "KW",
-    baseurl: "https://kw-beyt-personal.vercel.app",
+    baseurl: "https://www.beyt.co",
     currencySymbolEnglish: "KWD",
     currencySymbolArabic: "د.ك",
   },
@@ -115,7 +115,7 @@ export const COUNTRIES = [
     arabic: "المملكة العربية السعودية",
     countryCode: "+966",
     googleMapsCode: "SA",
-    baseurl: "https://sa-beyt-personal.vercel.app",
+    baseurl: "https://www.sa.beyt.co",
     currencySymbolEnglish: "SAR",
     currencySymbolArabic: "ر.س",
   },
@@ -125,7 +125,7 @@ export const COUNTRIES = [
     arabic: "الإمارات العربية المتحدة",
     countryCode: "+971",
     googleMapsCode: "AE",
-    baseurl: "https://ae-beyt-personal.vercel.app",
+    baseurl: "https://www.ae.beyt.co",
     currencySymbolEnglish: "AED",
     currencySymbolArabic: "د.إ",
   },
@@ -135,7 +135,7 @@ export const COUNTRIES = [
     arabic: "مصر",
     countryCode: "+20",
     googleMapsCode: "EG",
-    baseurl: "https://eg-beyt-personal.vercel.app",
+    baseurl: "https://www.eg.beyt.co",
     currencySymbolEnglish: "EGP",
     currencySymbolArabic: "ج.م",
   },
@@ -145,7 +145,7 @@ export const COUNTRIES = [
     arabic: "العراق",
     countryCode: "+964",
     googleMapsCode: "IQ",
-    baseurl: "https://iq-beyt-personal.vercel.app",
+    baseurl: "https://www.iq.beyt.co",
     currencySymbolEnglish: "IQD",
     currencySymbolArabic: "د.ع",
   },
@@ -155,7 +155,7 @@ export const COUNTRIES = [
     arabic: "سوريا",
     countryCode: "+963",
     googleMapsCode: "SY",
-    baseurl: "https://sy-beyt-personal.vercel.app",
+    baseurl: "https://www.sy.beyt.co",
     currencySymbolEnglish: "SYP",
     currencySymbolArabic: "ل.س",
   },
