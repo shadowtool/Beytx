@@ -161,7 +161,7 @@ This project exposes several RESTful API endpoints under `/api/`:
 
 ### Upload APIs
 
-- **POST /api/upload**: Upload a file to Cloudinary. Accepts form-data with a `file` field.
+- **POST /api/upload**: Upload a file to Cloudinary. Accepts form-data with a `file` field
   - **Body:**
     - `multipart/form-data` with a `file` field.
 - **POST /api/upload/generate-signature**: Generate a Cloudinary upload signature for client-side uploads.
