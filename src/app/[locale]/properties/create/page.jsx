@@ -127,7 +127,6 @@ export default function AddProperty() {
       // build base payload
       const dataToSend = {
         status: data.status,
-        // numeric fields + their Arabic variants
         price: "",
         priceArabic: "",
         bedrooms: "",
@@ -145,6 +144,7 @@ export default function AddProperty() {
         description: "",
         descriptionArabic: "",
         images: [],
+        userId: userData?._id,
       };
 
       // —— PRICE ——

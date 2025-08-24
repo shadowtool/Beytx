@@ -102,93 +102,144 @@ export default function index() {
     "٨": "8",
     "٩": "9",
   };
+
   const LATIN_TO_ARABIC = Object.entries(ARABIC_TO_LATIN).reduce(
     (acc, [arabic, latin]) => ((acc[latin] = arabic), acc),
     {}
   );
 
   function convertArabicDigitsToLatin(str) {
-    return str.replace(
+    return String(str).replace(
       /[\u0660-\u0669\u06F0-\u06F9]/g,
       (d) => ARABIC_TO_LATIN[d] || d
     );
   }
   function convertLatinDigitsToArabic(str) {
-    return str.replace(/\d/g, (d) => LATIN_TO_ARABIC[d] || d);
+    console.log({ str });
+    return String(str).replace(/\d/g, (d) => LATIN_TO_ARABIC[d] || d);
   }
   function isArabicDigits(str) {
-    return /[\u0660-\u0669\u06F0-\u06F9]/.test(str);
+    return /[\u0660-\u0669\u06F0-\u06F9]/.test(String(str));
   }
   // ————————————————
 
   const onSubmit = async (data) => {
     try {
+      console.log("Step 1: Received form data", data);
+
       // build base payload
       const dataToSend = {
         status: data?.status,
-        // numeric fields + their Arabic variants
-        price: "",
-        priceArabic: "",
-        bedrooms: "",
-        bedroomsArabic: "",
-        bathrooms: "",
-        bathroomsArabic: "",
+        price: data?.price || "",
+        priceArabic: data?.priceArabic || "",
+        bedrooms: data?.bedrooms || "",
+        bedroomsArabic: data?.bedroomsArabic || "",
+        bathrooms: data?.bathrooms || "",
+        bathroomsArabic: data?.bathroomsArabic || "",
         location: data?.location,
         size: data?.area,
-        sizeArabic: "",
+        sizeArabic: data?.sizeArabic || "",
         type: data?.type,
         amenities: data?.amenities,
-        description: "",
-        descriptionArabic: "",
+        description: data?.description || "",
+        descriptionArabic: data?.descriptionArabic || "",
         images: data?.images,
       };
+
+      console.log("Step 2: Initialized dataToSend", dataToSend);
 
       // —— PRICE —__
       if (isArabicDigits(data.price)) {
         dataToSend.priceArabic = data.price;
         dataToSend.price = convertArabicDigitsToLatin(data.price);
+        console.log("Step 3: Converted Arabic price to Latin", {
+          price: dataToSend.price,
+          priceArabic: dataToSend.priceArabic,
+        });
       } else {
         dataToSend.price = data.price;
         dataToSend.priceArabic = convertLatinDigitsToArabic(data.price);
+        console.log("Step 3: Converted Latin price to Arabic", {
+          price: dataToSend.price,
+          priceArabic: dataToSend.priceArabic,
+        });
       }
 
       // —— SIZE —__
       if (isArabicDigits(data.area)) {
         dataToSend.sizeArabic = data.area;
         dataToSend.size = convertArabicDigitsToLatin(data.area);
+        console.log("Step 4: Converted Arabic size to Latin", {
+          size: dataToSend.size,
+          sizeArabic: dataToSend.sizeArabic,
+        });
       } else {
         dataToSend.size = data.area;
         dataToSend.sizeArabic = convertLatinDigitsToArabic(data.area);
+        console.log("Step 4: Converted Latin size to Arabic", {
+          size: dataToSend.size,
+          sizeArabic: dataToSend.sizeArabic,
+        });
       }
 
       // —— BEDROOMS —__
       if (isArabicDigits(data.beds)) {
         dataToSend.bedroomsArabic = data.beds;
         dataToSend.bedrooms = convertArabicDigitsToLatin(data.beds);
+        console.log("Step 5: Converted Arabic bedrooms to Latin", {
+          bedrooms: dataToSend.bedrooms,
+          bedroomsArabic: dataToSend.bedroomsArabic,
+        });
       } else {
         dataToSend.bedrooms = data.beds;
         dataToSend.bedroomsArabic = convertLatinDigitsToArabic(data.beds);
+        console.log("Step 5: Converted Latin bedrooms to Arabic", {
+          bedrooms: dataToSend.bedrooms,
+          bedroomsArabic: dataToSend.bedroomsArabic,
+        });
       }
 
       // —— BATHROOMS —__
       if (isArabicDigits(data.baths)) {
         dataToSend.bathroomsArabic = data.baths;
         dataToSend.bathrooms = convertArabicDigitsToLatin(data.baths);
+        console.log("Step 6: Converted Arabic bathrooms to Latin", {
+          bathrooms: dataToSend.bathrooms,
+          bathroomsArabic: dataToSend.bathroomsArabic,
+        });
       } else {
         dataToSend.bathrooms = data.baths;
         dataToSend.bathroomsArabic = convertLatinDigitsToArabic(data.baths);
+        console.log("Step 6: Converted Latin bathrooms to Arabic", {
+          bathrooms: dataToSend.bathrooms,
+          bathroomsArabic: dataToSend.bathroomsArabic,
+        });
       }
 
       // —— DESCRIPTION TRANSLATION —__
       const originalLang = detectLanguage(data?.description);
+      console.log("Step 7: Detected description language", originalLang);
+
       if (originalLang === "ar") {
         dataToSend.descriptionArabic = data?.description;
+        console.log("Step 8: Description is Arabic, translating to English...");
         const translatedDesc = await translateText(data?.description, "en");
         dataToSend.description = translatedDesc || data?.description;
+        console.log(
+          "Step 8: Translated Arabic description to English",
+          dataToSend.description
+        );
       } else {
         dataToSend.description = data?.description;
+        console.log(
+          "Step 8: Description is not Arabic, translating to Arabic..."
+        );
         const translatedDesc = await translateText(data?.description, "ar");
         dataToSend.descriptionArabic = translatedDesc || data?.description;
+        console.log(
+          "Step 8: Translated description to Arabic",
+          dataToSend.descriptionArabic
+        );
       }
 
       const allImages = data?.images || [];
@@ -197,16 +248,28 @@ export default function index() {
       );
       const newImageFiles = allImages.filter((img) => typeof img !== "string");
 
+      console.log("Step 9: Existing image URLs", existingImageUrls);
+      console.log("Step 9: New image files to upload", newImageFiles);
+
       let uploadedUrls = [];
 
       if (newImageFiles.length > 0) {
         toast.loading("Uploading images...");
+        console.log("Step 10: Uploading new image files...");
         const response = await uploadImagesCall(newImageFiles);
         uploadedUrls = response;
         toast.dismiss();
+        console.log("Step 10: Uploaded new image files", uploadedUrls);
       }
 
       const finalImages = [...existingImageUrls, ...uploadedUrls];
+      console.log("Step 11: Final images array", finalImages);
+
+      console.log("Step 12: Sending updatePropertyData mutation", {
+        ...dataToSend,
+        propertyId: params?.propertyId,
+        images: finalImages,
+      });
 
       updatePropertyData({
         ...dataToSend,
