@@ -34,6 +34,11 @@ export default function ExploreSection() {
   const translate = useTranslations();
 
   const propertyLinks = useMemo(() => {
+    // Don't generate links if selectedLocation is not available
+    if (!selectedLocation?.city) {
+      return [];
+    }
+
     return PROPERTY_TYPES?.map((el) => {
       return {
         name: `${translate(`propertyTypes.${el?.toLowerCase()}`)} ${translate("exploreSection.in")} ${translate(`locations.${selectedLocation?.city}`)}`,
@@ -80,19 +85,24 @@ export default function ExploreSection() {
       </div>
 
       <div className="flex gap-3 my-6 overflow-x-auto hide-scrollbar">
-        {locationsData?.slice(0, 6)?.map((loc) => (
-          <button
-            key={loc?.city}
-            className={`whitespace-nowrap border px-4 py-2 rounded-full text-sm transition-all duration-300 ${
-              selectedLocation?.city === loc?.city
-                ? "bg-emerald-600 text-white border-emerald-600"
-                : "text-emerald-600 border-gray-300 hover:bg-emerald-600 hover:text-white"
-            }`}
-            onClick={() => handleLocationClick(loc)}
-          >
-            {translate(`locations.${loc?.city}`)}
-          </button>
-        ))}
+        {locationsData?.slice(0, 6)?.map((loc) => {
+          // Only render if the city exists and has a translation
+          if (!loc?.city) return null;
+
+          return (
+            <button
+              key={loc?.city}
+              className={`whitespace-nowrap border px-4 py-2 rounded-full text-sm transition-all duration-300 ${
+                selectedLocation?.city === loc?.city
+                  ? "bg-emerald-600 text-white border-emerald-600"
+                  : "text-emerald-600 border-gray-300 hover:bg-emerald-600 hover:text-white"
+              }`}
+              onClick={() => handleLocationClick(loc)}
+            >
+              {translate(`locations.${loc?.city}`)}
+            </button>
+          );
+        })}
       </div>
       {/* Property Type Links */}
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 py-4 gap-4">
