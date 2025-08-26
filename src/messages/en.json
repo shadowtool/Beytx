@@ -58,6 +58,7 @@
     "descriptionError": "Please provide a description for your property"
   },
   "propertyTypes": {
+    "undefined": "Property Type",
     "villa": "Villa",
     "apartment": "Apartment",
     "land": "Land",
@@ -275,6 +276,7 @@
     "error": "Error"
   },
   "locations": {
+    "undefined": "Location",
     "Kuwait": "Kuwait",
     "Saudi Arabia": "Saudi Arabia",
     "UAE": "UAE",

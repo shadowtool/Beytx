@@ -55,6 +55,7 @@
     "enterDescription": "أدخل النص هنا ..."
   },
   "propertyTypes": {
+    "undefined": "نوع العقار",
     "villa": "فيلا",
     "apartment": "شقة",
     "land": "أرض",
@@ -271,6 +272,7 @@
     "error": "خطأ"
   },
   "locations": {
+    "undefined": "الموقع",
     "Kuwait": "الكويت",
     "Saudi Arabia": "المملكة العربية السعودية",
     "UAE": "الإمارات العربية المتحدة",
