@@ -34,7 +34,7 @@ export default function Analytics() {
       {/* Facebook Pixel */}
       <Script
         id="facebook-pixel"
-        strategy="afterInteractive"
+        strategy="lazyOnload" // Changed from afterInteractive to lazyOnload
         onError={(error) => handleScriptError("facebook-pixel", error)}
         onLoad={() => handleScriptLoad("facebook-pixel")}
       >
@@ -74,7 +74,7 @@ export default function Analytics() {
       {/* Google Analytics - Load gtag script first */}
       <Script
         src="https://www.googletagmanager.com/gtag/js?id=G-CKDT319WH2"
-        strategy="afterInteractive"
+        strategy="lazyOnload" // Changed from afterInteractive to lazyOnload
         onError={(error) => handleScriptError("gtag-script", error)}
         onLoad={() => handleScriptLoad("gtag-script")}
       />
@@ -82,7 +82,7 @@ export default function Analytics() {
       {/* Google Analytics Configuration */}
       <Script
         id="google-analytics"
-        strategy="afterInteractive"
+        strategy="lazyOnload" // Changed from afterInteractive to lazyOnload
         onError={(error) => handleScriptError("google-analytics", error)}
         onLoad={() => handleScriptLoad("google-analytics")}
       >

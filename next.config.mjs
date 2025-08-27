@@ -6,6 +6,17 @@ const withNextIntl = createNextIntlPlugin();
 const nextConfig = {
   reactStrictMode: true,
   trailingSlash: false,
+  // Enable modern compression and optimization
+  compress: true,
+  poweredByHeader: false,
+  // Optimize CSS handling
+  experimental: {
+    cssChunking: "strict",
+  },
+  compiler: {
+    // Remove console logs in production
+    removeConsole: process.env.NODE_ENV === "production",
+  },
   images: {
     remotePatterns: [
       {
@@ -25,6 +36,9 @@ const nextConfig = {
         hostname: "images.unsplash.com",
       },
     ],
+    // Optimize images for faster loading
+    formats: ["image/webp", "image/avif"],
+    minimumCacheTTL: 60,
   },
 };
 

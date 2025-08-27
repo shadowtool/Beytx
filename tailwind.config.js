@@ -7,6 +7,8 @@ module.exports = {
     "./src/components/**/*.{js,ts,jsx,tsx,mdx}",
     "./src/app/**/*.{js,ts,jsx,tsx,mdx}",
   ],
+  // Enable JIT mode for better performance
+  mode: "jit",
   theme: {
     screens: {
       xs: "480px",
@@ -27,6 +29,7 @@ module.exports = {
         softGray: "#e4e4e4",
       },
       fontFamily: {
+        raleway: ["var(--font-raleway)", "system-ui", "sans-serif"],
         montserrat: ["var(--font-montserrat)", "system-ui", "sans-serif"],
         orbitron: ["var(--font-orbitron)", "system-ui", "sans-serif"],
       },
@@ -43,6 +46,7 @@ module.exports = {
       },
     },
   },
+  safelist: ["min-h-screen", "antialiased", "text-sm", "font-medium"],
   plugins: [
     require("tailwindcss-rtl"), // Add RTL support
     plugin(({ addBase }) => {
