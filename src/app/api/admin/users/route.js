@@ -1,29 +1,31 @@
+import { NextResponse } from "next/server";
 import dbConnect from "@/lib/mongodb";
 import User from "@/models/User";
+import jwt from "jsonwebtoken";
 
 export async function GET(req) {
-  const authHeader = req.headers.get("Authorization");
-
-  let userId = null;
-
-  if (authHeader && authHeader.startsWith("Bearer ")) {
-    userId = authHeader.split(" ")[1];
-  }
-
-  if (!userId) {
-    return NextResponse.json({ error: "Unauthorized" }, { status: 403 });
-  }
-
-  const user = await User.findById(userId);
-
-  if (!user || user?.role !== "admin") {
-    return new Response(JSON.stringify({ message: "Unauthorized" }), {
-      status: 401,
-    });
-  }
-
   try {
     await dbConnect();
+
+    const authHeader = req.headers.get("Authorization");
+
+    let userId = null;
+
+    if (authHeader && authHeader.startsWith("Bearer ")) {
+      const token = authHeader.slice(7);
+      const payload = jwt.verify(token, process.env.JWT_SECRET);
+      userId = payload.id;
+    }
+
+    if (!userId) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 403 });
+    }
+
+    const user = await User.findById(userId);
+
+    if (!user || user?.role !== "admin") {
+      return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
+    }
 
     const { searchParams } = new URL(req.url);
     const page = parseInt(searchParams.get("page")) || 1;
@@ -38,21 +40,14 @@ export async function GET(req) {
 
     const totalCount = await User.countDocuments();
 
-    return new Response(
-      JSON.stringify({
-        users,
-        totalPages: Math.ceil(totalCount / limit),
-        currentPage: page,
-        totalCount,
-      }),
-      {
-        status: 200,
-        headers: { "Content-Type": "application/json" },
-      }
-    );
-  } catch (error) {
-    return new Response(JSON.stringify({ message: "Server Error" }), {
-      status: 500,
+    return NextResponse.json({
+      users,
+      totalPages: Math.ceil(totalCount / limit),
+      currentPage: page,
+      totalCount,
     });
+  } catch (error) {
+    console.error("Admin users API error:", error);
+    return NextResponse.json({ message: "Server Error" }, { status: 500 });
   }
 }

@@ -8,6 +8,7 @@ import { useTranslations } from "next-intl";
 import GeneralButton from "../Buttons/GeneralButton";
 import { useUserContext } from "@/context/UserContext";
 import { useModal } from "@/context/ModalContext";
+import { removeToken } from "@/lib/axios";
 
 export default function AuthButton() {
   const translate = useTranslations("userOptions");
@@ -57,7 +58,7 @@ export default function AuthButton() {
                   className="py-3 px-6 flex items-center text-black cursor-pointer hover:bg-gray-200 transition-all duration-300  "
                   onClick={(e) => {
                     e.stopPropagation();
-                    localStorage.clear();
+                    removeToken();
                     refreshUserData();
                   }}
                 >

@@ -6,6 +6,7 @@ import GoogleLoginButton from "../../Buttons/GoogleLoginButton";
 import GeneralButton from "../../Buttons/GeneralButton";
 import { FormProvider, useForm, useWatch } from "react-hook-form";
 import { fetchUserAccountStatus } from "@/lib/queryFunctions";
+import { setToken } from "@/lib/axios";
 import { toast } from "react-toastify";
 import PasswordInput from "../../Inputs/PasswordInput";
 import GeneralInput from "../../Inputs/GeneralInput";
@@ -57,7 +58,7 @@ const AuthModal = ({ open, handleClose }) => {
         email: data.loginEmail,
         password: data.loginPassword,
       });
-      localStorage.setItem("token", res.data.token);
+      setToken(res.data.token);
       toast.success(translate("loginSuccess"));
       handleClose();
     } catch (error) {
@@ -80,7 +81,7 @@ const AuthModal = ({ open, handleClose }) => {
       toast.success(translate("signupSuccess"));
 
       if (result?.token) {
-        localStorage.setItem("token", result?.token);
+        setToken(result?.token);
         handleClose();
       }
     } catch (error) {
